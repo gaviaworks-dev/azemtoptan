@@ -1,0 +1,11 @@
+.DS_Store
+
+# Ekran görüntüleri ve doğrulama çıktıları (yerelde kalır)
+referans/
+
+# Kullanılmayan görsel: "Bu ürünler kaçmaz" vitrini gizli (görselde Azem'in test yazısı var)
+assets/img/banners/vitrin-bu-urunler-kacmaz.webp
+
+# Geçici / test dosyaları
+*.tmp
+*.log

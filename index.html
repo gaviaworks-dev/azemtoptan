@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Azem Toptan | Toptan Alışverişin Adresi</title>
+  <meta name="description" content="Azem Toptan; gıda, içecek, temizlik, kişisel bakım ve kağıt ürünlerinde tanınan markaların toptan satışını yapar.">
+  <meta name="theme-color" content="#1a114d">
+  <link rel="icon" href="data:,">
+  <link rel="preload" href="assets/fonts/plus-jakarta-sans/plus-jakarta-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/vendor/fontawesome/css/all.min.css">
+  <link rel="stylesheet" href="assets/css/tokens.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/layout.css">
+  <script>document.documentElement.classList.add('js');</script>
+</head>
+<body>
+
+<a class="sr-only" href="#icerik">İçeriğe geç</a>
+
+<!-- ================= HEADER ================= -->
+<header class="site-header" id="siteHeader">
+  <div class="wrap">
+    <div class="hdr-top">
+      <button class="icon-btn icon-btn--ghost hdr-mobile-only" type="button" data-drawer-open aria-controls="drawer" aria-label="Menüyü aç">
+        <i class="fa-solid fa-bars" aria-hidden="true"></i>
+      </button>
+
+      <a class="hdr-logo" href="#" aria-label="Azem Toptan ana sayfa">
+        <img src="assets/img/brand/azem-logo.svg" width="114" height="44" alt="Azem Toptan">
+      </a>
+
+      <form class="hdr-search hdr-desktop-only" role="search" action="#" data-search>
+        <label class="search">
+          <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+          <span class="sr-only">Ürün ara</span>
+          <input type="search" name="ara" placeholder="Ne Aramıştınız ?" autocomplete="off">
+          <button type="submit">Ara</button>
+        </label>
+      </form>
+
+      <div class="hdr-actions">
+        <button class="icon-btn icon-btn--ghost hdr-mobile-only hdr-search-trigger" type="button" data-search-toggle aria-label="Aramayı aç">
+          <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+        </button>
+
+        <a class="pill pill--brand hdr-desktop-only" href="#">
+          <i class="fa-solid fa-bolt" aria-hidden="true"></i> Bugünün Fırsatı
+        </a>
+
+        <a class="pill pill--soft hdr-desktop-only" href="#" aria-label="Favorilerim">
+          <i class="fa-regular fa-heart" aria-hidden="true"></i> Favorilerim
+          <span class="pill__count" data-fav-count data-count="0">0</span>
+        </a>
+
+        <div class="hdr-menu" data-menu>
+          <button class="pill pill--soft hdr-desktop-only" type="button" aria-haspopup="true" aria-expanded="false" data-menu-btn>
+            Giriş Yap <i class="fa-regular fa-user" aria-hidden="true"></i>
+          </button>
+          <button class="icon-btn icon-btn--ghost hdr-mobile-only" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Hesabım" data-menu-btn>
+            <i class="fa-regular fa-user" aria-hidden="true"></i>
+          </button>
+          <div class="dropdown" role="menu">
+            <ul class="dropdown__list">
+              <li><a class="dropdown__item" href="#" role="menuitem"><i class="fa-solid fa-arrow-right-to-bracket" aria-hidden="true"></i> Giriş Yap</a></li>
+              <li><a class="dropdown__item" href="#" role="menuitem"><i class="fa-solid fa-user-plus" aria-hidden="true"></i> Kayıt Ol</a></li>
+              <li><a class="dropdown__item" href="#" role="menuitem"><i class="fa-solid fa-key" aria-hidden="true"></i> Şifremi Unuttum?</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="hdr-menu" data-menu>
+          <button class="pill pill--soft hdr-desktop-only" type="button" aria-haspopup="true" aria-expanded="false" data-menu-btn>
+            Sepetim <i class="fa-solid fa-basket-shopping" aria-hidden="true"></i>
+            <span class="pill__count" data-cart-count data-count="0">0</span>
+          </button>
+          <button class="icon-btn icon-btn--ghost hdr-mobile-only" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Sepetim" data-menu-btn>
+            <i class="fa-solid fa-basket-shopping" aria-hidden="true"></i>
+            <span class="pill__count" data-cart-count data-count="0">0</span>
+          </button>
+          <div class="dropdown" data-minicart></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Masaüstü: teslimat adresi + kategori menüsü -->
+    <div class="hdr-nav-row hdr-desktop-only">
+      <span class="pill pill--outline pill--sm">
+        <i class="fa-solid fa-location-dot" aria-hidden="true"></i> <span data-address></span>
+      </span>
+      <nav aria-label="Kategoriler">
+        <ul class="nav" data-nav>
+          <li class="nav__item"><a class="nav__link nav__link--home" href="#" aria-label="Ana Sayfa"><i class="fa-solid fa-house" aria-hidden="true"></i></a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <!-- Mobil: arama + Kategoriler pill'i, teslimat adresi (aşağı kaydırınca katlanır) -->
+    <div class="hdr-collapse" id="hdrCollapse">
+      <div class="hdr-collapse__row">
+        <form class="hdr-collapse__search" role="search" action="#" data-search>
+          <label class="search">
+            <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+            <span class="sr-only">Ürün ara</span>
+            <input type="search" name="ara" placeholder="Ne Aramıştınız ?" autocomplete="off" id="mobileSearch">
+          </label>
+        </form>
+        <button class="pill pill--brand" type="button" data-drawer-open aria-controls="drawer">
+          <i class="fa-solid fa-table-cells-large" aria-hidden="true"></i> Kategoriler
+        </button>
+      </div>
+      <div class="hdr-collapse__row">
+        <span class="pill pill--outline pill--sm">
+          <i class="fa-solid fa-location-dot" aria-hidden="true"></i> <span data-address></span>
+        </span>
+      </div>
+    </div>
+  </div>
+</header>
+<div class="menu-scrim" data-menu-scrim></div>
+
+<!-- ================= İÇERİK ================= -->
+<main class="page-main" id="icerik">
+
+  <!-- Story şeridi: Bugünün Fırsatı + alt kategoriler -->
+  <section class="sec sec--white sec--tight-top sec--tight-bottom" aria-label="Kısayollar">
+    <div class="wrap">
+      <div class="story-strip">
+        <button class="icon-btn icon-btn--round rail-arrows" type="button" data-rail-prev="storyRail" aria-label="Önceki"><i class="fa-solid fa-chevron-left" aria-hidden="true"></i></button>
+        <div class="rail rail--bleed" id="storyRail" data-stories></div>
+        <button class="icon-btn icon-btn--round rail-arrows" type="button" data-rail-next="storyRail" aria-label="Sonraki"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Hero slider -->
+  <section class="sec sec--white sec--flush-top sec--compact-bottom" aria-roledescription="carousel" aria-label="Kampanyalar">
+    <div class="wrap">
+      <div class="hero" data-hero>
+        <div class="hero__frame">
+          <div class="hero__track" data-hero-track></div>
+        </div>
+        <div class="hero__controls">
+          <button class="icon-btn icon-btn--round" type="button" data-hero-prev aria-label="Önceki slayt"><i class="fa-solid fa-chevron-left" aria-hidden="true"></i></button>
+          <span class="hero__counter" data-hero-counter aria-live="polite">1/3</span>
+          <div class="hero__dots" data-hero-dots></div>
+          <button class="icon-btn icon-btn--round" type="button" data-hero-pause aria-label="Otomatik geçişi durdur"><i class="fa-solid fa-pause" aria-hidden="true"></i></button>
+          <button class="icon-btn icon-btn--round" type="button" data-hero-next aria-label="Sonraki slayt"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Duyuru şeridi -->
+  <div class="announce" role="region" aria-label="Duyurular">
+    <div class="wrap announce__inner">
+      <i class="fa-solid fa-truck-fast announce__icon" aria-hidden="true"></i>
+      <div class="announce__msgs" data-announce aria-live="polite"></div>
+    </div>
+  </div>
+
+  <!-- Popüler Kategoriler -->
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head"><h2 class="sec-head__title">Popüler Kategoriler</h2></div>
+      <div class="cat-grid reveal" data-cat-grid></div>
+    </div>
+  </section>
+
+  <!-- Kampanya kartları -->
+  <section class="sec sec--white" aria-label="Kampanyalar">
+    <div class="wrap">
+      <div class="promo-row rail--bleed" data-promos></div>
+    </div>
+  </section>
+
+  <!-- Ürün rafları + vitrinler (Azem sırası) -->
+  <div data-shelves></div>
+
+  <!-- E-bülten -->
+  <section class="sec sec--brand">
+    <div class="wrap newsletter">
+      <div>
+        <h2 class="newsletter__title">İNDİRİMLERİ YAKALA</h2>
+        <p class="newsletter__text">Ücretsiz olarak e-bülten aboneliğinizi başlatarak yeni kampanya ve ürünlerimizden anında haberdar olun!</p>
+      </div>
+      <form data-newsletter novalidate>
+        <label class="field-pill">
+          <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+          <span class="sr-only">E-posta adresi</span>
+          <input type="email" id="ebultenEmail" placeholder="Email Adresinizi Giriniz" required>
+          <button class="btn btn--accent" type="submit">Abone Ol <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></button>
+        </label>
+      </form>
+    </div>
+  </section>
+
+  <!-- Güven şeridi -->
+  <section class="sec sec--white sec--compact" aria-label="Avantajlar">
+    <div class="wrap">
+      <ul class="trust">
+        <li class="trust__item"><span class="trust__icon"><i class="fa-solid fa-shield-halved" aria-hidden="true"></i></span><span class="trust__label">Güvenli Alışveriş</span></li>
+        <li class="trust__item"><span class="trust__icon"><i class="fa-solid fa-truck-fast" aria-hidden="true"></i></span><span class="trust__label">10.000 TL Üzeri Ücretsiz Kargo</span></li>
+        <li class="trust__item"><span class="trust__icon"><i class="fa-solid fa-tags" aria-hidden="true"></i></span><span class="trust__label">Günlük Mega İndirimler</span></li>
+        <li class="trust__item"><span class="trust__icon"><i class="fa-solid fa-hand-holding-dollar" aria-hidden="true"></i></span><span class="trust__label">Piyasadaki En İyi Fiyatlar</span></li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<!-- ================= FOOTER ================= -->
+<footer class="site-footer" id="siteFooter">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a class="foot-brand__logo" href="#" aria-label="Azem Toptan ana sayfa"><img src="assets/img/brand/azem-logo.svg" width="108" height="42" alt="Azem Toptan"></a>
+        <div class="foot-soc" aria-label="Bizi Takip Edin">
+          <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f" aria-hidden="true"></i></a>
+          <a href="#" aria-label="YouTube"><i class="fa-brands fa-youtube" aria-hidden="true"></i></a>
+          <a href="#" aria-label="X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a>
+          <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <nav class="foot-col" aria-label="Kategoriler">
+        <h2>Kategoriler</h2>
+        <div data-foot-cats></div>
+      </nav>
+
+      <nav class="foot-col" aria-label="Yardım">
+        <h2>Yardım</h2>
+        <a href="#">Müşteri Hizmetleri</a>
+        <a href="#">İptal ve İade</a>
+        <a href="#">Nasıl Kolay İade Yaparım?</a>
+        <a href="#">S.S.S.</a>
+      </nav>
+
+      <div class="foot-col">
+        <h2>İletişim</h2>
+        <div class="foot-contact">
+          <p class="foot-contact__row"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i><span><strong>WhatsApp Sipariş Hattı</strong><span data-whatsapp></span></span></p>
+          <p class="foot-contact__row"><i class="fa-solid fa-envelope" aria-hidden="true"></i><span><strong>E-Posta Adresi</strong><span data-email></span></span></p>
+          <p class="foot-contact__row"><i class="fa-solid fa-location-dot" aria-hidden="true"></i><span><strong>Adres</strong><span data-address></span></span></p>
+        </div>
+      </div>
+
+      <div class="foot-app">
+        <h2>Uygulamayı İndir</h2>
+        <div class="foot-app__btns">
+          <a class="app-btn" href="#" aria-label="App Store'dan indir"><i class="fa-brands fa-apple" aria-hidden="true"></i><span class="app-btn__tx"><span class="app-btn__pre">İndir</span><span class="app-btn__store">App Store</span></span></a>
+          <a class="app-btn" href="#" aria-label="Google Play'den indir"><i class="fa-brands fa-google-play" aria-hidden="true"></i><span class="app-btn__tx"><span class="app-btn__pre">İndir</span><span class="app-btn__store">Google Play</span></span></a>
+        </div>
+      </div>
+    </div>
+
+    <nav class="foot-corp" aria-label="Kurumsal">
+      <a href="#">Hakkımızda</a><span class="sep"></span>
+      <a href="#">Markalar</a><span class="sep"></span>
+      <a href="#">Azem Kart</a><span class="sep"></span>
+      <a href="#">İletişim</a>
+    </nav>
+
+    <nav class="foot-legal" aria-label="Yasal">
+      <a href="#">Çerez Politikası</a><span class="sep"></span>
+      <a href="#">Üyelik Sözleşmesi</a><span class="sep"></span>
+      <a href="#">Mesafeli Satış Sözleşmesi</a><span class="sep"></span>
+      <a href="#">KVKK</a>
+    </nav>
+
+    <div class="foot-bottom">
+      <span>© 2024 <b>Azem Toptan</b> · Toptan Alışverişin Adresi</span>
+      <div class="pay-logos" aria-label="Ödeme yöntemleri"><svg viewBox="0 0 108.473 50.022" role="img" aria-label="troy"><use href="assets/img/icons/odeme.svg#troy"></use></svg><svg viewBox="0 0 24 7.751" role="img" aria-label="Visa"><use href="assets/img/icons/odeme.svg#visa"></use></svg><svg viewBox="0 0 24 14.831" role="img" aria-label="Mastercard"><use href="assets/img/icons/odeme.svg#mastercard"></use></svg><svg viewBox="0 0 134 22.911" role="img" aria-label="PayTR"><use href="assets/img/icons/odeme.svg#paytr"></use></svg><svg viewBox="0 0 24 24" role="img" aria-label="American Express"><use href="assets/img/icons/odeme.svg#americanexpress"></use></svg></div>
+      <a class="foot-sign" href="#"><span class="gw-code">&lt;/&gt;</span> GaviaWorks</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ================= MOBİL ALT MENÜ ================= -->
+<nav class="bottom-nav" id="bottomNav" aria-label="Hızlı erişim">
+  <a class="bottom-nav__item is-active" href="#"><i class="fa-solid fa-house" aria-hidden="true"></i>Ana Sayfa</a>
+  <button class="bottom-nav__item" type="button" data-drawer-open aria-controls="drawer"><i class="fa-solid fa-table-cells-large" aria-hidden="true"></i>Kategori</button>
+  <button class="bottom-nav__item" type="button" data-search-focus><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>Ara</button>
+  <a class="bottom-nav__item" href="#"><i class="fa-regular fa-heart" aria-hidden="true"></i>Favorilerim<span class="pill__count" data-fav-count data-count="0">0</span></a>
+  <a class="bottom-nav__item" href="#"><i class="fa-solid fa-basket-shopping" aria-hidden="true"></i>Sepet<span class="pill__count" data-cart-count data-count="0">0</span></a>
+</nav>
+
+<!-- ================= DRAWER (kategoriler) ================= -->
+<div class="scrim" data-drawer-scrim></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="Kategoriler" tabindex="-1">
+  <div class="drawer__head">
+    <img src="assets/img/brand/azem-logo.svg" width="104" height="40" alt="Azem Toptan">
+    <button class="icon-btn" type="button" data-drawer-close aria-label="Menüyü kapat"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+  </div>
+  <div class="drawer__body">
+    <p class="drawer__title">Kategoriler</p>
+    <div data-drawer-tree></div>
+  </div>
+  <div class="drawer__foot">
+    <a class="btn btn--primary btn--block" href="#"><i class="fa-solid fa-bolt" aria-hidden="true"></i> Bugünün Fırsatı</a>
+    <div class="drawer__pair">
+      <a class="btn btn--ghost btn--sm" href="#">Giriş Yap</a>
+      <a class="btn btn--ghost btn--sm" href="#">Kayıt Ol</a>
+    </div>
+  </div>
+</aside>
+
+<!-- ================= HIZLI BAKIŞ ================= -->
+<div class="scrim scrim--modal" data-modal-scrim></div>
+<div class="modal" id="quickView" role="dialog" aria-modal="true" aria-labelledby="qvName">
+  <div class="modal__panel" tabindex="-1">
+    <button class="icon-btn icon-btn--round modal__close" type="button" data-modal-close aria-label="Kapat"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+    <div class="qv" data-qv></div>
+  </div>
+</div>
+
+<!-- ================= ÇEREZ ================= -->
+<div class="cookie" role="region" aria-label="Çerezler" data-cookie hidden>
+  <p class="cookie__title"><i class="fa-solid fa-cookie-bite" aria-hidden="true"></i><strong>Çerezler</strong></p>
+  <p>Daha iyi bir kullanıcı deneyimi sunmak için çerezleri kullanıyoruz. <a href="#">Gizlilik Politikası</a></p>
+  <div class="cookie__actions">
+    <button class="btn btn--ghost btn--sm" type="button" data-cookie-choice="reddet">Reddet</button>
+    <button class="btn btn--primary btn--sm" type="button" data-cookie-choice="kabul">Kabul Et</button>
+  </div>
+</div>
+
+<div class="toast-stack" data-toasts role="status" aria-live="polite"></div>
+
+<button class="to-top" type="button" data-to-top aria-label="Yukarı çık"><i class="fa-solid fa-chevron-up" aria-hidden="true"></i></button>
+
+<script src="assets/data/catalog.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>

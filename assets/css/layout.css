@@ -1,0 +1,240 @@
+/* ==========================================================================
+   Yerleşim: header (A101 kurgusu), kategori menüsü, alt menü, footer (DadaGastro)
+   ========================================================================== */
+
+/* ---------- Header ---------- */
+.site-header {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: var(--z-header);
+  background: var(--c-brand-tint);
+  border-bottom: 1px solid var(--c-line);
+  transition: box-shadow var(--t-base) var(--ease);
+}
+.site-header.is-scrolled { box-shadow: var(--sh-header); }
+body::before {
+  content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px);
+  z-index: calc(var(--z-header) + 1); background: var(--c-brand-tint);
+}
+
+.hdr-top { display: flex; align-items: center; gap: var(--sp-5); min-height: var(--header-row); padding-block: var(--sp-3); }
+.hdr-logo { flex: none; display: block; }
+.hdr-logo img { width: 114px; height: auto; }
+.hdr-search { flex: 1; max-width: 560px; }
+.search {
+  display: flex; align-items: center; gap: 11px;
+  height: 44px; padding: 0 6px 0 16px;
+  border-radius: var(--r-pill); border: 1px solid var(--c-line-strong);
+  background: var(--c-surface);
+  transition: border-color var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease);
+}
+.search:focus-within { border-color: var(--c-brand-2); box-shadow: 0 0 0 3px color-mix(in srgb, var(--c-brand-2) 18%, transparent); }
+.search i { color: var(--c-muted); font-size: 15px; }
+.search input { flex: 1; min-width: 0; height: 100%; border: 0; outline: 0; background: transparent; font-size: var(--fs-sm); }
+.search input::placeholder { color: var(--c-muted); }
+.search button { height: 34px; padding: 0 16px; border-radius: var(--r-pill); background: var(--c-brand); color: var(--c-white); font-size: var(--fs-meta); font-weight: 700; }
+.search button:hover { background: var(--c-brand-deep); }
+
+.hdr-actions { display: flex; align-items: center; gap: var(--sp-2); margin-left: auto; }
+.hdr-menu { position: relative; }
+.hdr-menu > .dropdown { top: calc(100% + 10px); right: 0; width: 300px; }
+
+.hdr-nav-row { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-5); min-height: 56px; }
+.nav { display: flex; align-items: center; flex-wrap: nowrap; }
+.nav__item { position: relative; display: flex; align-items: center; }
+.nav__item + .nav__item::before { content: "·"; color: var(--c-muted); padding-inline: 6px; }
+.nav__link {
+  display: inline-flex; align-items: center; gap: 6px;
+  min-height: 44px; padding-inline: 4px;
+  font-size: var(--fs-nav); font-weight: 600; line-height: var(--lh-ui); white-space: nowrap; color: var(--c-ink);
+  transition: color var(--t-fast) var(--ease);
+}
+.nav__link:hover, .nav__item.is-open > .nav__link { color: var(--c-brand-2); }
+.nav__link--home { font-size: 17px; }
+.nav__item > .dropdown { top: calc(100% + 4px); left: -12px; display: flex; gap: 0; padding: var(--sp-3); }
+.nav__item:last-child > .dropdown, .nav__item:nth-last-child(2) > .dropdown { left: auto; right: -12px; }
+.mega__col { width: 280px; max-height: min(560px, 70vh); overflow-y: auto; }
+.mega__sub { width: 240px; padding-left: var(--sp-3); margin-left: var(--sp-3); border-left: 1px solid var(--c-line); display: none; }
+.mega__sub.is-visible { display: block; }
+.mega__sub-title { padding: 10px 10px 6px; font-size: var(--fs-xs); font-weight: 700; letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--c-muted); }
+.mega__sub a { display: block; padding: 9px 10px; border-radius: var(--r-sm); font-size: var(--fs-sm); font-weight: 500; line-height: var(--lh-ui); }
+.mega__sub a:hover { background: var(--c-brand-tint); color: var(--c-brand-2); }
+
+/* Mobil header satırları (A101: arama + Kategoriler pill'i; scroll'da katlanır) */
+.hdr-collapse { display: none; }
+.hdr-mobile-only { display: none; }
+
+@media (max-width: 1024px) {
+  .hdr-desktop-only { display: none !important; }
+  .hdr-mobile-only { display: inline-grid; }
+  .hdr-top { gap: var(--sp-3); padding-block: var(--sp-2); }
+  .hdr-logo img { width: 96px; }
+  .hdr-collapse {
+    display: block; overflow: hidden; max-height: 140px; opacity: 1;
+    transition: max-height .28s var(--ease-collapse), opacity .18s linear;
+  }
+  .hdr-collapse__row { display: flex; align-items: center; gap: var(--sp-2); padding-bottom: var(--sp-3); }
+  .hdr-collapse__search { flex: 1; min-width: 0; }
+  .site-header.is-compact .hdr-collapse { max-height: 0; opacity: 0; pointer-events: none; }
+  .site-header.is-compact.is-search-open .hdr-collapse { max-height: 140px; opacity: 1; pointer-events: auto; }
+  .site-header:not(.is-compact) .hdr-search-trigger { display: none; }
+}
+@media (max-width: 640px) {
+  .hdr-logo img { width: 84px; }
+  .hdr-actions .icon-btn { width: 44px; height: 44px; }
+  .hdr-collapse__row .pill { padding: 0 14px; }
+}
+
+/* Menü açıkken içerik hafif kısılır */
+.menu-scrim { position: fixed; inset: 0; z-index: var(--z-scrim-soft); background: var(--c-scrim-soft); opacity: 0; visibility: hidden; pointer-events: none; transition: opacity var(--t-fast) var(--ease), visibility var(--t-fast); }
+.menu-scrim.is-open { opacity: 1; visibility: visible; }
+
+/* ---------- Mobil alt menü (DadaGastro bottom-nav) ---------- */
+.bottom-nav { display: none; }
+@media (max-width: 640px) {
+  .bottom-nav {
+    position: fixed; z-index: var(--z-bottomnav);
+    left: max(var(--sp-4), env(safe-area-inset-left, 0px)); right: max(var(--sp-4), env(safe-area-inset-right, 0px));
+    bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+    display: grid; grid-template-columns: repeat(5, 1fr); align-items: center;
+    padding: 6px; border-radius: var(--r-lg);
+    background: var(--c-glass); border: 1px solid var(--c-line);
+    -webkit-backdrop-filter: blur(24px) saturate(180%); backdrop-filter: blur(24px) saturate(180%);
+    box-shadow: var(--sh-md);
+    transition: transform var(--t-slow) var(--ease), opacity var(--t-slow) var(--ease);
+  }
+  .bottom-nav.is-hidden { transform: translateY(calc(100% + 24px)); opacity: 0; }
+  .bottom-nav__item {
+    position: relative; min-height: 52px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+    border-radius: var(--r-md); font-size: var(--fs-micro); font-weight: 700; line-height: 1; color: var(--c-ink-2);
+  }
+  .bottom-nav__item i { font-size: 18px; }
+  .bottom-nav__item.is-active { color: var(--c-brand); background: var(--c-brand-tint-2); }
+  .bottom-nav__item .pill__count { top: 2px; right: 50%; transform: translateX(22px); box-shadow: 0 0 0 2px var(--c-surface); }
+}
+
+/* ---------- Footer (DadaGastro kurgusu; Azem içeriği, lacivert zemin) ---------- */
+.site-footer { background: var(--c-brand); color: var(--c-on-dark-2); padding-top: var(--sp-8); }
+
+/* Üst grid: marka | 3 link kolonu | uygulama (sağ kenara yaslı) */
+.foot-grid {
+  display: grid;
+  grid-template-columns: minmax(max-content, 1fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.15fr) auto;
+  gap: var(--sp-7) var(--sp-7);
+  padding-bottom: var(--sp-7);
+  border-bottom: 1px solid var(--c-on-dark-line);
+}
+
+/* Marka kolonu: logo + sosyal butonlar */
+.foot-brand__logo { display: inline-block; margin-bottom: var(--sp-5); }
+.foot-brand__logo img { height: 42px; width: auto; filter: brightness(0) invert(1); }
+.foot-soc { display: flex; gap: 11px; }
+.foot-soc a {
+  width: 42px; height: 42px; display: grid; place-items: center;
+  border-radius: var(--r-md); background: var(--c-on-dark-fill-2);
+  color: var(--c-on-dark); font-size: 16px;
+  transition: background-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease), transform var(--t-fast) var(--ease);
+}
+.foot-soc a:hover { background: var(--c-on-dark); color: var(--c-brand); transform: translateY(-3px); }
+
+/* Link kolonları */
+.foot-col h2, .foot-app h2 {
+  margin-bottom: var(--sp-5);
+  font-size: var(--fs-nav); font-weight: 700; letter-spacing: 0; line-height: var(--lh-ui); color: var(--c-on-dark);
+}
+.foot-col a {
+  display: block; padding-block: var(--sp-2);
+  font-size: var(--fs-sm); font-weight: 500; line-height: var(--lh-prose); color: var(--c-on-dark-2);
+  transition: color var(--t-fast) var(--ease), padding-left var(--t-fast) var(--ease);
+}
+.foot-col h2 + a, .foot-col h2 + * > a:first-child { padding-top: 0; }
+.foot-col a:hover { color: var(--c-on-dark); padding-left: 5px; }
+
+/* İletişim satırları */
+.foot-contact { display: grid; gap: var(--sp-4); }
+.foot-contact__row { display: flex; gap: var(--sp-3); align-items: flex-start; font-size: var(--fs-sm); line-height: var(--lh-prose); }
+.foot-contact__row i { width: 16px; margin-top: 3px; color: var(--c-on-dark); text-align: center; }
+.foot-contact__row strong { display: block; margin-bottom: 2px; font-size: var(--fs-xs); font-weight: 700; letter-spacing: .02em; color: var(--c-on-dark); }
+
+/* Uygulama kolonu: butonların sağ kenarı divider'ın sağ ucuyla aynı hizada */
+.foot-app { justify-self: end; }
+.foot-app__btns { display: grid; gap: var(--sp-3); }
+
+/* Alt bölüm: üç satır, eşit dikey boşluk, ortak orta eksen */
+.foot-corp, .foot-legal, .foot-bottom { padding-block: var(--sp-5); }
+.foot-corp, .foot-legal { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; border-bottom: 1px solid var(--c-on-dark-line); }
+.foot-corp { gap: 10px 14px; font-size: var(--fs-meta); font-weight: 600; }
+.foot-legal { gap: 8px 10px; font-size: var(--fs-xs); font-weight: 500; }
+.foot-corp a, .foot-legal a { white-space: nowrap; color: var(--c-on-dark-2); transition: color var(--t-fast) var(--ease); }
+.foot-corp a:hover, .foot-legal a:hover { color: var(--c-on-dark); }
+.foot-corp .sep { width: 1px; height: 12px; background: var(--c-on-dark-sep); flex: none; }
+.foot-legal .sep { width: 1px; height: 11px; background: var(--c-on-dark-sep); flex: none; }
+
+.foot-bottom {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: var(--sp-5);
+  font-size: var(--fs-meta); font-weight: 500; color: var(--c-on-dark-3);
+}
+.foot-bottom > :first-child { justify-self: start; }
+.foot-bottom > .pay-logos { justify-self: center; }
+.foot-bottom > :last-child { justify-self: end; }
+.foot-bottom b { color: var(--c-on-dark); font-weight: 700; }
+.foot-sign { display: inline-flex; align-items: center; gap: 9px; color: var(--c-on-dark-3); transition: color var(--t-fast) var(--ease); }
+.foot-sign:hover { color: var(--c-on-dark); }
+.gw-code { font-family: var(--font-mono); font-weight: 700; letter-spacing: -.04em; margin-right: 2px; }
+
+/* Perde açılışı (DadaGastro): ≥641'de footer sabit ve içeriğin ALTINDA (z 1);
+   .page-main (z 2, opak zemin) üstünden kayar. Alt boşluk = footer yüksekliği, JS ölçer. */
+@media (min-width: 641px) {
+  .site-footer { position: fixed; left: 0; right: 0; bottom: 0; z-index: 1; }
+}
+
+@media (max-width: 1024px) {
+  .foot-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--sp-6) var(--sp-5); }
+  .foot-brand { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; gap: var(--sp-5); }
+  .foot-brand__logo { margin-bottom: 0; }
+  .foot-app { grid-column: 1 / -1; justify-self: stretch; display: flex; align-items: center; justify-content: space-between; gap: var(--sp-5); }
+  .foot-app h2 { margin-bottom: 0; }
+  .foot-app__btns { grid-auto-flow: column; }
+}
+@media (max-width: 640px) {
+  .site-footer { padding-bottom: calc(86px + env(safe-area-inset-bottom, 0px)); }
+  .foot-grid { grid-template-columns: minmax(0, 1fr); gap: var(--sp-6); padding-bottom: var(--sp-6); }
+  .foot-brand { flex-direction: column; align-items: flex-start; gap: var(--sp-5); }
+  .foot-app { display: block; }
+  .foot-app h2 { margin-bottom: var(--sp-5); }
+  .foot-app__btns { grid-auto-flow: row; }
+  .foot-app .app-btn { width: 100%; }
+  .foot-corp { display: grid; grid-template-columns: 1fr 1fr; justify-content: stretch; gap: 2px var(--sp-4); }
+  .foot-corp .sep { display: none; }
+  .foot-corp a { white-space: normal; padding-block: var(--sp-2); }
+  .foot-legal { text-align: center; }
+  .foot-bottom { grid-template-columns: minmax(0, 1fr); justify-items: center; gap: var(--sp-4); text-align: center; }
+  .foot-bottom > :first-child, .foot-bottom > :last-child { justify-self: center; }
+  .pay-logos { flex-wrap: wrap; justify-content: center; }
+}
+
+/* ==========================================================================
+   Dokunmatik ve dar ekran düzeltmeleri — header ve footer (yalnız ≤1024 / ≤640)
+   ========================================================================== */
+@media (max-width: 1024px) {
+  .hdr-logo { display: flex; align-items: center; min-height: 44px; }
+  /* footer: 44px dokunma hedefi */
+  .foot-brand__logo { display: inline-flex; align-items: center; min-height: 44px; }
+  .foot-soc a { width: 44px; height: 44px; }
+  .foot-col a { padding-block: 11px; }
+  .foot-corp a, .foot-legal a { display: inline-flex; align-items: center; min-height: 44px; }
+  .foot-legal { row-gap: 0; }
+  .foot-sign { min-height: 44px; }
+  /* alt satır: tablette de alt alta ve ortalı (copyright iki satıra kırılmasın) */
+  .foot-bottom { grid-template-columns: minmax(0, 1fr); justify-items: center; gap: var(--sp-4); text-align: center; }
+  .foot-bottom > :first-child, .foot-bottom > :last-child { justify-self: center; }
+}
+@media (max-width: 640px) {
+  /* hesap / mini sepet menüsü ekrandan taşmasın: header altına, kenar boşluklu */
+  .hdr-menu > .dropdown {
+    position: fixed; top: calc(env(safe-area-inset-top, 0px) + var(--header-row));
+    left: var(--gutter); right: var(--gutter); width: auto;
+  }
+  /* ödeme logoları tek satır */
+  .pay-logos { gap: var(--sp-3); }
+  .pay-logos svg { height: 16px; }
+}
