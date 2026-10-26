@@ -49,16 +49,16 @@
           <i class="fa-solid fa-bolt" aria-hidden="true"></i> Bugünün Fırsatı
         </a>
 
-        <a class="pill pill--soft hdr-desktop-only" href="#" aria-label="Favorilerim">
-          <i class="fa-regular fa-heart" aria-hidden="true"></i> Favorilerim
-          <span class="pill__count" data-fav-count data-count="0">0</span>
-        </a>
-
-        <div class="hdr-menu" data-menu>
-          <button class="pill pill--soft hdr-desktop-only" type="button" aria-haspopup="true" aria-expanded="false" data-menu-btn>
-            Giriş Yap <i class="fa-regular fa-user" aria-hidden="true"></i>
+        <div class="hdr-menu" data-menu data-hover>
+          <button class="icon-btn icon-btn--ghost hdr-icon" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Favorilerim" title="Favorilerim" data-menu-btn>
+            <i class="fa-regular fa-heart" aria-hidden="true"></i>
+            <span class="pill__count" data-fav-count data-count="0">0</span>
           </button>
-          <button class="icon-btn icon-btn--ghost hdr-mobile-only" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Hesabım" data-menu-btn>
+          <div class="dropdown" data-favlist></div>
+        </div>
+
+        <div class="hdr-menu" data-menu data-hover>
+          <button class="icon-btn icon-btn--ghost hdr-icon" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Giriş Yap" title="Giriş Yap" data-menu-btn>
             <i class="fa-regular fa-user" aria-hidden="true"></i>
           </button>
           <div class="dropdown" role="menu">
@@ -70,12 +70,8 @@
           </div>
         </div>
 
-        <div class="hdr-menu" data-menu>
-          <button class="pill pill--soft hdr-desktop-only" type="button" aria-haspopup="true" aria-expanded="false" data-menu-btn>
-            Sepetim <i class="fa-solid fa-basket-shopping" aria-hidden="true"></i>
-            <span class="pill__count" data-cart-count data-count="0">0</span>
-          </button>
-          <button class="icon-btn icon-btn--ghost hdr-mobile-only" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Sepetim" data-menu-btn>
+        <div class="hdr-menu" data-menu data-hover>
+          <button class="icon-btn icon-btn--ghost hdr-icon" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Sepetim" title="Sepetim" data-menu-btn>
             <i class="fa-solid fa-basket-shopping" aria-hidden="true"></i>
             <span class="pill__count" data-cart-count data-count="0">0</span>
           </button>
@@ -84,11 +80,8 @@
       </div>
     </div>
 
-    <!-- Masaüstü: teslimat adresi + kategori menüsü -->
+    <!-- Masaüstü: kategori menüsü (sola yaslı) -->
     <div class="hdr-nav-row hdr-desktop-only">
-      <span class="pill pill--outline pill--sm">
-        <i class="fa-solid fa-location-dot" aria-hidden="true"></i> <span data-address></span>
-      </span>
       <nav aria-label="Kategoriler">
         <ul class="nav" data-nav>
           <li class="nav__item"><a class="nav__link nav__link--home" href="#" aria-label="Ana Sayfa"><i class="fa-solid fa-house" aria-hidden="true"></i></a></li>
@@ -96,7 +89,7 @@
       </nav>
     </div>
 
-    <!-- Mobil: arama + Kategoriler pill'i, teslimat adresi (aşağı kaydırınca katlanır) -->
+    <!-- Mobil: arama + Kategoriler butonu (aşağı kaydırınca katlanır) -->
     <div class="hdr-collapse" id="hdrCollapse">
       <div class="hdr-collapse__row">
         <form class="hdr-collapse__search" role="search" action="#" data-search>
@@ -109,11 +102,6 @@
         <button class="pill pill--brand" type="button" data-drawer-open aria-controls="drawer">
           <i class="fa-solid fa-table-cells-large" aria-hidden="true"></i> Kategoriler
         </button>
-      </div>
-      <div class="hdr-collapse__row">
-        <span class="pill pill--outline pill--sm">
-          <i class="fa-solid fa-location-dot" aria-hidden="true"></i> <span data-address></span>
-        </span>
       </div>
     </div>
   </div>
@@ -144,7 +132,6 @@
         <div class="hero__controls">
           <button class="icon-btn icon-btn--round" type="button" data-hero-prev aria-label="Önceki slayt"><i class="fa-solid fa-chevron-left" aria-hidden="true"></i></button>
           <span class="hero__counter" data-hero-counter aria-live="polite">1/3</span>
-          <div class="hero__dots" data-hero-dots></div>
           <button class="icon-btn icon-btn--round" type="button" data-hero-pause aria-label="Otomatik geçişi durdur"><i class="fa-solid fa-pause" aria-hidden="true"></i></button>
           <button class="icon-btn icon-btn--round" type="button" data-hero-next aria-label="Sonraki slayt"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i></button>
         </div>
@@ -161,7 +148,7 @@
   </div>
 
   <!-- Popüler Kategoriler -->
-  <section class="sec">
+  <section class="sec sec--strong">
     <div class="wrap">
       <div class="sec-head"><h2 class="sec-head__title">Popüler Kategoriler</h2></div>
       <div class="cat-grid reveal" data-cat-grid></div>
@@ -329,6 +316,7 @@
 <button class="to-top" type="button" data-to-top aria-label="Yukarı çık"><i class="fa-solid fa-chevron-up" aria-hidden="true"></i></button>
 
 <script src="assets/data/catalog.js"></script>
+<script src="assets/data/format.js"></script>
 <script src="assets/js/main.js"></script>
 </body>
 </html>

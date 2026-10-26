@@ -49,7 +49,8 @@
   --c-muted: #6c6987;
   --c-line: #e6e5ee;
   --c-line-strong: #d4d2e0;
-  --c-bg: #f9f9fb;
+  --c-bg: #f3f3f7;            /* açık gri bölüm zemini */
+  --c-bg-strong: #e9e8f0;     /* bir ton koyu bölüm zemini (Popüler Kategoriler) */
   --c-surface: #ffffff;
   --c-skeleton: rgba(23, 19, 58, .06);
   --c-white: #ffffff;
@@ -74,13 +75,12 @@
   --rail-gap: 24px;
   --header-row: 76px;
 
-  /* — Köşe — */
-  --r-xs: 6px;   /* rozet */
-  --r-sm: 8px;   /* chip */
-  --r-md: 12px;  /* buton, ikon-buton, input */
-  --r-lg: 16px;  /* kart, modal, dropdown */
-  --r-xl: 24px;  /* hero çerçevesi */
-  --r-pill: 999px;
+  /* — Köşe: TEK ölçü. Referans = güven şeridi kutusu. Buton, input, kart, panel, banner hep bu. — */
+  --radius: 16px;
+  /* yalnız istisnalar: story dairesi ve küçük sayaç rozeti */
+  --radius-round: 50%;
+  --radius-counter: 999px;
+  --radius-badge: 6px;       /* story "FIRSAT" şeridi (16px yükseklikte; 16 radius oval yapardı) */
 
   /* — Gölge — */
   --sh-sm: 0 1px 2px rgba(23, 19, 58, .04), 0 2px 6px rgba(23, 19, 58, .05);
@@ -93,14 +93,15 @@
   /* Tip kanonu — yalnız tam sayı ölçeği: 11 · 12 · 13 · 14 · 15 · 16 · 18 · 22 · 24 · 26 · 30 · 34 · 44.
      Her rol tek token; aynı rol her yerde aynı boyut/ağırlık/satır yüksekliği. Mobil = aynı rollerin küçültülmüşü. */
   --fs-display: 44px;   /* hero başlığı · 700 · lh-tight */
-  --fs-h2: 34px;        /* bölüm başlığı · 700 · lh-tight */
+  --fs-h2: 24px;        /* bölüm başlığı (tüm bölümler, e-bülten dahil) · 700 · lh-tight */
   --fs-h3: 22px;        /* modal / panel başlığı · 700 · lh-snug */
   --fs-price-lg: 26px;  /* detay fiyatı · 800 · lh-snug */
   --fs-band: 18px;      /* duyuru bandı metni · 700 · lh-snug */
   --fs-price: 18px;     /* kart fiyatı · 800 · lh-snug */
   --fs-lead: 16px;      /* giriş paragrafı (hero, e-bülten) · 500 · lh-body */
   --fs-body: 16px;      /* gövde · 500 · lh-body */
-  --fs-nav: 15px;       /* menü öğesi, footer başlığı · 600/700 · lh-ui */
+  --fs-nav: 15px;       /* footer başlığı, drawer menü öğesi · 600/700 · lh-ui */
+  --fs-menu: 14px;      /* header ana menü · 600 · lh-ui */
   --fs-btn: 15px;       /* buton · 700 · lh-ui */
   --fs-name: 15px;      /* ürün adı · 500 · lh-name */
   --fs-sm: 14px;        /* UI metni: dropdown, input, link, kart alt satırı · 500/600 · lh-ui */
@@ -108,6 +109,9 @@
   --fs-meta: 13px;      /* meta: chip, küçük pill, alt bar · 500/600 */
   --fs-xs: 12px;        /* altyazı: eyebrow, story etiketi, yasal · 600/700 */
   --fs-micro: 11px;     /* rozet, sayaç, alt menü etiketi · 700/800 */
+  /* İkon boyutları (Font Awesome) */
+  --icon-sm: 14px;      /* header menü ikonları */
+  --icon-md: 16px;      /* header aksiyon ikonları */
   --lh-tight: 1.12;
   --lh-snug: 1.25;
   --lh-ui: 1.3;
@@ -144,7 +148,7 @@
   :root {
     --gutter: 24px;
     --fs-display: 34px;
-    --fs-h2: 30px;
+    --fs-h2: 22px;
     --fs-h3: 22px;
     --header-row: 64px;
   }
@@ -158,7 +162,7 @@
     --sec-head-gap: 24px;
     --rail-gap: 12px;
     --fs-display: 26px;
-    --fs-h2: 24px;
+    --fs-h2: 18px;
     --fs-h3: 18px;
     --fs-price-lg: 22px;
     --fs-band: 14px;

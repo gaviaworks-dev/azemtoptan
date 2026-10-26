@@ -47,7 +47,7 @@
   });
 
   var cart = store.get('azem-sepet', {});
-  var favs = store.get('azem-favori', []);
+  var favs = store.get('azem-favori', []).filter(function (id) { return products[id]; });
   Object.keys(cart).forEach(function (id) { if (!products[id]) delete cart[id]; });
 
   /* ---------- İletişim alanları ---------- */
@@ -136,6 +136,24 @@
   });
   document.addEventListener('click', function (e) { if (!e.target.closest('[data-menu]')) closeMenus(); });
 
+  /* Favori / hesap / sepet: fare ile hover'da açılır, dokunmatikte tıklamayla (yukarıdaki) */
+  var finePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
+  $$('[data-menu][data-hover]').forEach(function (m) {
+    var timer;
+    function set(open) {
+      m.classList.toggle('is-open', open);
+      $$('[data-menu-btn]', m).forEach(function (b) { b.setAttribute('aria-expanded', String(open)); });
+    }
+    m.addEventListener('mouseenter', function () {
+      if (!finePointer.matches) return;
+      clearTimeout(timer); timer = setTimeout(function () { closeMenus(m); closeNav(); set(true); }, 80);
+    });
+    m.addEventListener('mouseleave', function () {
+      if (!finePointer.matches) return;
+      clearTimeout(timer); timer = setTimeout(function () { set(false); }, 160);
+    });
+  });
+
   /* ---------- Story şeridi ---------- */
   var stories = $('[data-stories]');
   var storyHtml =
@@ -170,15 +188,12 @@
       '<span class="hero__bg hero__bg--blur" style="' + bg(s.img) + '"></span>' +
       '<span class="hero__media" style="' + bg(s.img) + '" role="img" aria-label="' + esc(s.alt) + '"></span></a>';
   }).join('');
-  var dots = $('[data-hero-dots]', hero);
-  dots.innerHTML = D.hero.map(function (_, i) { return '<span class="hero__dot' + (i ? '' : ' is-active') + '"></span>'; }).join('');
   var heroIndex = 0, heroTimer = null, heroPaused = reduceMotion;
   var pauseBtn = $('[data-hero-pause]', hero);
   function heroGo(n) {
     heroIndex = (n + D.hero.length) % D.hero.length;
     track.style.transform = 'translateX(' + (-100 * heroIndex) + '%)';
     $('[data-hero-counter]', hero).textContent = (heroIndex + 1) + '/' + D.hero.length;
-    $$('.hero__dot', dots).forEach(function (d, i) { d.classList.toggle('is-active', i === heroIndex); });
     $$('.hero__slide', track).forEach(function (sl, i) {
       sl.setAttribute('aria-hidden', String(i !== heroIndex));
       $$('a, button', sl).concat(sl.tagName === 'A' ? [sl] : []).forEach(function (f) { f.tabIndex = i === heroIndex ? 0 : -1; });
@@ -261,15 +276,15 @@
 
   /* ---------- Raflar ve vitrinler (Azem sırası) ---------- */
   var shelfOrder = [
-    { shelf: 0, bg: '' }, { showcase: 0 },
-    { shelf: 1, bg: 'sec--white' }, { showcase: 1 },
-    { shelf: 2, bg: '' },
-    { shelf: 3, bg: 'sec--white' }
+    { shelf: 0, bg: '' }, { showcase: 0, bg: 'sec--white' },
+    { shelf: 1, bg: 'sec--white' }, { showcase: 1, bg: '' },
+    { shelf: 2, bg: 'sec--white' },
+    { shelf: 3, bg: '' }
   ].filter(function (o) { return !('showcase' in o) || !D.showcases[o.showcase].gizli; });
   $('[data-shelves]').outerHTML = shelfOrder.map(function (o, k) {
     if ('showcase' in o) {
       var v = D.showcases[o.showcase];
-      return '<section class="sec sec--white sec--compact" aria-label="' + esc(v.alt) + '"><div class="wrap">' +
+      return '<section class="sec sec--compact ' + o.bg + '" aria-label="' + esc(v.alt) + '"><div class="wrap">' +
         '<a class="banner-frame reveal" href="#" style="--ratio:' + v.ratio + '"><span style="' + bg(v.img, true) + '" role="img" aria-label="' + esc(v.alt) + '"></span></a></div></section>';
     }
     var s = D.shelves[o.shelf], railId = 'rail-' + k;
@@ -337,8 +352,21 @@
     $$('[data-cart-count]').forEach(function (c) { c.textContent = n; c.setAttribute('data-count', n); });
     renderMiniCart();
   }
+  function renderFavs() {
+    var box = $('[data-favlist]');
+    if (!favs.length) {
+      box.innerHTML = '<p class="empty"><i class="fa-regular fa-heart" aria-hidden="true"></i>Favorilerinizde Ürün Bulunamadı!</p>';
+      return;
+    }
+    box.innerHTML = '<ul class="dropdown__list">' + favs.map(function (id) {
+      var p = products[id];
+      return '<li><a class="dropdown__item" href="#"><span class="dropdown__item-img" style="' + (p.img ? bg(p.img) : '') + '"></span>' +
+        '<span>' + esc(p.name) + '<span class="dropdown__meta">' + formatPrice(toNumber(p.price)) + '</span></span></a></li>';
+    }).join('') + '</ul>';
+  }
   function syncFav(id) {
     store.set('azem-favori', favs);
+    renderFavs();
     var on = favs.indexOf(id) > -1;
     $$('[data-fav="' + id + '"]').forEach(function (b) {
       b.setAttribute('aria-pressed', String(on));

@@ -38,7 +38,7 @@ strong, b { font-weight: 700; }
 :focus-visible {
   outline: 3px solid color-mix(in srgb, var(--c-brand-2) 55%, transparent);
   outline-offset: 2px;
-  border-radius: var(--r-sm);
+  border-radius: var(--radius);
 }
 
 /* — Container — */
@@ -52,6 +52,7 @@ strong, b { font-weight: 700; }
 /* — Bölüm ritmi (DadaGastro: 74 / 44, zemin dönüşümlü) — */
 .sec { padding-block: var(--sec-y); background: var(--c-bg); }
 .sec--white { background: var(--c-surface); }
+.sec--strong { background: var(--c-bg-strong); }  /* bir ton koyu: slider sonrası Popüler Kategoriler */
 .sec--tight-top { padding-top: var(--sp-5); }
 .sec--tight-bottom { padding-bottom: var(--sp-5); }
 .sec--flush-top { padding-top: 0; }

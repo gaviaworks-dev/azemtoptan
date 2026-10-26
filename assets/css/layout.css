@@ -21,41 +21,47 @@ body::before {
 .hdr-search { flex: 1; max-width: 560px; }
 .search {
   display: flex; align-items: center; gap: 11px;
-  height: 44px; padding: 0 6px 0 16px;
-  border-radius: var(--r-pill); border: 1px solid var(--c-line-strong);
+  height: 44px; padding: 0 0 0 16px; overflow: hidden;
+  border-radius: var(--radius); border: 1px solid var(--c-line-strong);
   background: var(--c-surface);
   transition: border-color var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease);
 }
 .search:focus-within { border-color: var(--c-brand-2); box-shadow: 0 0 0 3px color-mix(in srgb, var(--c-brand-2) 18%, transparent); }
-.search i { color: var(--c-muted); font-size: 15px; }
+.search i { color: var(--c-muted); font-size: var(--icon-sm); }
 .search input { flex: 1; min-width: 0; height: 100%; border: 0; outline: 0; background: transparent; font-size: var(--fs-sm); }
 .search input::placeholder { color: var(--c-muted); }
-.search button { height: 34px; padding: 0 16px; border-radius: var(--r-pill); background: var(--c-brand); color: var(--c-white); font-size: var(--fs-meta); font-weight: 700; }
+.search button { align-self: stretch; height: auto; padding: 0 20px; border-radius: 0; background: var(--c-brand); color: var(--c-white); font-size: var(--fs-meta); font-weight: 700; }
 .search button:hover { background: var(--c-brand-deep); }
 
-.hdr-actions { display: flex; align-items: center; gap: var(--sp-2); margin-left: auto; }
+.hdr-actions { display: flex; align-items: center; gap: var(--sp-1); margin-left: auto; }
+.hdr-actions .pill--brand { margin-right: var(--sp-2); }
+/* ikon butonları (A101 kalıbı): favori, hesap, sepet — sayaç rozeti köşede */
+.hdr-icon { font-size: var(--icon-md); color: var(--c-ink); }
+.hdr-icon:hover, .hdr-menu.is-open > .hdr-icon { background: var(--c-brand-tint-2); border-color: transparent; color: var(--c-brand); }
 .hdr-menu { position: relative; }
-.hdr-menu > .dropdown { top: calc(100% + 10px); right: 0; width: 300px; }
+.hdr-menu > .dropdown { top: calc(100% + 10px); right: 0; width: 320px; }
+.hdr-menu > .dropdown::before { content: ""; position: absolute; left: 0; right: 0; top: -12px; height: 12px; }  /* hover köprüsü */
 
-.hdr-nav-row { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-5); min-height: 56px; }
+.hdr-nav-row { display: flex; align-items: center; justify-content: flex-start; gap: var(--sp-5); min-height: 48px; }
 .nav { display: flex; align-items: center; flex-wrap: nowrap; }
 .nav__item { position: relative; display: flex; align-items: center; }
 .nav__item + .nav__item::before { content: "·"; color: var(--c-muted); padding-inline: 6px; }
 .nav__link {
   display: inline-flex; align-items: center; gap: 6px;
   min-height: 44px; padding-inline: 4px;
-  font-size: var(--fs-nav); font-weight: 600; line-height: var(--lh-ui); white-space: nowrap; color: var(--c-ink);
+  font-size: var(--fs-menu); font-weight: 600; line-height: var(--lh-ui); white-space: nowrap; color: var(--c-ink);
   transition: color var(--t-fast) var(--ease);
 }
 .nav__link:hover, .nav__item.is-open > .nav__link { color: var(--c-brand-2); }
-.nav__link--home { font-size: 17px; }
+.nav__link--home { font-size: var(--icon-sm); }
 .nav__item > .dropdown { top: calc(100% + 4px); left: -12px; display: flex; gap: 0; padding: var(--sp-3); }
-.nav__item:last-child > .dropdown, .nav__item:nth-last-child(2) > .dropdown { left: auto; right: -12px; }
+.nav__item:nth-last-child(-n+2) > .dropdown { left: auto; right: -12px; }  /* son iki kategori: mega panel sağdan taşmasın */
+
 .mega__col { width: 280px; max-height: min(560px, 70vh); overflow-y: auto; }
 .mega__sub { width: 240px; padding-left: var(--sp-3); margin-left: var(--sp-3); border-left: 1px solid var(--c-line); display: none; }
 .mega__sub.is-visible { display: block; }
 .mega__sub-title { padding: 10px 10px 6px; font-size: var(--fs-xs); font-weight: 700; letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--c-muted); }
-.mega__sub a { display: block; padding: 9px 10px; border-radius: var(--r-sm); font-size: var(--fs-sm); font-weight: 500; line-height: var(--lh-ui); }
+.mega__sub a { display: block; padding: 9px 10px; border-radius: var(--radius); font-size: var(--fs-sm); font-weight: 500; line-height: var(--lh-ui); }
 .mega__sub a:hover { background: var(--c-brand-tint); color: var(--c-brand-2); }
 
 /* Mobil header satırları (A101: arama + Kategoriler pill'i; scroll'da katlanır) */
@@ -80,6 +86,8 @@ body::before {
 @media (max-width: 640px) {
   .hdr-logo img { width: 84px; }
   .hdr-actions .icon-btn { width: 44px; height: 44px; }
+  .hdr-top { gap: var(--sp-2); }
+  .hdr-actions { gap: 0; }
   .hdr-collapse__row .pill { padding: 0 14px; }
 }
 
@@ -95,7 +103,7 @@ body::before {
     left: max(var(--sp-4), env(safe-area-inset-left, 0px)); right: max(var(--sp-4), env(safe-area-inset-right, 0px));
     bottom: calc(14px + env(safe-area-inset-bottom, 0px));
     display: grid; grid-template-columns: repeat(5, 1fr); align-items: center;
-    padding: 6px; border-radius: var(--r-lg);
+    padding: 6px; border-radius: var(--radius);
     background: var(--c-glass); border: 1px solid var(--c-line);
     -webkit-backdrop-filter: blur(24px) saturate(180%); backdrop-filter: blur(24px) saturate(180%);
     box-shadow: var(--sh-md);
@@ -105,7 +113,7 @@ body::before {
   .bottom-nav__item {
     position: relative; min-height: 52px;
     display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
-    border-radius: var(--r-md); font-size: var(--fs-micro); font-weight: 700; line-height: 1; color: var(--c-ink-2);
+    border-radius: var(--radius); font-size: var(--fs-micro); font-weight: 700; line-height: 1; color: var(--c-ink-2);
   }
   .bottom-nav__item i { font-size: 18px; }
   .bottom-nav__item.is-active { color: var(--c-brand); background: var(--c-brand-tint-2); }
@@ -130,7 +138,7 @@ body::before {
 .foot-soc { display: flex; gap: 11px; }
 .foot-soc a {
   width: 42px; height: 42px; display: grid; place-items: center;
-  border-radius: var(--r-md); background: var(--c-on-dark-fill-2);
+  border-radius: var(--radius); background: var(--c-on-dark-fill-2);
   color: var(--c-on-dark); font-size: 16px;
   transition: background-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease), transform var(--t-fast) var(--ease);
 }
