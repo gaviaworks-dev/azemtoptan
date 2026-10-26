@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Giriş | Azem Toptan</title>
+  <meta name="description" content="Azem Toptan'da bireysel ya da ticari üyelikle yeni hesap oluşturun.">
+  <meta name="theme-color" content="#1a114d">
+  <link rel="icon" href="data:,">
+  <link rel="preload" href="assets/fonts/plus-jakarta-sans/plus-jakarta-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/vendor/fontawesome/css/all.min.css">
+  <link rel="stylesheet" href="assets/css/tokens.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/layout.css">
+  <script>document.documentElement.classList.add('js');</script>
+</head>
+<body data-page="giris">
+<script src="assets/js/shell.js" data-shell="top"></script>
+
+<!-- ================= İÇERİK =================
+     Giriş ve Kayıt aynı kartta iki sekme: giris-yap.html ve kayit-ol.html aynı belge, açılış sekmesi farklı;
+     sekme değişince adres güncellenir (form.js). -->
+<main class="page-main" id="icerik">
+  <section class="sec"><div class="wrap">
+    <div class="page-head"><nav aria-label="Konum"><ol class="breadcrumb"><li><a href="index.html">Ana Sayfa</a></li><li class="breadcrumb__sep" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></li><li aria-current="page" data-auth-crumb>Giriş</li></ol></nav></div>
+
+    <div class="auth" data-auth="giris">
+      <aside class="auth__panel" aria-label="Azem Toptan">
+        <img class="auth__logo" src="assets/img/brand/azem-logo.svg" width="120" height="46" alt="Azem Toptan">
+        <div>
+          <h1 class="auth__title">Azem Toptan'a Hoş Geldiniz</h1>
+          <p class="auth__lead">Toptan Alışverişin Adresi</p>
+        </div>
+        <ul class="auth__perks">
+          <li class="auth__perk"><span class="auth__perk-icon"><i class="fa-solid fa-shield-halved" aria-hidden="true"></i></span>Güvenli Alışveriş</li>
+          <li class="auth__perk"><span class="auth__perk-icon"><i class="fa-solid fa-truck-fast" aria-hidden="true"></i></span>10.000 TL Üzeri Ücretsiz Kargo</li>
+          <li class="auth__perk"><span class="auth__perk-icon"><i class="fa-solid fa-tags" aria-hidden="true"></i></span>Günlük Mega İndirimler</li>
+          <li class="auth__perk"><span class="auth__perk-icon"><i class="fa-solid fa-hand-holding-dollar" aria-hidden="true"></i></span>Piyasadaki En İyi Fiyatlar</li>
+        </ul>
+        <p class="auth__contact"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i><span><strong>WhatsApp Sipariş Hattı</strong><span data-whatsapp></span></span></p>
+      </aside>
+
+      <div class="auth__main">
+        <div class="tabs tabs--block" data-tabs data-auth-tabs>
+          <div class="tabs__list" role="tablist" aria-label="Üyelik">
+            <button class="tabs__tab" type="button" role="tab" id="sekme-giris" aria-controls="panel-giris" aria-selected="true" data-auth-tab="giris">Giriş Yap</button>
+            <button class="tabs__tab" type="button" role="tab" id="sekme-kayit" aria-controls="panel-kayit" aria-selected="false" data-auth-tab="kayit">Kayıt Ol</button>
+          </div>
+
+          <!-- Giriş (Azem "Giriş") -->
+          <div class="tabs__panel" role="tabpanel" id="panel-giris" aria-labelledby="sekme-giris">
+            <form data-form="giris" novalidate>
+              <div class="auth__head"><h2 class="auth__heading">Hesabınıza Giriş Yapın</h2></div>
+              <div class="form-stack">
+                <div class="form-alert form-alert--error" data-form-error role="alert" hidden></div>
+                <div class="form-alert" data-form-info role="status" hidden></div>
+                <div class="field">
+                  <label class="field__label" for="gTelefon">Telefon Numaranız<span class="req" aria-hidden="true">*</span><span class="sr-only">(zorunlu)</span></label>
+                  <div class="input-group"><span class="input-group__prefix" aria-hidden="true">0</span><input class="input" id="gTelefon" name="telefon" type="tel" inputmode="numeric" autocomplete="tel-national" placeholder="5__ ___ __ __" data-phone required data-label="Telefon"></div>
+                </div>
+                <div class="field">
+                  <label class="field__label" for="gSifre">Şifreniz<span class="req" aria-hidden="true">*</span><span class="sr-only">(zorunlu)</span></label>
+                  <div class="input-group"><input class="input" id="gSifre" name="sifre" type="password" autocomplete="current-password" required data-label="Şifre"><button class="input-group__btn" type="button" data-eye="gSifre" aria-label="Şifreyi göster" aria-pressed="false"><i class="fa-solid fa-eye" aria-hidden="true"></i></button></div>
+                </div>
+                <div class="form-row">
+                  <label class="check"><input class="check__input" id="gBeniHatirla" name="beniHatirla" type="checkbox"><span class="check__box"><i class="fa-solid fa-check" aria-hidden="true"></i></span><span class="check__label">Beni Hatırla</span></label>
+                  <a class="link" href="sifremi-unuttum.html">Şifreni mi Unuttun ?</a>
+                </div>
+                <fieldset class="form-group">
+                  <legend class="form-group__title">Onaylar</legend>
+                  <div class="stack stack--sm"><label class="check"><input class="check__input" id="gOnayUyelik" name="onayUyelik" type="checkbox"><span class="check__box"><i class="fa-solid fa-check" aria-hidden="true"></i></span><span class="check__label"><a href="sayfa.html?s=uyelik-sozlesmesi" target="_blank">Üyelik Sözleşmesini</a> ve <a href="sayfa.html?s=kvkk" target="_blank">KVKK</a> Metnini Okudum Ve Kabul Ediyorum</span></label><label class="check"><input class="check__input" id="gOnayRiza" name="onayRiza" type="checkbox"><span class="check__box"><i class="fa-solid fa-check" aria-hidden="true"></i></span><span class="check__label"><a href="sayfa.html?s=acik-riza-metni" target="_blank">Açık Rıza Metnini</a> Okudum Ve Kabul Ediyorum</span></label></div>
+                </fieldset>
+                <button class="btn btn--primary btn--block btn--lg" type="submit">Giriş Yap <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></button>
+              </div>
+              <p class="form-switch">Hesabın Yok Mu ? <a class="link" href="kayit-ol.html" data-auth-goto="kayit">Üye Ol</a></p>
+            </form>
+          </div>
+
+          <!-- Kayıt (Azem "Kayıt Ol") -->
+          <div class="tabs__panel" role="tabpanel" id="panel-kayit" aria-labelledby="sekme-kayit" hidden>
+            <form data-form="kayit" novalidate>
+              <div class="auth__head"><h2 class="auth__heading">Yeni Hesap Oluştur</h2></div>
+              <div class="form-stack">
+                <div class="form-alert form-alert--error" data-form-error role="alert" hidden></div>
+                <div class="form-alert" data-form-info role="status" hidden></div>
+
+                <div class="segmented segmented--block segmented--lg" role="radiogroup" aria-label="Üyelik tipi">
+                  <label class="segmented__opt"><input type="radio" name="registerType" value="1" checked><span><i class="fa-solid fa-user" aria-hidden="true"></i>Bireysel Üyelik</span></label>
+                  <label class="segmented__opt"><input type="radio" name="registerType" value="2"><span><i class="fa-solid fa-building" aria-hidden="true"></i>Ticari Üyelik</span></label>
+                </div>
+
+                <fieldset class="form-group">
+                  <legend class="form-group__title">Kişisel bilgiler</legend>
+                  <div class="form-grid form-grid--2">
+                    <div class="field"><label class="field__label" for="ad">Adınız<span class="req" aria-hidden="true">*</span><span class="sr-only">(zorunlu)</span></label><input class="input" id="ad" name="ad" type="text" autocomplete="given-name" required data-label="Ad"></div>
+                    <div class="field"><label class="field__label" for="soyad">Soyadınız<span class="req" aria-hidden="true">*</span><span class="sr-only">(zorunlu)</span></label><input class="input" id="soyad" name="soyad" type="text" autocomplete="family-name" required data-label="Soyad"></div>
+                    <div class="field"><label class="field__label" for="email">E-Posta<span class="req" aria-hidden="true">*</span><span class="sr-only">(zorunlu)</span></label><input class="input" id="email" name="email" type="email" autocomplete="email" required data-label="E-posta"></div>
+                    <div class="field"><label class="field__label" for="telefon">Telefon<span class="req" aria-hidden="true">*</span><span class="sr-only">(zorunlu)</span></label><div class="input-group"><span class="input-group__prefix" aria-hidden="true">0</span><input class="input" id="telefon" name="telefon" type="tel" inputmode="numeric" autocomplete="tel-national" placeholder="5__ ___ __ __" data-phone required data-label="Telefon"></div></div>
+                  </div>
+                </fieldset>
+
+                <fieldset class="form-group" data-ticari-group hidden>
+                  <legend class="form-group__title">Firma bilgileri</legend>
+                  <div class="form-grid form-grid--2">
+                    <div class="field" data-ticari hidden><label class="field__label" for="firmaadi">Şirket<span class="req" aria-hidden="true">*</span><span class="sr-only">(zorunlu)</span></label><input class="input" id="firmaadi" name="firmaadi" type="text" autocomplete="organization" data-label="Şirket"></div>
+                    <div class="field" data-ticari hidden><label class="field__label" for="faaliyetalani">Faaliyet Alanı<span class="req" aria-hidden="true">*</span><span class="sr-only">(zorunlu)</span></label><input class="input" id="faaliyetalani" name="faaliyetalani" type="text" minlength="5" maxlength="100" data-label="Faaliyet Alanı"></div>
+                    <div class="field" data-ticari hidden><label class="field__label" for="sehir">İl<span class="req" aria-hidden="true">*</span><span class="sr-only">(zorunlu)</span></label>
+                      <span class="select"><select class="input" id="sehir" name="sehir" autocomplete="address-level1"><option value="">İl Seçiniz</option>
+                  <option>Adana</option>
+                  <option>Adıyaman</option>
+                  <option>Afyonkarahisar</option>
+                  <option>Ağrı</option>
+                  <option>Amasya</option>
+                  <option>Ankara</option>
+                  <option>Antalya</option>
+                  <option>Artvin</option>
+                  <option>Aydın</option>
+                  <option>Balıkesir</option>
+                  <option>Bilecik</option>
+                  <option>Bingöl</option>
+                  <option>Bitlis</option>
+                  <option>Bolu</option>
+                  <option>Burdur</option>
+                  <option>Bursa</option>
+                  <option>Çanakkale</option>
+                  <option>Çankırı</option>
+                  <option>Çorum</option>
+                  <option>Denizli</option>
+                  <option>Diyarbakır</option>
+                  <option>Edirne</option>
+                  <option>Elazığ</option>
+                  <option>Erzincan</option>
+                  <option>Erzurum</option>
+                  <option>Eskişehir</option>
+                  <option>Gaziantep</option>
+                  <option>Giresun</option>
+                  <option>Gümüşhane</option>
+                  <option>Hakkari</option>
+                  <option>Hatay</option>
+                  <option>Isparta</option>
+                  <option>Mersin</option>
+                  <option>İstanbul</option>
+                  <option>İzmir</option>
+                  <option>Kars</option>
+                  <option>Kastamonu</option>
+                  <option>Kayseri</option>
+                  <option>Kırklareli</option>
+                  <option>Kırşehir</option>
+                  <option>Kocaeli</option>
+                  <option>Konya</option>
+                  <option>Kütahya</option>
+                  <option>Malatya</option>
+                  <option>Manisa</option>
+                  <option>Kahramanmaraş</option>
+                  <option>Mardin</option>
+                  <option>Muğla</option>
+                  <option>Muş</option>
+                  <option>Nevşehir</option>
+                  <option>Niğde</option>
+                  <option>Ordu</option>
+                  <option>Rize</option>
+                  <option>Sakarya</option>
+                  <option>Samsun</option>
+                  <option>Siirt</option>
+                  <option>Sinop</option>
+                  <option>Sivas</option>
+                  <option>Tekirdağ</option>
+                  <option>Tokat</option>
+                  <option>Trabzon</option>
+                  <option>Tunceli</option>
+                  <option>Şanlıurfa</option>
+                  <option>Uşak</option>
+                  <option>Van</option>
+                  <option>Yozgat</option>
+                  <option>Zonguldak</option>
+                  <option>Aksaray</option>
+                  <option>Bayburt</option>
+                  <option>Karaman</option>
+                  <option>Kırıkkale</option>
+                  <option>Batman</option>
+                  <option>Şırnak</option>
+                  <option>Bartın</option>
+                  <option>Ardahan</option>
+                  <option>Iğdır</option>
+                  <option>Yalova</option>
+                  <option>Karabük</option>
+                  <option>Kilis</option>
+                  <option>Osmaniye</option>
+                  <option>Düzce</option>
+            </select></span>
+                    </div>
+                    <div class="field" data-ticari hidden><label class="field__label" for="ilce">İlçe Yazınız<span class="req" aria-hidden="true">*</span><span class="sr-only">(zorunlu)</span></label><input class="input" id="ilce" name="ilce" type="text" minlength="3" maxlength="255" autocomplete="address-level2" placeholder="İlçeniz" data-label="İlçe"></div>
+                    <div class="field" data-ticari hidden><label class="field__label" for="vergidairesi">Vergi Dairesi<span class="req" aria-hidden="true">*</span><span class="sr-only">(zorunlu)</span></label><input class="input" id="vergidairesi" name="vergidairesi" type="text" minlength="3" maxlength="100" data-label="Vergi Dairesi"></div>
+                    <div class="field" data-ticari hidden><label class="field__label" for="tcvergino">Vergi Num. / TC Num.<span class="req" aria-hidden="true">*</span><span class="sr-only">(zorunlu)</span></label><input class="input" id="tcvergino" name="tcvergino" type="text" inputmode="numeric" data-taxno data-label="Vergi/TC"></div>
+                  </div>
+                </fieldset>
+
+                <fieldset class="form-group">
+                  <legend class="form-group__title">Şifre</legend>
+                  <div class="form-grid form-grid--2">
+                    <div class="field"><label class="field__label" for="sifre">Şifre<span class="req" aria-hidden="true">*</span><span class="sr-only">(zorunlu)</span></label><div class="input-group"><input class="input" id="sifre" name="sifre" type="password" minlength="5" autocomplete="new-password" required data-label="Şifre"><button class="input-group__btn" type="button" data-eye="sifre" aria-label="Şifreyi göster" aria-pressed="false"><i class="fa-solid fa-eye" aria-hidden="true"></i></button></div></div>
+                    <div class="field"><label class="field__label" for="sifretekrar">Şifreni Onayla<span class="req" aria-hidden="true">*</span><span class="sr-only">(zorunlu)</span></label><div class="input-group"><input class="input" id="sifretekrar" name="sifretekrar" type="password" autocomplete="new-password" required data-match="sifre"><button class="input-group__btn" type="button" data-eye="sifretekrar" aria-label="Şifreyi göster" aria-pressed="false"><i class="fa-solid fa-eye" aria-hidden="true"></i></button></div></div>
+                  </div>
+                </fieldset>
+
+                <fieldset class="form-group">
+                  <legend class="form-group__title">Onaylar</legend>
+                  <div class="stack stack--sm"><div class="field"><label class="check"><input class="check__input" id="kOnayUyelik" name="onayUyelik" type="checkbox" required><span class="check__box"><i class="fa-solid fa-check" aria-hidden="true"></i></span><span class="check__label"><a href="sayfa.html?s=uyelik-sozlesmesi" target="_blank">Üyelik Sözleşmesini</a> ve <a href="sayfa.html?s=kvkk" target="_blank">KVKK</a> Metnini Okudum Ve Kabul Ediyorum<span class="req" aria-hidden="true">*</span><span class="sr-only">(zorunlu)</span></span></label></div><label class="check"><input class="check__input" id="kOnayRiza" name="onayRiza" type="checkbox"><span class="check__box"><i class="fa-solid fa-check" aria-hidden="true"></i></span><span class="check__label"><a href="sayfa.html?s=acik-riza-metni" target="_blank">Açık Rıza Metnini</a> Okudum Ve Kabul Ediyorum</span></label></div>
+                </fieldset>
+
+                <button class="btn btn--primary btn--block btn--lg" type="submit">Kayıt Ol <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></button>
+              </div>
+              <p class="form-switch">Zaten Bir Hesabın Var Mı ? <a class="link" href="giris-yap.html" data-auth-goto="giris">Giriş Yap</a></p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div></section>
+</main>
+
+<script src="assets/js/shell.js" data-shell="bottom"></script>
+<script src="assets/data/catalog.js"></script>
+<script src="assets/data/products.js"></script>
+<script src="assets/data/format.js"></script>
+<script src="assets/js/main.js"></script>
+<script src="assets/js/form.js"></script>
+</body>
+</html>

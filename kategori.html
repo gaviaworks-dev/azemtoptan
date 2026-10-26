@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Ürün Listesi | Azem Toptan</title>
+  <meta name="description" content="Azem Toptan kategori ürün listesi: kategori, fiyat ve markaya göre filtreleyin, sıralayın, sepete ekleyin.">
+  <meta name="theme-color" content="#1a114d">
+  <link rel="icon" href="data:,">
+  <link rel="preload" href="assets/fonts/plus-jakarta-sans/plus-jakarta-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/vendor/fontawesome/css/all.min.css">
+  <link rel="stylesheet" href="assets/css/tokens.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/layout.css">
+  <script>document.documentElement.classList.add('js');</script>
+</head>
+<body data-page="kategori">
+
+<script src="assets/js/shell.js" data-shell="top"></script>
+
+<!-- ================= İÇERİK ================= -->
+<main class="page-main" id="icerik">
+
+  <section class="sec">
+    <div class="wrap">
+      <!-- Sayfa başı: breadcrumb + "Kategori (N Ürün)" tek satır -->
+      <div class="page-head">
+        <nav aria-label="Konum"><ol class="breadcrumb" data-crumbs><li><a href="index.html">Ana Sayfa</a></li></ol></nav>
+        <div class="page-head__row"><h1 class="page-head__title"><span data-title>Ürün Listesi</span><span class="page-head__count" data-total></span></h1></div>
+      </div>
+
+      <!-- Yapışık blok: ana kategori çubuğu (görselli; kaydırınca yazıya daralır) + alt kategori chip'leri "Ad (sayı)" -->
+      <div class="list-sticky" data-list-sticky>
+        <nav class="cat-bar" aria-label="Ana kategoriler">
+          <button class="icon-btn icon-btn--round rail-arrows" type="button" data-rail-prev="catBar" aria-label="Önceki kategoriler"><i class="fa-solid fa-chevron-left" aria-hidden="true"></i></button>
+          <div class="rail" id="catBar" data-cat-bar></div>
+          <button class="icon-btn icon-btn--round rail-arrows" type="button" data-rail-next="catBar" aria-label="Sonraki kategoriler"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i></button>
+        </nav>
+        <div class="chip-bar" data-chips role="group" aria-label="Alt kategoriler"></div>
+      </div>
+
+      <div class="with-aside" data-layout>
+
+        <!-- Filtre: ≥1025 sabit yan sütun, ≤1024 sağdan drawer (tek markup) -->
+        <aside class="drawer drawer--aside with-aside__side" id="filterDrawer" role="dialog" aria-label="Filtreler">
+          <div class="drawer__head">
+            <span class="drawer__head-title">Filtreler</span>
+            <button class="icon-btn" type="button" data-drawer-close aria-label="Filtreleri kapat"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+          </div>
+          <div class="drawer__body" data-acc-single>
+            <div class="filter__head"><span class="filter__title">Filtreler</span><button class="link" type="button" data-clear>Hepsini Temizle</button></div>
+            <div class="filter__applied chip-row" data-applied aria-label="Uygulanan filtreler"></div>
+
+            <div class="acc filter__group" data-group="fiyat">
+              <button class="acc__btn" type="button" aria-expanded="false" aria-controls="fFiyat">Fiyat (TL)<i class="fa-solid fa-chevron-down" aria-hidden="true"></i></button>
+              <div class="acc__panel" id="fFiyat"><div><div class="filter__body">
+                <div class="range" data-range>
+                  <div class="range__track"><span class="range__fill"></span></div>
+                  <input class="range__input" type="range" aria-label="En düşük fiyat">
+                  <input class="range__input" type="range" aria-label="En yüksek fiyat">
+                  <div class="range__values"><output data-range-out></output><span aria-hidden="true">–</span><output data-range-out></output></div>
+                </div>
+              </div></div></div>
+            </div>
+
+            <div class="acc filter__group" data-group="marka">
+              <button class="acc__btn" type="button" aria-expanded="true" aria-controls="fMarka">Markalar<i class="fa-solid fa-chevron-down" aria-hidden="true"></i></button>
+              <div class="acc__panel" id="fMarka"><div><div class="filter__body">
+                <div class="check-list" data-brand-list></div>
+              </div></div></div>
+            </div>
+          </div>
+          <div class="drawer__foot"><button class="btn btn--primary btn--block" type="button" data-apply>Filtrele</button></div>
+        </aside>
+
+        <!-- Sağ: araç çubuğu, ürünler, sayfalama -->
+        <div class="with-aside__main stack stack--lg" data-main>
+          <div class="toolbar" data-toolbar>
+            <div class="toolbar__group">
+              <button class="pill pill--outline toolbar__mobile" type="button" data-drawer-open="filterDrawer" aria-controls="filterDrawer"><i class="fa-solid fa-filter" aria-hidden="true"></i> Filtrele<span class="pill__count" data-filter-count data-count="0">0</span></button>
+            </div>
+            <div class="toolbar__group">
+              <span class="toolbar__label toolbar__desktop">Sıralama :</span>
+              <div class="menu" data-menu>
+                <button class="pill pill--outline menu__btn" type="button" data-menu-btn aria-haspopup="true" aria-expanded="false"><span data-sort-label>En Çok Satanlar</span> <i class="fa-solid fa-chevron-down" aria-hidden="true"></i></button>
+                <div class="dropdown" role="menu" aria-label="Sıralama">
+                  <button class="dropdown__item" type="button" role="menuitemradio" aria-checked="true" data-sort="">En Çok Satanlar</button>
+                  <button class="dropdown__item" type="button" role="menuitemradio" aria-checked="false" data-sort="artan">Ucuzadan Pahalıya</button>
+                  <button class="dropdown__item" type="button" role="menuitemradio" aria-checked="false" data-sort="azalan">Pahalıdan Ucuza</button>
+                </div>
+              </div>
+              <div class="segmented segmented--icons show-desktop" role="radiogroup" aria-label="Görünüm">
+                <label class="segmented__opt"><input type="radio" name="gorunum" value="3" aria-label="3'lü görünüm" data-view><span><i class="fa-solid fa-table-cells" aria-hidden="true"></i></span></label>
+                <label class="segmented__opt"><input type="radio" name="gorunum" value="4" aria-label="4'lü görünüm" data-view checked><span><i class="fa-solid fa-table-cells-large" aria-hidden="true"></i></span></label>
+                <label class="segmented__opt"><input type="radio" name="gorunum" value="liste" aria-label="Liste görünümü" data-view><span><i class="fa-solid fa-list" aria-hidden="true"></i></span></label>
+              </div>
+            </div>
+          </div>
+          <div class="filter__applied chip-row show-tablet" data-applied aria-label="Uygulanan filtreler"></div>
+          <h2 class="sr-only">Ürünler</h2>
+          <p class="sr-only" role="status" data-status></p>
+          <div class="stack stack--lg" data-results></div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Filtre drawer'ının perdesi: gövde katmanında, drawer'ın altında (≤1024) -->
+  <div class="scrim" data-drawer-scrim="filterDrawer"></div>
+</main>
+
+<script src="assets/js/shell.js" data-shell="bottom"></script>
+
+<script src="assets/data/catalog.js"></script>
+<script src="assets/data/products.js"></script>
+<script src="assets/data/format.js"></script>
+<script src="assets/js/main.js"></script>
+<script src="assets/js/list.js"></script>
+</body>
+</html>

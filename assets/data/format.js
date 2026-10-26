@@ -29,6 +29,8 @@
   window.AZEM_FORMAT = { productName: productName };
 
   /* Katalog yüklendiğinde adları bir kez normalleştir (kaynak ad saklanır) */
+  var DB = window.AZEM_DB;
+  if (DB) DB.products.forEach(function (p) { p.name = productName(p.sourceName); });
   var D = window.AZEM;
   if (!D) return;
   D.shelves.forEach(function (s) {

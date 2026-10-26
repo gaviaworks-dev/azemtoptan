@@ -53,8 +53,12 @@
   --c-bg-strong: #e9e8f0;     /* bir ton koyu bölüm zemini (Popüler Kategoriler) */
   --c-surface: #ffffff;
   --c-skeleton: rgba(23, 19, 58, .06);
+  --c-skeleton-shine: rgba(255, 255, 255, .7);   /* shimmer parıltısı */
   --c-white: #ffffff;
   --c-danger: #d6304a;         /* favori, indirim rozeti, hata */
+  --c-danger-tint: #fdedf0;    /* hatalı alan zemini, hata uyarısı */
+  --c-success: #1d7a4f;        /* başarı uyarısı ikonu */
+  --c-success-tint: #e7f4ec;   /* başarı uyarısı zemini */
 
   /* — Renk: perde (overlay) — */
   --c-scrim: rgba(26, 17, 77, .5);        /* drawer / modal */
@@ -74,13 +78,16 @@
   --sec-head-gap: 34px;    /* başlık → içerik */
   --rail-gap: 24px;
   --header-row: 76px;
+  --hdr-h: 125px;          /* header'ın gerçek yüksekliği; main.js ölçüp yazar (sticky yan sütun, araç çubuğu) */
+  --aside-w: 280px;        /* yan sütun: liste filtresi, yasal menü */
+  --field-h: 48px;         /* form alanı, filtre araması hariç */
 
-  /* — Köşe: TEK ölçü. Referans = güven şeridi kutusu. Buton, input, kart, panel, banner hep bu. — */
-  --radius: 16px;
-  /* yalnız istisnalar: story dairesi ve küçük sayaç rozeti */
-  --radius-round: 50%;
-  --radius-counter: 999px;
-  --radius-badge: 6px;       /* story "FIRSAT" şeridi (16px yükseklikte; 16 radius oval yapardı) */
+  /* — Köşe: TEK ölçü, kareye yakın. Buton, input, kart, panel, banner, sekme, modal, drawer hep bu. — */
+  --radius: 8px;
+  /* yalnız istisnalar */
+  --radius-badge: 4px;       /* küçük öğeler: onay kutusu, story "FIRSAT" şeridi, rozet, kaydırıcı çubuğu ve tutamağı, segment dilimi */
+  --radius-round: 50%;       /* yalnız story dairesi */
+  --radius-counter: 999px;   /* yalnız sayaç rozeti */
 
   /* — Gölge — */
   --sh-sm: 0 1px 2px rgba(23, 19, 58, .04), 0 2px 6px rgba(23, 19, 58, .05);
@@ -93,17 +100,20 @@
   /* Tip kanonu — yalnız tam sayı ölçeği: 11 · 12 · 13 · 14 · 15 · 16 · 18 · 22 · 24 · 26 · 30 · 34 · 44.
      Her rol tek token; aynı rol her yerde aynı boyut/ağırlık/satır yüksekliği. Mobil = aynı rollerin küçültülmüşü. */
   --fs-display: 44px;   /* hero başlığı · 700 · lh-tight */
+  --fs-page: 24px;      /* iç sayfa başlığı (liste, yasal, form) · 700 · lh-snug */
   --fs-h2: 24px;        /* bölüm başlığı (tüm bölümler, e-bülten dahil) · 700 · lh-tight */
   --fs-h3: 22px;        /* modal / panel başlığı · 700 · lh-snug */
   --fs-price-lg: 26px;  /* detay fiyatı · 800 · lh-snug */
+  --fs-prose-h: 18px;   /* metin içi başlık (yasal, detay sekmeleri) · 700 · lh-snug */
   --fs-band: 18px;      /* duyuru bandı metni · 700 · lh-snug */
-  --fs-price: 18px;     /* kart fiyatı · 800 · lh-snug */
+  --fs-price: 16px;     /* kart fiyatı · 700 · lh-snug */
+  --fs-price-old: 13px; /* kart eski fiyatı · 500 · üstü çizili */
   --fs-lead: 16px;      /* giriş paragrafı (hero, e-bülten) · 500 · lh-body */
   --fs-body: 16px;      /* gövde · 500 · lh-body */
   --fs-nav: 15px;       /* footer başlığı, drawer menü öğesi · 600/700 · lh-ui */
   --fs-menu: 14px;      /* header ana menü · 600 · lh-ui */
   --fs-btn: 15px;       /* buton · 700 · lh-ui */
-  --fs-name: 15px;      /* ürün adı · 500 · lh-name */
+  --fs-name: 14px;      /* ürün kartı adı · 500 · lh-name · 2 satır */
   --fs-sm: 14px;        /* UI metni: dropdown, input, link, kart alt satırı · 500/600 · lh-ui */
   --fs-cell: 14px;      /* grid hücre etiketi (kategori, güven) · 600 · lh-ui */
   --fs-meta: 13px;      /* meta: chip, küçük pill, alt bar · 500/600 */
@@ -124,6 +134,8 @@
   /* — Katman — */
   --z-content: 2;
   --z-fab: 55;
+  --z-sticky: 50;       /* liste araç çubuğu (mobil) */
+  --z-buybar: 85;       /* detay sabit sepet çubuğu (alt menünün altında) */
   --z-scrim-soft: 58;
   --z-header: 60;
   --z-menu: 80;
@@ -137,11 +149,13 @@
   /* — Hareket — */
   --ease: cubic-bezier(.22, .61, .36, 1);
   --ease-collapse: cubic-bezier(.4, 0, .2, 1);
+  --ease-out: cubic-bezier(.16, 1, .3, 1);   /* açılır panel girişi (A101 expo-out) */
   --t-fast: .2s;
   --t-base: .25s;
   --t-slow: .32s;
   --t-media: .5s;
   --t-reveal: .7s;
+  --t-shimmer: 1.4s;
 }
 
 @media (max-width: 1024px) {
@@ -150,6 +164,7 @@
     --fs-display: 34px;
     --fs-h2: 22px;
     --fs-h3: 22px;
+    --fs-page: 22px;
     --header-row: 64px;
   }
 }
@@ -162,13 +177,16 @@
     --sec-head-gap: 24px;
     --rail-gap: 12px;
     --fs-display: 26px;
+    --fs-page: 18px;
+    --fs-prose-h: 16px;
     --fs-h2: 18px;
     --fs-h3: 18px;
     --fs-price-lg: 22px;
     --fs-band: 14px;
-    --fs-price: 16px;
+    --fs-price: 15px;
+    --fs-price-old: 12px;
     --fs-lead: 15px;
-    --fs-name: 14px;
+    --fs-name: 13px;
     --fs-cell: 13px;
     --header-row: 58px;
   }

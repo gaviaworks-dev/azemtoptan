@@ -9,3 +9,9 @@ assets/img/banners/vitrin-bu-urunler-kacmaz.webp
 # Geçici / test dosyaları
 *.tmp
 *.log
+
+# Araç ve sistem dosyaları
+Thumbs.db
+node_modules/
+.claude/
+*.bak

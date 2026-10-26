@@ -72,3 +72,15 @@ strong, b { font-weight: 700; }
 
 /* — Sayfa gövdesi (footer perde açılışı için katman) — */
 .page-main { position: relative; z-index: var(--z-content); background: var(--c-bg); }
+
+/* — Yerleşim yardımcıları (iç sayfalar) — */
+.stack { display: flex; flex-direction: column; gap: var(--sp-4); min-width: 0; }
+.stack--lg { gap: var(--sp-5); }
+.stack--sm { gap: var(--sp-2); }
+.cluster { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-3); }
+.cluster--between { justify-content: space-between; }
+.cluster--nowrap { flex-wrap: nowrap; align-items: flex-start; }   /* başlık + ikon buton: ikon alt satıra düşmez */
+.cluster--nowrap > :first-child { flex: 1; min-width: 0; }
+.h3 { font-size: var(--fs-h3); line-height: var(--lh-snug); }
+.text-meta { font-size: var(--fs-sm); font-weight: 500; line-height: var(--lh-ui); color: var(--c-muted); }
+.sec--tight { padding-block: var(--sp-5); }

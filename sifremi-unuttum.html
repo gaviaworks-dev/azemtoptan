@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Şifremi Unuttum | Azem Toptan</title>
+  <meta name="description" content="Azem Toptan hesabınızın şifresini kayıtlı e-posta adresinizle yenileyin.">
+  <meta name="theme-color" content="#1a114d">
+  <link rel="icon" href="data:,">
+  <link rel="preload" href="assets/fonts/plus-jakarta-sans/plus-jakarta-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/vendor/fontawesome/css/all.min.css">
+  <link rel="stylesheet" href="assets/css/tokens.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/layout.css">
+  <script>document.documentElement.classList.add('js');</script>
+</head>
+<body data-page="giris">
+<script src="assets/js/shell.js" data-shell="top"></script>
+
+<!-- ================= İÇERİK ================= -->
+<main class="page-main" id="icerik">
+  <section class="sec"><div class="wrap">
+    <div class="page-head"><nav aria-label="Konum"><ol class="breadcrumb"><li><a href="index.html">Ana Sayfa</a></li><li class="breadcrumb__sep" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></li><li aria-current="page">Şifremi Unuttum</li></ol></nav></div>
+
+    <!-- Kısa form → tek, ortalı, ikonlu kart (Hepsiburada / Trendyol kalıbı); marka paneli yok -->
+    <div class="auth-card">
+      <form data-form="sifre" novalidate>
+        <div class="auth-card__head">
+          <span class="auth-card__icon" aria-hidden="true"><i class="fa-solid fa-key"></i></span>
+          <h1 class="auth-card__title">Şifrenizi Mi Unuttunuz ?</h1>
+          <p class="auth-card__text">Kayıtlı e-posta adresinizi yazın; şifre yenileme bağlantısını bu adrese gönderelim.</p>
+        </div>
+        <div class="form-stack">
+          <div class="form-alert form-alert--error" data-form-error role="alert" hidden></div>
+          <div class="form-alert" data-form-info role="status" hidden></div>
+          <div class="field">
+            <label class="field__label" for="email">Kayıtlı E-Posta Adresiniz<span class="req" aria-hidden="true">*</span><span class="sr-only">(zorunlu)</span></label>
+            <input class="input" id="email" name="email" type="email" autocomplete="email" required data-label="E-posta">
+          </div>
+          <button class="btn btn--primary btn--block btn--lg" type="submit">Şifremi Gönder <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></button>
+        </div>
+        <div class="auth-card__foot">
+          <a class="link auth__back" href="giris-yap.html"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Giriş Yap</a>
+          <p class="auth-card__help"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i><span>WhatsApp Sipariş Hattı <span data-whatsapp></span></span></p>
+        </div>
+      </form>
+    </div>
+  </div></section>
+</main>
+
+<script src="assets/js/shell.js" data-shell="bottom"></script>
+<script src="assets/data/catalog.js"></script>
+<script src="assets/data/products.js"></script>
+<script src="assets/data/format.js"></script>
+<script src="assets/js/main.js"></script>
+<script src="assets/js/form.js"></script>
+</body>
+</html>
