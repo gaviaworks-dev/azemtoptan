@@ -31,6 +31,7 @@
   --c-brand-2-deep: #2a4f86;
   --c-brand-tint: #f2f1f8;     /* header zemini (A101'deki açık marka tonu) */
   --c-brand-tint-2: #e8e6f3;   /* story dairesi, hover zemini */
+  --c-band: #efedf8;           /* liste sayfa başı bandı: düz tek ton, primary'nin çok açık hali (header #f2f1f8 ve sayfa #f3f3f7 ile uyumlu, ferah) */
   --c-brand-on-dark: #b9c9ea;  /* lacivert üstünde ikincil metin */
 
   /* — Renk: koyu zemin üstü (footer) — */
@@ -81,12 +82,19 @@
   --hdr-h: 125px;          /* header'ın gerçek yüksekliği; main.js ölçüp yazar (sticky yan sütun, araç çubuğu) */
   --aside-w: 280px;        /* yan sütun: liste filtresi, yasal menü */
   --field-h: 48px;         /* form alanı, filtre araması hariç */
+  /* Üyelik formları (giriş / kayıt / şifre) kompakt ölçeği: kartın içinde --field-h buna iner */
+  --auth-ctl-h: 44px;      /* alan, sekme, segment */
+  --auth-btn-h: 48px;      /* gönder butonu */
+  --auth-fs-ctl: var(--fs-sm);    /* sekme ve segment yazısı (14) */
+  --auth-fs-field: 15px;          /* alan yazısı; ≤1024 16 (iOS odak büyütmesi olmasın) */
 
-  /* — Köşe: TEK ölçü, kareye yakın. Buton, input, kart, panel, banner, sekme, modal, drawer hep bu. — */
+  /* — Köşe: İKİ ölçü. Büyük kapsayıcı (form kartı, marka paneli, modal, hero, banner, drawer, açılır panel, büyük panel) 16;
+       buton, input, chip, küçük kart ve küçük öğeler 8. — */
+  --radius-lg: 16px;
   --radius: 8px;
   /* yalnız istisnalar */
   --radius-badge: 4px;       /* küçük öğeler: onay kutusu, story "FIRSAT" şeridi, rozet, kaydırıcı çubuğu ve tutamağı, segment dilimi */
-  --radius-round: 50%;       /* yalnız story dairesi */
+  --radius-round: 50%;       /* story dairesi ve radyo düğmesi */
   --radius-counter: 999px;   /* yalnız sayaç rozeti */
 
   /* — Gölge — */
@@ -116,6 +124,8 @@
   --fs-name: 14px;      /* ürün kartı adı · 500 · lh-name · 2 satır */
   --fs-sm: 14px;        /* UI metni: dropdown, input, link, kart alt satırı · 500/600 · lh-ui */
   --fs-cell: 14px;      /* grid hücre etiketi (kategori, güven) · 600 · lh-ui */
+  --fs-side: 14px;      /* yan sütun başlığı: liste filtresi (Filtreler, Fiyat, Markalar) ve yasal yan menü öğeleri · 600 · lh-ui */
+  --fs-text-btn: 13px;  /* metin buton / küçük link: Hepsini Temizle, Şifreni mi Unuttun, Üye Ol · 600 */
   --fs-meta: 13px;      /* meta: chip, küçük pill, alt bar · 500/600 */
   --fs-xs: 12px;        /* altyazı: eyebrow, story etiketi, yasal · 600/700 */
   --fs-micro: 11px;     /* rozet, sayaç, alt menü etiketi · 700/800 */
@@ -166,6 +176,7 @@
     --fs-h3: 22px;
     --fs-page: 22px;
     --header-row: 64px;
+    --auth-fs-field: 16px;
   }
 }
 

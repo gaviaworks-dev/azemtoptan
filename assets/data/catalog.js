@@ -22,8 +22,7 @@ window.AZEM = {
       "Enerji İçeceği",
       "Gazoz"
      ],
-     "photo": "img/categories/story/gazli-icecek.webp",
-     "photoAlt": "BLACK BURN ENERJİ İÇECEĞİ 1 LT"
+     "ico": "bottle-water"
     },
     {
      "name": "Gazsız İçecek",
@@ -36,8 +35,7 @@ window.AZEM = {
       "Boza",
       "Toz İçecek"
      ],
-     "photo": "img/categories/story/gazsiz-icecek.webp",
-     "photoAlt": "ORİ PORTAKAL AROMALI TOZ İÇECEK 300 GR"
+     "ico": "lemon"
     },
     {
      "name": "Çay",
@@ -49,8 +47,7 @@ window.AZEM = {
       "Form Çayı",
       "Soğuk Çay"
      ],
-     "photo": "img/categories/story/cay.webp",
-     "photoAlt": "ÇAYKUR RİZE 500 GR"
+     "ico": "mug-hot"
     },
     {
      "name": "Kahve",
@@ -60,97 +57,86 @@ window.AZEM = {
       "Soğuk Kahve",
       "Sıcak Çikolata ve Salep"
      ],
-     "photo": "img/categories/story/kahve.webp",
-     "photoAlt": "KURUKAHVECİ MEHMET EFENDİ TÜRK KAHVESİ 100 GR"
+     "ico": "mug-saucer"
     },
     {
      "name": "Su",
-     "children": []
+     "children": [],
+     "ico": "droplet"
     },
     {
      "name": "Maden Suyu",
      "children": [],
-     "photo": "img/categories/story/maden-suyu.webp",
-     "photoAlt": "ULUDAĞ FRUTTİ EXTRA LİMON AROMALI 200 ML 24 ADET"
+     "ico": "glass-water"
     },
     {
      "name": "Süt",
      "children": [],
-     "photo": "img/categories/story/sut.webp",
-     "photoAlt": "İÇİM SÜT 1 LT 12 AD"
+     "ico": "cow"
     }
    ],
-   "photo": "img/categories/foto/icecekler.webp",
-   "photoAlt": "ÇAYKUR RİZE 500 GR"
+   "ico": "bottle-water"
   },
   {
    "name": "Atıştırmalık",
    "children": [
     {
      "name": "Kuruyemiş",
-     "children": []
+     "children": [],
+     "ico": "seedling"
     },
     {
      "name": "Cips",
-     "children": []
+     "children": [],
+     "ico": "cookie-bite"
     },
     {
      "name": "Çikolata",
      "children": [],
-     "photo": "img/categories/story/cikolata.webp",
-     "photoAlt": "ETİ HOŞBEŞ HİNDİSTAN CEVİZLİ GOFRET 142 GR"
+     "ico": "cookie-bite"
     },
     {
      "name": "Gofret",
      "children": [],
-     "photo": "img/categories/story/gofret.webp",
-     "photoAlt": "ETİ HOŞBEŞ FINDIKLI GOFRET 142 GR"
+     "ico": "cookie-bite"
     },
     {
      "name": "Bar, Kaplamalılar",
      "children": [],
-     "photo": "img/categories/story/bar-kaplamalilar.webp",
-     "photoAlt": "MARS ÇİKOLATA 51 GR 24 ADET"
+     "ico": "cookie-bite"
     },
     {
      "name": "Bisküvi",
      "children": [],
-     "photo": "img/categories/story/biskuvi.webp",
-     "photoAlt": "ETİ BURÇAK BİSKÜVİ SADE 131 GR 24 ADET"
+     "ico": "cookie"
     },
     {
      "name": "Kek",
      "children": [],
-     "photo": "img/categories/story/kek.webp",
-     "photoAlt": "ETİ POPKEK ÇİKOLATALI 60 GR 24 ADET"
+     "ico": "cake-candles"
     },
     {
      "name": "Şekerleme",
      "children": [],
-     "photo": "img/categories/story/sekerleme.webp",
-     "photoAlt": "MENTOS NANE AROMALI ŞEKER 20 ADET"
+     "ico": "candy-cane"
     },
     {
      "name": "Draje",
      "children": [],
-     "photo": "img/categories/story/draje.webp",
-     "photoAlt": "M&M'S FISTIKLI DRAJE 45 GR 24 AD"
+     "ico": "candy-cane"
     },
     {
      "name": "Kraker",
      "children": [],
-     "photo": "img/categories/story/kraker.webp",
-     "photoAlt": "ETİ CRAX SADE ÇUBUK KRAKER 40 GR 34 ADET"
+     "ico": "cookie"
     },
     {
      "name": "Sakız",
      "children": [],
-     "photo": "img/categories/story/sakiz.webp",
-     "photoAlt": "FALIM NANE AROMALI STİCK SAKIZ 5Lİ 35 GR 20 ADET"
+     "ico": "cookie-bite"
     }
    ],
-   "photo": "img/categories/foto/atistirmalik.webp",
-   "photoAlt": "ETİ HOŞBEŞ HİNDİSTAN CEVİZLİ GOFRET 142 GR"
+   "ico": "cookie-bite"
   },
   {
    "name": "Temel Gıda",
@@ -163,16 +149,14 @@ window.AZEM = {
       "Karbonat",
       "Puding"
      ],
-     "photo": "img/categories/story/hamur-pasta-malzemeleri.webp",
-     "photoAlt": "DR OETKER HAMUR KABARTMA TOZU 5 ADET 50 GR"
+     "ico": "bread-slice"
     },
     {
      "name": "Pratik Yemek",
      "children": [
       "Çorba"
      ],
-     "photo": "img/categories/story/pratik-yemek.webp",
-     "photoAlt": "KNORR MERCİMEK ÇORBASI 76 GR 12 ADET"
+     "ico": "bowl-food"
     },
     {
      "name": "Şeker",
@@ -182,8 +166,7 @@ window.AZEM = {
       "Esmer Şeker",
       "Pudra Şekeri"
      ],
-     "photo": "img/categories/story/seker.webp",
-     "photoAlt": "BALKÜPÜ KÜP ŞEKER 1 KG"
+     "ico": "cubes-stacked"
     },
     {
      "name": "Un",
@@ -193,7 +176,8 @@ window.AZEM = {
       "Mısır Unu",
       "Galeta Unu",
       "Nişasta"
-     ]
+     ],
+     "ico": "wheat-awn"
     },
     {
      "name": "Sos",
@@ -208,8 +192,7 @@ window.AZEM = {
       "Limon Sosu",
       "Nar Ekşisi"
      ],
-     "photo": "img/categories/story/sos.webp",
-     "photoAlt": "CALVE KETÇAP 430 GR"
+     "ico": "bottle-droplet"
     },
     {
      "name": "Konserve",
@@ -221,12 +204,12 @@ window.AZEM = {
       "Közlenmiş",
       "Haşlanmış"
      ],
-     "photo": "img/categories/story/konserve.webp",
-     "photoAlt": "DARDANEL TON BALIĞI 140 GR"
+     "ico": "jar"
     },
     {
      "name": "Bulyon",
-     "children": []
+     "children": [],
+     "ico": "cube"
     },
     {
      "name": "Tuz, Baharat, Harç",
@@ -235,8 +218,7 @@ window.AZEM = {
       "Tuz",
       "Harç"
      ],
-     "photo": "img/categories/story/tuz-baharat-harc.webp",
-     "photoAlt": "BİLLUR TUZ 750 GR"
+     "ico": "pepper-hot"
     },
     {
      "name": "Sıvı Yağ",
@@ -244,8 +226,7 @@ window.AZEM = {
       "Ayçiçek Yağı",
       "Zeytinyağı"
      ],
-     "photo": "img/categories/story/sivi-yag.webp",
-     "photoAlt": "BİGALIM SIZMA ZEYTİNYAĞI 5 LT"
+     "ico": "bottle-droplet"
     },
     {
      "name": "Bakliyat",
@@ -259,8 +240,7 @@ window.AZEM = {
       "Barbunya",
       "Mantı"
      ],
-     "photo": "img/categories/story/bakliyat.webp",
-     "photoAlt": "GÖZE BALDO PİRİNÇ 1 KG"
+     "ico": "bowl-rice"
     },
     {
      "name": "Süt, Kahvaltılık",
@@ -272,17 +252,16 @@ window.AZEM = {
       "Zeytin",
       "Bal",
       "Kavurma"
-     ]
+     ],
+     "ico": "cheese"
     },
     {
      "name": "Makarna",
      "children": [],
-     "photo": "img/categories/story/makarna.webp",
-     "photoAlt": "FİLİZ BURGU MAKARNA 500 GR"
+     "ico": "plate-wheat"
     }
    ],
-   "photo": "img/categories/foto/temel-gida.webp",
-   "photoAlt": "FİLİZ SPAGETTİ MAKARNA 500 GR"
+   "ico": "wheat-awn"
   },
   {
    "name": "Deterjan, Temizlik",
@@ -296,8 +275,7 @@ window.AZEM = {
       "Çamaşır Suyu",
       "Renk Koruyucular"
      ],
-     "photo": "img/categories/story/camasir-yikama.webp",
-     "photoAlt": "DOMESTOS ÇAMAŞIR SUYU ULTRA BEYAZ 3240 ML"
+     "ico": "shirt"
     },
     {
      "name": "Bulaşık Yıkama",
@@ -305,8 +283,7 @@ window.AZEM = {
       "Bulaşık Makinesi Ürünleri",
       "Sıvı Bulaşık Deterjanı"
      ],
-     "photo": "img/categories/story/bulasik-yikama.webp",
-     "photoAlt": "FAİRY BULAŞIK MAKİNESİ TABLETİ 29 ADET"
+     "ico": "sink"
     },
     {
      "name": "Genel Temizlik",
@@ -319,8 +296,7 @@ window.AZEM = {
       "Hava Temizleyiciler",
       "Tuvalet Temizleyiciler"
      ],
-     "photo": "img/categories/story/genel-temizlik.webp",
-     "photoAlt": "DOMESTOS WC BLOK 5Lİ GÜÇ ÇAM FERAHLIĞI 50 G"
+     "ico": "spray-can-sparkles"
     },
     {
      "name": "Temizlik Malzemeleri",
@@ -335,18 +311,15 @@ window.AZEM = {
       "Lavabo Açıcı",
       "Tüy Toplayıcı Rulo"
      ],
-     "photo": "img/categories/story/temizlik-malzemeleri.webp",
-     "photoAlt": "ACORD TEMİZLİK BEZİ 3 ADET"
+     "ico": "broom"
     },
     {
      "name": "Çöp Poşeti",
      "children": [],
-     "photo": "img/categories/story/cop-poseti.webp",
-     "photoAlt": "FLOREX ÇÖP POŞETİ MİNİ BOY 44 X 45 40 ADET"
+     "ico": "trash-can"
     }
    ],
-   "photo": "img/categories/foto/deterjan-temizlik.webp",
-   "photoAlt": "DOMESTOS ÇAMAŞIR SUYU ULTRA BEYAZ 3240 ML"
+   "ico": "spray-can-sparkles"
   },
   {
    "name": "Kağıt, Islak Mendil",
@@ -354,34 +327,35 @@ window.AZEM = {
     {
      "name": "Islak Mendil",
      "children": [],
-     "photo": "img/categories/story/islak-mendil.webp",
-     "photoAlt": "ELDE ISLAK MENDİL 100 ADET"
+     "ico": "hand-sparkles"
     },
     {
      "name": "Tuvalet Kağıdı",
-     "children": []
+     "children": [],
+     "ico": "toilet-paper"
     },
     {
      "name": "Kağıt Havlu",
      "children": [],
-     "photo": "img/categories/story/kagit-havlu.webp",
-     "photoAlt": "BERRAK KAĞIT HAVLU 12 ADET"
+     "ico": "toilet-paper"
     },
     {
      "name": "Peçete",
-     "children": []
+     "children": [],
+     "ico": "toilet-paper"
     },
     {
      "name": "Servis Peçetesi",
-     "children": []
+     "children": [],
+     "ico": "toilet-paper"
     },
     {
      "name": "Kağıt Mendil",
-     "children": []
+     "children": [],
+     "ico": "box-tissue"
     }
    ],
-   "photo": "img/categories/foto/kagit-islak-mendil.webp",
-   "photoAlt": "BERRAK KAĞIT HAVLU 12 ADET"
+   "ico": "toilet-paper"
   },
   {
    "name": "Kişisel Bakım",
@@ -394,13 +368,13 @@ window.AZEM = {
       "Güneşsiz Bronzlaştırıcılar",
       "Güneş Yağı",
       "Bebek, Çocuk Güneş Bakımı"
-     ]
+     ],
+     "ico": "sun"
     },
     {
      "name": "Kolonya",
      "children": [],
-     "photo": "img/categories/story/kolonya.webp",
-     "photoAlt": "BOĞAZİÇİ LİMON KOLONYASI 400 ML"
+     "ico": "spray-can"
     },
     {
      "name": "Sağlık Ürünleri",
@@ -411,7 +385,8 @@ window.AZEM = {
       "Yara Bandı",
       "ilaç",
       "18+ Yetişkin"
-     ]
+     ],
+     "ico": "kit-medical"
     },
     {
      "name": "Cilt Bakım",
@@ -419,14 +394,14 @@ window.AZEM = {
       "El ve Vücut Bakım",
       "Yüz Maskesi"
      ],
-     "photo": "img/categories/story/cilt-bakim.webp",
-     "photoAlt": "ARKO YAĞLI KREM 20 CC 12 ADET"
+     "ico": "hand-holding-droplet"
     },
     {
      "name": "Hijyenik Ped",
      "children": [
       "Ultra Ped"
-     ]
+     ],
+     "ico": "pump-soap"
     },
     {
      "name": "Parfüm, Deodorant",
@@ -434,8 +409,7 @@ window.AZEM = {
       "Deodorant",
       "Parfüm"
      ],
-     "photo": "img/categories/story/parfum-deodorant.webp",
-     "photoAlt": "AXE BLACK ERKEK DEODORANT 150 ML"
+     "ico": "spray-can"
     },
     {
      "name": "Tıraş Malzemeleri",
@@ -447,8 +421,7 @@ window.AZEM = {
       "Tıraş Kremi",
       "Tıraş Sabunu"
      ],
-     "photo": "img/categories/story/tiras-malzemeleri.webp",
-     "photoAlt": "BLUE 2 GİLLETTE KARTELA 20 ADET"
+     "ico": "pump-soap"
     },
     {
      "name": "Duş, Banyo, Sabun",
@@ -457,8 +430,7 @@ window.AZEM = {
       "Lif, Sünger, Setler",
       "Sabun"
      ],
-     "photo": "img/categories/story/dus-banyo-sabun.webp",
-     "photoAlt": "DOVE SABUN BEAUTY CREAM BAR 90 GR"
+     "ico": "shower"
     },
     {
      "name": "Saç Bakım",
@@ -468,8 +440,7 @@ window.AZEM = {
       "Saç Kremi",
       "Saç Şekillendiriciler"
      ],
-     "photo": "img/categories/story/sac-bakim.webp",
-     "photoAlt": "HEAD & SHOULDERS ŞAMPUAN KLASİK BAKIM 350 ML"
+     "ico": "pump-soap"
     },
     {
      "name": "Ağız Bakım Ürünleri",
@@ -482,18 +453,17 @@ window.AZEM = {
       "Çocuk Diş Bakımı",
       "Kürdan"
      ],
-     "photo": "img/categories/story/agiz-bakim-urunleri.webp",
-     "photoAlt": "COLGATE ÜÇLÜ ETKİ DİŞ MACUNU 50 ML 12 ADET"
+     "ico": "tooth"
     },
     {
      "name": "Makyaj",
      "children": [
       "Tırnak Ürünleri"
-     ]
+     ],
+     "ico": "pump-soap"
     }
    ],
-   "photo": "img/categories/foto/kisisel-bakim.webp",
-   "photoAlt": "HEAD & SHOULDERS ŞAMPUAN KLASİK BAKIM 350 ML"
+   "ico": "pump-soap"
   },
   {
    "name": "Ev, Yaşam",
@@ -508,28 +478,24 @@ window.AZEM = {
       "Fırın Torbası",
       "Dondurulmuş Gıda Torbası"
      ],
-     "photo": "img/categories/story/mutfak-sarf-malzemesi.webp",
-     "photoAlt": "KOROPLAST ALÜMİNYUM FOLYO 8 MT"
+     "ico": "scroll"
     },
     {
      "name": "Kullan At Ürünler",
      "children": [],
-     "photo": "img/categories/story/kullan-at-urunler.webp",
-     "photoAlt": "BEYBİ LATEX ELDİVEN L BEDEN 100 ADET"
+     "ico": "utensils"
     },
     {
      "name": "Pil",
      "children": [],
-     "photo": "img/categories/story/pil.webp",
-     "photoAlt": "DURACELL KALEM PİL 20 ADET"
+     "ico": "battery-full"
     },
     {
      "name": "Mobilya, Dekorasyon",
      "children": [
       "Mum Mumluk"
      ],
-     "photo": "img/categories/story/mobilya-dekorasyon.webp",
-     "photoAlt": "BOZKURT MUM 20 ADET"
+     "ico": "couch"
     },
     {
      "name": "Pet Shop",
@@ -538,16 +504,17 @@ window.AZEM = {
       "Kuş Yemi",
       "Kedi Kumu"
      ],
-     "photo": "img/categories/story/pet-shop.webp",
-     "photoAlt": "ERDİNÇ MUHABBET KUŞ YEMİ 250 GR"
+     "ico": "paw"
     },
     {
      "name": "Ampul",
-     "children": []
+     "children": [],
+     "ico": "lightbulb"
     },
     {
      "name": "Fare İlacı",
-     "children": []
+     "children": [],
+     "ico": "bug"
     },
     {
      "name": "Hırdavat",
@@ -555,56 +522,55 @@ window.AZEM = {
       "Japon Yapıştırıcı",
       "Koli Bandı"
      ],
-     "photo": "img/categories/story/hirdavat.webp",
-     "photoAlt": "QUICKSTAR JAPON YAPIŞTIRICI 50 AD"
+     "ico": "hammer"
     },
     {
      "name": "Çakmak",
      "children": [
       "Çakmak Gazı"
-     ]
+     ],
+     "ico": "fire"
     },
     {
      "name": "Bahçe ve Piknik Malzemeleri",
      "children": [
       "Kibrit"
      ],
-     "photo": "img/categories/story/bahce-ve-piknik-malzemeleri.webp",
-     "photoAlt": "KAV KİBRİT KUTU 100 ADET"
+     "ico": "tree"
     },
     {
      "name": "Poşet",
      "children": [],
-     "photo": "img/categories/story/poset.webp",
-     "photoAlt": "HIŞIR POŞET KÜÇÜK BOY 250 ADET"
+     "ico": "bag-shopping"
     },
     {
      "name": "Bebek",
      "children": [
       "Bebek Bezi"
-     ]
+     ],
+     "ico": "baby"
     },
     {
      "name": "Diğer",
-     "children": []
+     "children": [],
+     "ico": "house"
     },
     {
      "name": "Elektronik",
      "children": [
       "Telefon ve Aksesuarları"
-     ]
+     ],
+     "ico": "plug"
     },
     {
      "name": "Mutfak Eşyaları",
      "children": [
       "Bardak"
      ],
-     "photo": "img/categories/story/mutfak-esyalari.webp",
-     "photoAlt": "PAŞABAHÇE ÇAY BARDAĞI 12 ADET"
+     "ico": "kitchen-set"
     }
    ],
-   "photo": "img/categories/foto/ev-yasam.webp",
-   "photoAlt": "KOROPLAST ALÜMİNYUM FOLYO 8 MT"
+   "ico": "house"
   }
  ],
  "shelves": [
@@ -823,22 +789,22 @@ window.AZEM = {
    "type": "banner",
    "img": "img/banners/hero-365-gun.webp",
    "alt": "365 Gün Avantajlı Fiyatlar",
-   "edge": [
-    "#e6e0d6",
-    "#efefee"
-   ],
-   "link": null
+   "link": null,
+   "fill": {
+    "wide": "img/banners/hero-365-gun-genis.webp",
+    "tall": "img/banners/hero-365-gun-dikey.webp"
+   }
   },
   {
    "type": "banner",
    "img": "img/banners/hero-kurukahveci.webp",
    "alt": "Kurukahveci Mehmet Efendi Türk Kahvesi %20 İndirim",
-   "edge": [
-    "#ede8e3",
-    "#beb6b3"
-   ],
    "link": {
     "cat": "turk-kahvesi-93"
+   },
+   "fill": {
+    "wide": "img/banners/hero-kurukahveci-genis.webp",
+    "tall": "img/banners/hero-kurukahveci-dikey.webp"
    }
   }
  ],

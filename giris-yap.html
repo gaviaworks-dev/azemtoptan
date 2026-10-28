@@ -22,7 +22,7 @@
      Giriş ve Kayıt aynı kartta iki sekme: giris-yap.html ve kayit-ol.html aynı belge, açılış sekmesi farklı;
      sekme değişince adres güncellenir (form.js). -->
 <main class="page-main" id="icerik">
-  <section class="sec"><div class="wrap">
+  <section class="sec sec--backdrop"><div class="wrap">
     <div class="page-head"><nav aria-label="Konum"><ol class="breadcrumb"><li><a href="index.html">Ana Sayfa</a></li><li class="breadcrumb__sep" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></li><li aria-current="page" data-auth-crumb>Giriş</li></ol></nav></div>
 
     <div class="auth" data-auth="giris">
@@ -65,7 +65,7 @@
                 </div>
                 <div class="form-row">
                   <label class="check"><input class="check__input" id="gBeniHatirla" name="beniHatirla" type="checkbox"><span class="check__box"><i class="fa-solid fa-check" aria-hidden="true"></i></span><span class="check__label">Beni Hatırla</span></label>
-                  <a class="link" href="sifremi-unuttum.html">Şifreni mi Unuttun ?</a>
+                  <a class="link link--sm" href="sifremi-unuttum.html">Şifreni mi Unuttun ?</a>
                 </div>
                 <fieldset class="form-group">
                   <legend class="form-group__title">Onaylar</legend>
@@ -73,7 +73,7 @@
                 </fieldset>
                 <button class="btn btn--primary btn--block btn--lg" type="submit">Giriş Yap <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></button>
               </div>
-              <p class="form-switch">Hesabın Yok Mu ? <a class="link" href="kayit-ol.html" data-auth-goto="kayit">Üye Ol</a></p>
+              <p class="form-switch">Hesabın Yok Mu ? <a class="link link--sm" href="kayit-ol.html" data-auth-goto="kayit">Üye Ol</a></p>
             </form>
           </div>
 
@@ -211,7 +211,7 @@
 
                 <button class="btn btn--primary btn--block btn--lg" type="submit">Kayıt Ol <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></button>
               </div>
-              <p class="form-switch">Zaten Bir Hesabın Var Mı ? <a class="link" href="giris-yap.html" data-auth-goto="giris">Giriş Yap</a></p>
+              <p class="form-switch">Zaten Bir Hesabın Var Mı ? <a class="link link--sm" href="giris-yap.html" data-auth-goto="giris">Giriş Yap</a></p>
             </form>
           </div>
         </div>

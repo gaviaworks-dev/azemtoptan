@@ -52,6 +52,15 @@ strong, b { font-weight: 700; }
 /* — Bölüm ritmi (DadaGastro: 74 / 44, zemin dönüşümlü) — */
 .sec { padding-block: var(--sec-y); background: var(--c-bg); }
 .sec--white { background: var(--c-surface); }
+/* Koyu zemin görseli (üyelik sayfaları): depo görseli kendi boyutunda (2x kaynak 1599 px, büyütme yok), üstte ortalı;
+   yüksek opaklıklı Azem laciverti perdenin altında kalır, altta düz laciverte erir (footer'la kesintisiz). */
+.sec--backdrop {
+  background-color: var(--c-brand);
+  background-image: linear-gradient(180deg, rgba(26, 17, 77, .88) 0, rgba(26, 17, 77, .93) 520px, var(--c-brand) 880px), url("../img/banners/hero-depo@2x.webp");
+  background-size: 100% 100%, 1599px 899px; background-position: 0 0, center top; background-repeat: no-repeat;
+}
+/* koyu zeminde kartlar: açık çizgi yerine derin gölge, net ayrışır */
+.sec--backdrop .auth, .sec--backdrop .auth-card { border-color: var(--c-on-dark-line); box-shadow: var(--sh-lg); }
 .sec--strong { background: var(--c-bg-strong); }  /* bir ton koyu: slider sonrası Popüler Kategoriler */
 .sec--tight-top { padding-top: var(--sp-5); }
 .sec--tight-bottom { padding-bottom: var(--sp-5); }
@@ -72,6 +81,7 @@ strong, b { font-weight: 700; }
 
 /* — Sayfa gövdesi (footer perde açılışı için katman) — */
 .page-main { position: relative; z-index: var(--z-content); background: var(--c-bg); }
+body:has(.list-sticky) .page-main { overflow-x: clip; }   /* liste sayfa başı bandı tam genişlik taşar; kaydırma yaratmaz (clip, sticky'yi bozmaz) */
 
 /* — Yerleşim yardımcıları (iç sayfalar) — */
 .stack { display: flex; flex-direction: column; gap: var(--sp-4); min-width: 0; }

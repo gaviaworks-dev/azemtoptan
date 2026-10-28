@@ -18,7 +18,9 @@ body::before {
 .hdr-top { display: flex; align-items: center; gap: var(--sp-5); min-height: var(--header-row); padding-block: var(--sp-3); }
 .hdr-logo { flex: none; display: block; }
 .hdr-logo img { width: 114px; height: auto; }
-.hdr-search { flex: 1; max-width: 560px; }
+/* arama logodan uzak, sağda: Bugünün Fırsatı'nın hemen solunda, daha dar */
+.hdr-search { flex: 0 1 420px; margin-left: auto; margin-right: calc(var(--sp-5) * -1 + var(--sp-3)); }
+@media (min-width: 1025px) { .hdr-search + .hdr-actions { margin-left: 0; } }
 .search {
   display: flex; align-items: center; gap: 11px;
   height: 44px; padding: 0 0 0 16px; overflow: hidden;
@@ -47,7 +49,7 @@ body::before {
 .hdr-menu > .dropdown { top: calc(100% + 10px); right: 0; width: 320px; }
 .hdr-menu > .dropdown::before { content: ""; position: absolute; left: 0; right: 0; top: -12px; height: 12px; }  /* hover köprüsü */
 
-.hdr-nav-row { display: flex; align-items: center; justify-content: flex-start; gap: var(--sp-5); min-height: 48px; }
+.hdr-nav-row { display: flex; align-items: center; justify-content: center; gap: var(--sp-5); min-height: 48px; border-top: 1px solid var(--c-line); }   /* arama satırından ince çizgiyle ayrılır; menü ortalı */
 /* Kategori çubuğu olan sayfada (liste) aynı 7 kategori tekrar etmesin: header menü satırı gizlenir */
 body:has(.cat-bar) .hdr-nav-row { display: none; }
 .nav { display: flex; align-items: center; flex-wrap: nowrap; }
@@ -111,7 +113,7 @@ body:has(.cat-bar) .hdr-nav-row { display: none; }
     left: max(var(--sp-4), env(safe-area-inset-left, 0px)); right: max(var(--sp-4), env(safe-area-inset-right, 0px));
     bottom: calc(14px + env(safe-area-inset-bottom, 0px));
     display: grid; grid-template-columns: repeat(5, 1fr); align-items: center;
-    padding: 6px; border-radius: var(--radius);
+    padding: 6px; border-radius: var(--radius-lg);
     background: var(--c-glass); border: 1px solid var(--c-line);
     -webkit-backdrop-filter: blur(24px) saturate(180%); backdrop-filter: blur(24px) saturate(180%);
     box-shadow: var(--sh-md);
@@ -213,19 +215,23 @@ body:has(.cat-bar) .hdr-nav-row { display: none; }
   .foot-app h2 { margin-bottom: 0; }
   .foot-app__btns { grid-auto-flow: column; }
 }
+/* Mobil footer (A101/DadaGastro): iki kolonlu link alanı, tek eksende ortalı alt satırlar, alt menüyle eşit nefes */
 @media (max-width: 640px) {
-  .site-footer { padding-bottom: calc(86px + env(safe-area-inset-bottom, 0px)); }
-  .foot-grid { grid-template-columns: minmax(0, 1fr); gap: var(--sp-6); padding-bottom: var(--sp-6); }
-  .foot-brand { flex-direction: column; align-items: flex-start; gap: var(--sp-5); }
-  .foot-app { display: block; }
-  .foot-app h2 { margin-bottom: var(--sp-5); }
-  .foot-app__btns { grid-auto-flow: row; }
+  /* alt boşluk = alt menü (66) + menünün altı (14) + üstünde nefes (24): menü footer'ın içinde, son satırdan ayrık durur */
+  .site-footer { padding-top: var(--sp-7); padding-bottom: calc(104px + env(safe-area-inset-bottom, 0px)); }
+  .foot-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-6) var(--sp-5); padding-bottom: var(--sp-6); }
+  .foot-brand { grid-column: 1 / -1; flex-direction: row; align-items: center; justify-content: space-between; gap: var(--sp-4); }
+  .foot-brand__logo img { height: 36px; }
+  .foot-soc { gap: var(--sp-2); }
+  .foot-col h2, .foot-app h2 { margin-bottom: var(--sp-3); }
+  .foot-col:has(.foot-contact) { grid-column: 1 / -1; }
+  .foot-app { grid-column: 1 / -1; display: block; }
+  .foot-app__btns { grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); }
   .foot-app .app-btn { width: 100%; }
-  .foot-corp { display: grid; grid-template-columns: 1fr 1fr; justify-content: stretch; gap: 2px var(--sp-4); }
-  .foot-corp .sep { display: none; }
-  .foot-corp a { white-space: normal; padding-block: var(--sp-2); }
-  .foot-legal { text-align: center; }
-  .foot-bottom { grid-template-columns: minmax(0, 1fr); justify-items: center; gap: var(--sp-4); text-align: center; }
+  /* kurumsal ve yasal satırlar: ayırıcısız, ortalı akış (satır sonunda sarkan ayırıcı kalmaz) */
+  .foot-corp, .foot-legal { gap: 0 var(--sp-5); padding-block: var(--sp-3); }
+  .foot-corp .sep, .foot-legal .sep { display: none; }
+  .foot-bottom { grid-template-columns: minmax(0, 1fr); justify-items: center; gap: var(--sp-3); padding-block: var(--sp-5) 0; text-align: center; }
   .foot-bottom > :first-child, .foot-bottom > :last-child { justify-self: center; }
   .pay-logos { flex-wrap: wrap; justify-content: center; }
 }
@@ -266,7 +272,21 @@ body:has(.cat-bar) .hdr-nav-row { display: none; }
    Kullanım: <section class="sec …"><div class="wrap"><div class="page-head">…</div> içerik…</div></section> */
 .sec:has(> .wrap > .page-head:first-child) { padding-top: 0; }
 .page-head { padding-block: var(--sp-5) var(--sp-5); min-width: 0; }
-.page-head__row { display: flex; align-items: center; gap: var(--sp-3); min-width: 0; margin-top: var(--sp-3); }
+/* Liste sayfa başı bandı: breadcrumb + başlık + kategori çubuğu + chip'ler düz tek tonlu zeminde, kenardan kenara;
+   bant chip'lerin altında net biter, sayfa zemini başlar. Yalnız liste sayfası (kategori çubuğu olan sayfa). */
+/* Ritim: header → breadcrumb 24 · breadcrumb → başlık 8 · başlık → hücreler 24 · hücreler → chip'ler 8 · chip'ler → bant sonu 24;
+   bant bitince içerik 32 aşağıdan başlar. Yapışık blok (.list-sticky) kendi tam genişlik zeminini taşır, bandın devamıdır. */
+body:has(.list-sticky) .page-head { position: relative; isolation: isolate; padding-bottom: var(--sp-4); }
+body:has(.list-sticky) .page-head::before {
+  content: ""; position: absolute; z-index: -1; pointer-events: none;
+  inset: 0 calc(50% - 50vw); background: var(--c-band);
+}
+/* koyu zemin görselli bölümde (üyelik) breadcrumb açık renk */
+.sec--backdrop .breadcrumb, .sec--backdrop .breadcrumb a { color: var(--c-on-dark-3); }
+.sec--backdrop .breadcrumb a:hover { color: var(--c-on-dark); }
+.sec--backdrop .breadcrumb [aria-current="page"] { color: var(--c-on-dark); }
+.sec--backdrop .breadcrumb__sep { color: var(--c-on-dark-sep); }
+.page-head__row { display: flex; align-items: center; gap: var(--sp-3); min-width: 0; margin-top: var(--sp-2); }
 .page-head__title { min-width: 0; font-size: var(--fs-page); line-height: var(--lh-snug); }
 .page-head__count { margin-left: var(--sp-2); font-size: var(--fs-sm); font-weight: 500; letter-spacing: 0; color: var(--c-muted); white-space: nowrap; }
 .page-head__back { display: none; }
@@ -276,6 +296,7 @@ body:has(.cat-bar) .hdr-nav-row { display: none; }
 /* Yan sütun + içerik: liste filtresi ve yasal menü aynı iki kolon */
 .with-aside { display: grid; grid-template-columns: var(--aside-w) minmax(0, 1fr); gap: var(--sp-6); align-items: start; }
 .with-aside__main { min-width: 0; }
+.list-sticky + .with-aside { margin-top: var(--sp-6); }   /* bant bitince içerik 32 aşağıdan */
 @media (min-width: 1025px) {
   .with-aside__side { position: sticky; top: calc(var(--hdr-h) + var(--sticky-h, 0px) + var(--sp-5)); max-height: calc(100vh - var(--hdr-h) - var(--sticky-h, 0px) - var(--sp-7)); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; }
 }
@@ -294,7 +315,7 @@ body:has(.cat-bar) .hdr-nav-row { display: none; }
     max-height: var(--aside-max, calc(100vh - var(--hdr-h) - var(--sp-7)));
     overflow: hidden;
     transform: none; visibility: visible; transition: none;
-    border-radius: var(--radius); border: 1px solid var(--c-line); box-shadow: none;
+    border-radius: var(--radius-lg); border: 1px solid var(--c-line); box-shadow: none;
   }
   .drawer--aside .drawer__head { display: none; }
   /* mobil drawer'daki gibi: gövde kendi içinde kayar, Filtrele satırı altta her zaman görünür */
@@ -318,6 +339,9 @@ body:has(.cat-bar) .hdr-nav-row { display: none; }
 .buy-bar__img { flex: none; width: 56px; height: 56px; border-radius: var(--radius); border: 1px solid var(--c-line); background: var(--c-surface) center / contain no-repeat; background-origin: content-box; padding: 4px; }
 .buy-bar__name { font-size: var(--fs-sm); font-weight: 600; line-height: var(--lh-ui); color: var(--c-ink); display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
 .buy-bar__actions { display: flex; align-items: center; gap: var(--sp-2); flex: none; }
+.buy-bar__sel { margin-top: 2px; font-size: var(--fs-meta); font-weight: 500; line-height: var(--lh-ui); color: var(--c-ink-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.buy-bar__sel b { font-weight: 700; color: var(--c-ink); }
+.buy-bar__sel .price { font-size: var(--fs-price); }
 /* çubuk açıkken alt menü, çerez kartı ve yukarı çık üst üste binmez */
 body.has-buybar .bottom-nav { transform: translateY(calc(100% + 24px)); opacity: 0; pointer-events: none; }
 body.has-buybar .to-top { bottom: calc(96px + env(safe-area-inset-bottom, 0px)); }

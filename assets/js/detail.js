@@ -73,7 +73,8 @@
   /* ---------- Sağ sütun ---------- */
   var brand = p.brand != null && A.brands[p.brand];
   var fav = A.favs.indexOf(p.id) > -1;
-  var opts = p.options && p.options.length ? p.options : [{ label: 'Adet Fiyatı', price: p.price }];
+  /* Satış çeşitleri: Adet · Paket (N Adet) · Koli (main.js saleOptions; eksik fiyat türetilir ya da fiyatsız) */
+  var sale = A.saleOptions(p), opts = sale.rows, sel = sale.def;
   function priceHtml(price) { return A.formatPrice(price) + (p.old ? '<span class="price__old">' + A.formatPrice(p.old) + '</span>' : ''); }
   function qtyHtml(mod) {
     return '<div class="qty' + mod + '" role="group" aria-label="Adet">' +
@@ -91,12 +92,15 @@
         '<div class="cluster cluster--between cluster--nowrap"><h1 class="h3">' + esc(p.name) + '</h1>' +
           '<button class="icon-btn" type="button" data-fav="' + p.id + '" aria-pressed="' + fav + '" aria-label="Favorilere Ekle">' + A.favIcon(fav) + '</button></div>' +
       '</div>' +
-      '<p class="price price--lg" data-price>' + priceHtml(opts[0].price) + '</p>' +
+      '<p class="price price--lg" data-price>' + priceHtml(opts[sel].price || p.price) + '</p>' +
       '<p class="text-meta">' + esc(p.short) + '</p>' +
-      '<div class="radio-list" role="radiogroup" aria-label="Seçenekler">' + opts.map(function (o, i) {
-        return '<label class="radio-card"><input class="check__input" type="radio" name="secenek" value="' + i + '"' + (i ? '' : ' checked') + '>' +
-          '<span class="check__box">' + icon('fa-solid fa-check') + '</span>' +
-          '<span class="radio-card__label">' + esc(o.label) + '</span><span class="radio-card__meta">' + A.formatPrice(o.price) + '</span></label>';
+      '<div class="radio-list" role="radiogroup" aria-label="Satış çeşidi">' + opts.map(function (o, i) {
+        var off = !o.price;
+        return '<label class="radio-card' + (off ? ' is-disabled' : '') + '"><input class="check__input" type="radio" name="secenek" value="' + i + '"' + (i === sel && !off ? ' checked' : '') + (off ? ' disabled' : '') + '>' +
+          '<span class="check__box"></span>' +
+          '<span class="radio-card__body"><span class="radio-card__label">' + esc(o.label) + '</span>' +
+          (o.each ? '<span class="radio-card__sub">Adet: ' + A.formatPrice(o.each) + '</span>' : '') + '</span>' +
+          '<span class="radio-card__meta">' + (off ? '<span class="radio-card__na">Fiyat bilgisi yok</span>' : A.formatPrice(o.price)) + '</span></label>';
       }).join('') + '</div>' +
       '<div class="cluster" data-buy-inline>' + qtyHtml('') + cartBtn + '</div>' +
       '<div class="note-list">' +
@@ -164,10 +168,14 @@
     banner +
     shelf('Birlikte Alınan Ürünler', together, 'rail-birlikte', '');
 
-  /* ---------- Sabit sepet çubuğu (K25a) ---------- */
+  /* ---------- Sabit sepet çubuğu (K25a): "Seçili Fiyat: … | Birim: …" (Bizim Toptan) ---------- */
+  function selText(i) {
+    var o = opts[i];
+    return o && o.price ? 'Seçili Fiyat: <b class="price">' + A.formatPrice(o.price) + '</b> <span aria-hidden="true">|</span> Birim: <b>' + o.unit + '</b>' : 'Fiyat bilgisi yok';
+  }
   bar.innerHTML = '<div class="wrap buy-bar__inner">' +
     '<div class="buy-bar__item">' + (p.img ? '<span class="buy-bar__img" style="' + A.productBg(p) + '" aria-hidden="true"></span>' : '') +
-      '<div><p class="buy-bar__name">' + esc(p.name) + '</p><p class="price" data-price>' + priceHtml(opts[0].price) + '</p></div></div>' +
+      '<div><p class="buy-bar__name">' + esc(p.name) + '</p><p class="buy-bar__sel" data-sel>' + selText(sel) + '</p></div></div>' +
     qtyHtml(' qty--sm buy-bar__qty') +
     '<div class="buy-bar__actions">' +
       '<button class="btn btn--ghost buy-bar__fav" type="button" data-fav="' + p.id + '" aria-pressed="' + fav + '">' + A.favIcon(fav) + '<span data-fav-label>Favori Listesi</span></button>' +
@@ -181,8 +189,9 @@
   /* seçenek → fiyat (içerik + çubuk) */
   $$('input[name="secenek"]', body).forEach(function (r) {
     r.addEventListener('change', function () {
-      var html = priceHtml(opts[+r.value].price);
-      $$('[data-price]').forEach(function (el) { el.innerHTML = html; });
+      sel = +r.value;
+      $$('[data-price]', body).forEach(function (el) { el.innerHTML = priceHtml(opts[sel].price); });
+      $$('[data-sel]').forEach(function (el) { el.innerHTML = selText(sel); });
     });
   });
   /* iki adet seçici aynı değeri taşır */
@@ -197,8 +206,8 @@
   });
   $$('[data-buy-add]').forEach(function (b) {
     b.addEventListener('click', function () {
-      var k = +($('input[name="secenek"]:checked', body) || { value: 0 }).value;
-      A.addToCart(p.id, A.qtyValue(qtys[0]), k);
+      if (!opts[sel] || !opts[sel].price) return;
+      A.addToCart(p.id, A.qtyValue(qtys[0]), sel);
     });
   });
 

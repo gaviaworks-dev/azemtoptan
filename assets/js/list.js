@@ -38,10 +38,18 @@
   /* ---------- Ana kategori çubuğu: Azem'in 7 ana kategorisi, etkin olan tintli ---------- */
   var topCat = path[0] || null;
   $('[data-cat-bar]').innerHTML = A.DB.cats.filter(function (c) { return c.level === 1; }).map(function (c) {
-    var icon = (A.D.categories || []).filter(function (x) { return A.slug(x.name) === A.slug(c.name); })[0];
+    var dc = (A.D.categories || []).filter(function (x) { return A.slug(x.name) === A.slug(c.name); })[0];
     return '<a class="cat-bar__item" href="' + A.catUrl(c) + '"' + (topCat && topCat.id === c.id ? ' aria-current="true"' : '') + '>' +
-      A.catImg(icon, 'cat-bar__img') + esc(c.name) + '</a>';
+      A.catImg(dc, 'cat-bar__img') + esc(c.name) + '</a>';
   }).join('');
+  /* hücreler sığıyorsa oklar gizlenir ve hücreler satırı doldurur; sığmıyorsa oklar + kaydırma */
+  var catBar = $('.cat-bar'), catRail = $('[data-cat-bar]');
+  function fitCatBar() {
+    catBar.classList.add('is-fit');
+    if (catRail.scrollWidth > catRail.clientWidth + 1) catBar.classList.remove('is-fit');
+  }
+  fitCatBar();
+  window.addEventListener('resize', fitCatBar);
   /* etkin hücre çubukta ortalanır (A101) */
   var activeCell = $('.cat-bar__item[aria-current="true"]');
   if (activeCell) {

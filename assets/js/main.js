@@ -32,9 +32,10 @@
     var set = 'url(\'' + u + '\') 1x, url(\'' + u2 + '\') 2x';
     return 'background-image:url(\'' + u + '\');background-image:-webkit-image-set(' + set + ');background-image:image-set(' + set + ')';
   }
-  /* Kategori görseli: story kalıbı, saydam kesilmiş gerçek ürün fotoğrafı. Ürünü olmayan kategoride görsel yok, aynı boyda boş karo. */
+  /* Kategori görseli: tek ikon seti (Font Awesome Solid). Her kategorinin ikonu catalog.js'te (ico);
+     eşleşmeyen alt kategori ana kategorinin ikonunu alır. Story şeridi gerçek ürün fotoğrafıyla kalır. */
   function catImg(c, cls) {
-    return c && c.photo ? '<span class="' + cls + '" style="' + bg(c.photo) + '" aria-hidden="true"></span>' : '<span class="' + cls + ' is-empty" aria-hidden="true"></span>';
+    return '<span class="' + cls + ' cat-ico" aria-hidden="true"><i class="fa-solid fa-' + ((c && c.ico) || 'layer-group') + '"></i></span>';
   }
   function toNumber(price) { return typeof price === 'number' ? price : (parseFloat(String(price).replace(/\./g, '').replace(',', '.')) || 0); }
   function formatPrice(n) {
@@ -70,12 +71,45 @@
 
   var cart = store.get('azem-sepet', {});
   var favs = store.get('azem-favori', []).filter(function (id) { return products[id]; });
-  /* Sepet anahtarı: ürün id (varsayılan seçenek) ya da "id~k" (k. seçenek: "Paket Fiyatı (50 Adet)" vb.) */
-  function cartKey(id, k) { return k ? id + '~' + k : id; }
+  /* Satış çeşitleri (Bizim Toptan kalıbı): her üründe Adet · Paket (N Adet) · Koli sırası.
+     Kaynak Azem'in seçenekleri; eksik olan türetilir, uydurulmaz:
+       adet  = Azem adet fiyatı, yoksa paket ÷ N (ya da koli ÷ N)
+       paket = Azem paket fiyatı, yoksa adet × N (N ürün adındaki "N ADET"; koli adedine eşitse paket türetilmez)
+       koli  = yalnız Azem'de varsa; yoksa fiyatsız (seçilemez) gösterilir.
+     def: Azem'in kendi satış birimi (kart ve hızlı bakış bunu ekler; kart fiyatı da bu). */
+  function round2(n) { return Math.round(n * 100) / 100; }
+  function saleOptions(p) {
+    if (p._sale) return p._sale;
+    var az = {}, first = null;
+    (p.options || []).forEach(function (o) {
+      var t = /^adet/i.test(o.label) ? 0 : /^paket/i.test(o.label) ? 1 : /^koli/i.test(o.label) ? 2 : -1;
+      if (t < 0 || az[t]) return;
+      az[t] = { price: toNumber(o.price) || null, n: +((/\((\d+)\s*adet\)/i.exec(o.label) || [])[1] || 0) };
+      if (first === null) first = t;
+    });
+    var nameN = +((/(\d+)\s*(?:ADET|AD)\b/i.exec(p.sourceName || '') || [])[1] || 0);
+    var each = (az[0] && az[0].price) || (az[1] && az[1].price && az[1].n && az[1].price / az[1].n) || (az[2] && az[2].price && az[2].n && az[2].price / az[2].n) || null;
+    var pak = az[1] || null, src = { adet: az[0] ? 'azem' : each ? 'turetildi' : 'yok' };
+    if (!pak && each && nameN > 1 && !(az[2] && az[2].n === nameN)) { pak = { price: round2(each * nameN), n: nameN }; src.paket = 'turetildi'; }
+    else src.paket = pak ? 'azem' : 'yok';
+    var koli = az[2] || null; src.koli = koli ? 'azem' : 'yok';
+    var rows = [
+      { unit: 'Adet', label: 'Adet Fiyatı', price: each ? round2(each) : null },
+      { unit: 'Paket', label: 'Paket Fiyatı' + (pak && pak.n ? ' (' + pak.n + ' Adet)' : ''), price: pak ? pak.price : null, each: pak && pak.n ? round2(pak.price / pak.n) : null },
+      { unit: 'Koli', label: 'Koli' + (koli && koli.n ? ' Fiyatı (' + koli.n + ' Adet)' : ''), price: koli ? koli.price : null, each: koli && koli.n && koli.price ? round2(koli.price / koli.n) : null }
+    ];
+    var def = first !== null && rows[first].price ? first : rows.findIndex(function (r) { return r.price; });
+    p._sale = { rows: rows, def: def < 0 ? 0 : def, src: src };
+    return p._sale;
+  }
+  /* Sepet anahtarı: ürün id (Azem'in satış birimi) ya da "id~k" (k: 0 adet, 1 paket, 2 koli) */
+  function cartKey(id, k) { var p = products[id]; return k == null || !p || k === saleOptions(p).def ? id : id + '~' + k; }
   function cartItem(key) {
-    var m = String(key).split('~'), p = products[m[0]], k = +m[1] || 0;
-    if (!p || (k && !(p.options && p.options[k]))) return null;
-    return { p: p, k: k, opt: p.options && p.options[k], price: k ? p.options[k].price : p.price };
+    var m = String(key).split('~'), p = products[m[0]];
+    if (!p) return null;
+    var s = saleOptions(p), k = m[1] != null ? +m[1] : s.def, row = s.rows[k];
+    if (!row || !row.price) return null;
+    return { p: p, k: k, opt: row, price: row.price, isDefault: k === s.def };
   }
   Object.keys(cart).forEach(function (key) { if (!cartItem(key)) delete cart[key]; });
 
@@ -278,7 +312,7 @@
       var it = cartItem(key), p = it.p, line = toNumber(it.price) * cart[key];
       total += line;
       return '<li><a class="dropdown__item" href="' + productUrl(p) + '"><span class="dropdown__item-img" style="' + (p.img ? bg(p.img) : '') + '"></span>' +
-        '<span>' + esc(p.name) + '<span class="dropdown__meta">' + (p.options && p.options.length > 1 ? esc(it.opt.label) + ' · ' : '') + cart[key] + ' × ' + formatPrice(it.price) + '</span></span></a></li>';
+        '<span>' + esc(p.name) + '<span class="dropdown__meta">' + (it.isDefault ? '' : esc(it.opt.unit) + ' · ') + cart[key] + ' × ' + formatPrice(it.price) + '</span></span></a></li>';
     }).join('') + '</ul><p class="dropdown__item"><strong>Toplam</strong><span class="price dropdown__total">' + formatPrice(total) + '</span></p>';
   }
   function syncCart(id) {
@@ -598,7 +632,7 @@
         if (document.activeElement !== input) { setOpen(false); return; }
         panel.innerHTML = '<p class="search-panel__title" role="presentation">Popüler Kategoriler</p><div class="search-panel__list" role="presentation">' +
           (D.categories || []).map(function (c) {
-            return opt(catUrl(catByName(c.name, null)), catImg(c, 'search-panel__img search-panel__img--photo') + '<span>' + esc(c.name) + '</span>');
+            return opt(catUrl(catByName(c.name, null)), catImg(c, 'search-panel__img') + '<span>' + esc(c.name) + '</span>');
           }).join('') + '</div>';
         setOpen(true); return;
       }
@@ -992,7 +1026,7 @@
     onEscape: function (fn) { escHandlers.push(fn); },
     initRails: initRails, reveal: reveal, syncFooter: syncFooter, bindMenu: bindMenu, closeMenus: closeMenus,
     initTabs: initTabs, initAcc: initAcc, setAcc: setAcc, initRange: initRange, initGallery: initGallery, scrollSpy: scrollSpy, stickyBar: stickyBar,
-    qtyValue: qtyValue, cartKey: cartKey, cartItem: cartItem, inCart: inCart, measureClamp: measureClamp, hyphenate: hyphenate, searchProducts: searchProducts, watchImages: watchImages, skeletonCards: skeletonCards, phoneDigits: phoneDigits, setError: setError, clearError: clearError,
+    qtyValue: qtyValue, saleOptions: saleOptions, cartKey: cartKey, cartItem: cartItem, inCart: inCart, measureClamp: measureClamp, hyphenate: hyphenate, searchProducts: searchProducts, watchImages: watchImages, skeletonCards: skeletonCards, phoneDigits: phoneDigits, setError: setError, clearError: clearError,
     /* sayfa betiği içeriği bastıktan sonra çağırır */
     ready: function () {
       Object.keys(cart).forEach(syncCart);

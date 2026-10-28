@@ -32,17 +32,16 @@
   var storyHtml =
     '<a class="story story--featured" href="#"><span class="story__ring"><span class="story__badge">FIRSAT</span>' +
     '<i class="fa-solid fa-bolt story__icon" aria-hidden="true"></i></span><span class="story__label">Bugünün Fırsatı</span></a>';
-  /* Gerçek ürün fotoğrafı olan alt kategoriler (ürünü olmayan alt kategori şeritte yer almaz; menülerde durur) */
+  /* Alt kategoriler, kategori ikon setiyle (Font Awesome Solid; catalog.js ico). Ürünü olmayan alt kategori şeritte yer almaz, menülerde durur. */
   var subs = [];
   D.categories.forEach(function (cat) {
     var top = A.catByName(cat.name, null);
     cat.children.forEach(function (c) { subs.push({ c: c, cat: top && A.catByName(c.name, top.id) }); });
   });
-  subs.filter(function (s) { return s.c.photo; }).forEach(function (s) {
-    var c = s.c;
-    storyHtml += '<a class="story story--photo" href="' + A.catUrl(s.cat) + '"><span class="story__ring">' +
-      '<span class="story__img" style="' + bg(c.photo) + '" role="img" aria-label="' + esc(c.photoAlt) + '"></span></span>' +
-      '<span class="story__label">' + esc(c.name) + '</span></a>';
+  subs.filter(function (s) { return s.cat && s.cat.items.length; }).forEach(function (s) {
+    storyHtml += '<a class="story story--cat" href="' + A.catUrl(s.cat) + '"><span class="story__ring">' +
+      '<i class="fa-solid fa-' + s.c.ico + ' story__icon" aria-hidden="true"></i></span>' +
+      '<span class="story__label">' + esc(s.c.name) + '</span></a>';
   });
   stories.innerHTML = storyHtml;
 
@@ -62,9 +61,11 @@
         '</div></div>';
     }
     return '<a class="hero__slide" href="' + linkFor(s.link) + '" ' + label + '>' +
-      /* yanlar görselin kenar renginden geçişle dolar (bulanık büyütülmüş kopya yerine: görsel kaynağından büyük çizilmez) */
-      '<span class="hero__bg" style="background:linear-gradient(90deg, ' + s.edge[0] + ', ' + s.edge[1] + ')"></span>' +
-      '<span class="hero__media" style="' + bg(s.img) + '" role="img" aria-label="' + esc(s.alt) + '"></span></a>';
+      /* görsel çerçeve oranına uzatılmış sürümüyle (kenarları kendi renkleriyle yumuşak dolgu, 1:1 piksel): masaüstü geniş, mobil dikey */
+      (s.fill
+        ? '<span class="hero__media hero__media--wide" style="' + bg(s.fill.wide) + '" role="img" aria-label="' + esc(s.alt) + '"></span>' +
+          '<span class="hero__media hero__media--tall" style="' + bg(s.fill.tall) + '" aria-hidden="true"></span></a>'
+        : '<span class="hero__media" style="' + bg(s.img) + '" role="img" aria-label="' + esc(s.alt) + '"></span></a>');
   }).join('');
   var heroIndex = 0, heroTimer = null, heroPaused = A.reduceMotion;
   var pauseBtn = $('[data-hero-pause]', hero);
@@ -114,7 +115,7 @@
 
   /* ---------- Popüler Kategoriler ---------- */
   $('[data-cat-grid]').innerHTML = D.categories.map(function (c) {
-    return '<a class="cat-cell" href="' + A.catUrl(A.catByName(c.name, null)) + '"><span class="cat-cell__img">' + A.catImg(c, 'cat-cell__photo') + '</span>' +
+    return '<a class="cat-cell" href="' + A.catUrl(A.catByName(c.name, null)) + '"><span class="cat-cell__img">' + A.catImg(c, 'cat-cell__ico') + '</span>' +
       '<span class="cat-cell__label">' + esc(c.name) + '</span></a>';
   }).join('');
 
