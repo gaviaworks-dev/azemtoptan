@@ -654,10 +654,10 @@
    ========================================================================== */
 
 /* ---------- Metin linki (form, metin, boş durum) ---------- */
-.link { color: var(--c-brand-2); font-weight: 600; text-decoration: underline; text-underline-offset: 2px; transition: color var(--t-fast) var(--ease); }
+/* Metin buton / küçük link (Hepsini Temizle, Şifreni mi Unuttun, Üye Ol, Giriş Yap…): tek token, 13 · 600 */
+.link { font-size: var(--fs-text-btn); color: var(--c-brand-2); font-weight: 600; text-decoration: underline; text-underline-offset: 2px; transition: color var(--t-fast) var(--ease); }
 .link:hover { color: var(--c-brand); }
-.link--sm { font-size: var(--fs-text-btn); }
-button.link { font: inherit; font-weight: 600; }
+button.link { font-family: inherit; line-height: inherit; }
 
 /* ---------- Form kanonu ---------- */
 .form-stack { display: grid; gap: var(--sp-5); }
