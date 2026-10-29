@@ -69,6 +69,17 @@
         alertBox(errBox, 'fa-circle-exclamation', '<strong>' + MSG.fail + '</strong>');
         bad[0].focus({ preventScroll: true });
         bad[0].scrollIntoView({ block: 'center', behavior: A.reduceMotion ? 'auto' : 'smooth' });
+      } else if (form.getAttribute('data-form') === 'giris' || form.getAttribute('data-form') === 'kayit') {
+        /* prototip oturumu (K3/K14): gerçek doğrulama yok; yerel oturum açılır, hesaba ya da geldiği sayfaya döner */
+        var f = new FormData(form), kayit = form.getAttribute('data-form') === 'kayit';
+        var v = function (n) { return String(f.get(n) || '').trim(); };
+        A.session.set(kayit
+          ? { ad: v('ad'), soyad: v('soyad'), email: v('email'), telefon: v('telefon'), tip: v('registerType') || 'bireysel',
+              firma: v('firmaadi'), vergiDairesi: v('vergidairesi'), vergiNo: v('tcvergino'), faaliyet: v('faaliyetalani'), il: v('sehir'), ilce: v('ilce') }
+          : { telefon: v('telefon') || ($('[type="tel"]', form) || {}).value || '' });
+        var btn = $('[type="submit"]', form); A.busy(btn, true, kayit ? 'Hesap oluşturuluyor' : 'Giriş yapılıyor');
+        var geri = A.param('geri');
+        setTimeout(function () { location.href = geri && /^[a-z-]+\.html/.test(geri) ? geri : A.URLS.hesap(); }, 600);
       } else {
         alertBox(infoBox, 'fa-circle-info', MSG.proto);
         infoBox.scrollIntoView({ block: 'center', behavior: A.reduceMotion ? 'auto' : 'smooth' });

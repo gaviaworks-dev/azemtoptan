@@ -31,7 +31,7 @@ p { margin: 0; }
 ul, ol { margin: 0; padding: 0; list-style: none; }
 a { color: inherit; text-decoration: none; }
 img { display: block; max-width: 100%; height: auto; }
-button, input { font: inherit; color: inherit; }
+button, input, textarea, select { font: inherit; color: inherit; }
 button { cursor: pointer; background: none; border: 0; padding: 0; }
 strong, b { font-weight: 700; }
 
@@ -94,3 +94,7 @@ body:has(.list-sticky) .page-main { overflow-x: clip; }   /* liste sayfa başı 
 .h3 { font-size: var(--fs-h3); line-height: var(--lh-snug); }
 .text-meta { font-size: var(--fs-sm); font-weight: 500; line-height: var(--lh-ui); color: var(--c-muted); }
 .sec--tight { padding-block: var(--sp-5); }
+/* içerik sonu işareti (main.js stickyBar): main'in alt kenarı; sabit çubuk footer görünürken çekilir */
+.page-end { position: absolute; left: 0; bottom: 0; width: 1px; height: 1px; pointer-events: none; }
+/* perde açıkken kısa sayfada footer'ın ortası tek satır görünmesin: içerik en az bir ekran boyu */
+@media (min-width: 641px) { html:not(.no-curtain) .page-main { min-height: 100vh; } }

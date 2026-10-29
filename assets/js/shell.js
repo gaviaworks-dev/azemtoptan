@@ -14,6 +14,13 @@
     giris: 'giris-yap.html',
     kayit: 'kayit-ol.html',
     sifre: 'sifremi-unuttum.html',
+    sepet: 'sepet.html',
+    odeme: 'odeme.html',
+    tamam: function (no) { return 'siparis-tamamlandi.html' + (no ? '?no=' + encodeURIComponent(no) : ''); },
+    hesap: function (s) { return 'hesabim.html' + (s ? '?s=' + s : ''); },
+    kampanyalar: 'kampanyalar.html',
+    markalar: 'markalar.html',
+    kurumsal: function (s) { return 'kurumsal.html?s=' + s; },
     yasal: function (s) { return 'sayfa.html?s=' + s; }
   };
 
@@ -34,7 +41,7 @@
       '</form>' +
       '<div class="hdr-actions">' +
         '<button class="icon-btn icon-btn--ghost hdr-mobile-only hdr-search-trigger" type="button" data-search-toggle aria-label="Aramayı aç">' + icon('fa-solid fa-magnifying-glass') + '</button>' +
-        '<a class="pill pill--brand hdr-desktop-only" href="#">' + icon('fa-solid fa-bolt') + ' Bugünün Fırsatı</a>' +
+        '<button class="pill pill--brand hdr-desktop-only" type="button" data-firsat>' + icon('fa-solid fa-bolt') + ' Bugünün Fırsatı</button>' +
         '<div class="hdr-menu" data-menu data-hover>' +
           '<button class="icon-btn icon-btn--ghost hdr-icon" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Favorilerim" title="Favorilerim" data-menu-btn>' + icon('fa-regular fa-heart') +
           '<span class="pill__count" data-fav-count data-count="0">0</span></button>' +
@@ -42,16 +49,27 @@
         '</div>' +
         '<div class="hdr-menu" data-menu data-hover>' +
           '<button class="icon-btn icon-btn--ghost hdr-icon" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Giriş Yap" title="Giriş Yap" data-menu-btn>' + icon('fa-regular fa-user') + '</button>' +
-          '<div class="dropdown" role="menu"><ul class="dropdown__list">' +
-            '<li><a class="dropdown__item" href="' + URL.giris + '" role="menuitem">' + icon('fa-solid fa-arrow-right-to-bracket') + ' Giriş Yap</a></li>' +
-            '<li><a class="dropdown__item" href="' + URL.kayit + '" role="menuitem">' + icon('fa-solid fa-user-plus') + ' Kayıt Ol</a></li>' +
-            '<li><a class="dropdown__item" href="' + URL.sifre + '" role="menuitem">' + icon('fa-solid fa-key') + ' Şifremi Unuttum?</a></li>' +
-          '</ul></div>' +
+          '<div class="dropdown" role="menu">' +
+            /* misafir / oturum açık: iki liste, html.is-signed-in ile değişir */
+            '<ul class="dropdown__list only-guest">' +
+              '<li><a class="dropdown__item" href="' + URL.giris + '" role="menuitem">' + icon('fa-solid fa-arrow-right-to-bracket') + ' Giriş Yap</a></li>' +
+              '<li><a class="dropdown__item" href="' + URL.kayit + '" role="menuitem">' + icon('fa-solid fa-user-plus') + ' Kayıt Ol</a></li>' +
+              '<li><a class="dropdown__item" href="' + URL.sifre + '" role="menuitem">' + icon('fa-solid fa-key') + ' Şifremi Unuttum?</a></li>' +
+            '</ul>' +
+            '<ul class="dropdown__list only-user">' +
+              '<li class="dropdown__hello"><span>Hoş geldiniz</span><strong data-session-name></strong></li>' +
+              '<li><a class="dropdown__item" href="' + URL.hesap() + '" role="menuitem">' + icon('fa-solid fa-house') + ' Hesabım</a></li>' +
+              '<li><a class="dropdown__item" href="' + URL.hesap('siparisler') + '" role="menuitem">' + icon('fa-solid fa-box') + ' Siparişlerim</a></li>' +
+              '<li><a class="dropdown__item" href="' + URL.hesap('favoriler') + '" role="menuitem">' + icon('fa-regular fa-heart') + ' Favorilerim</a></li>' +
+              '<li><a class="dropdown__item" href="' + URL.hesap('adresler') + '" role="menuitem">' + icon('fa-solid fa-location-dot') + ' Adreslerim</a></li>' +
+              '<li><button class="dropdown__item" type="button" role="menuitem" data-logout>' + icon('fa-solid fa-arrow-right-from-bracket') + ' Çıkış Yap</button></li>' +
+            '</ul>' +
+          '</div>' +
         '</div>' +
         '<div class="hdr-menu" data-menu data-hover>' +
           '<button class="icon-btn icon-btn--ghost hdr-icon" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Sepetim" title="Sepetim" data-menu-btn>' + icon('fa-solid fa-basket-shopping') +
           '<span class="pill__count" data-cart-count data-count="0">0</span></button>' +
-          '<div class="dropdown" data-minicart></div>' +
+          '<div class="dropdown dropdown--cart" data-minicart></div>' +
         '</div>' +
       '</div>' +
     '</div>' +
@@ -90,10 +108,10 @@
       '</div>' +
       '<nav class="foot-col" aria-label="Kategoriler"><h2>Kategoriler</h2><div data-foot-cats></div></nav>' +
       '<nav class="foot-col" aria-label="Yardım"><h2>Yardım</h2>' +
-        '<a href="#">Müşteri Hizmetleri</a>' +
+        '<a href="' + URL.kurumsal('musteri-hizmetleri') + '">Müşteri Hizmetleri</a>' +
         '<a href="' + URL.yasal('iptal-ve-iade') + '">İptal ve İade</a>' +
-        '<a href="#">Nasıl Kolay İade Yaparım?</a>' +
-        '<a href="#">S.S.S.</a>' +
+        '<a href="' + URL.kurumsal('iade') + '">Nasıl Kolay İade Yaparım?</a>' +
+        '<a href="' + URL.kurumsal('sss') + '">S.S.S.</a>' +
       '</nav>' +
       '<div class="foot-col"><h2>İletişim</h2><div class="foot-contact">' +
         '<p class="foot-contact__row">' + icon('fa-brands fa-whatsapp') + '<span><strong>WhatsApp Sipariş Hattı</strong><span data-whatsapp></span></span></p>' +
@@ -106,7 +124,8 @@
       '</div></div>' +
     '</div>' +
     '<nav class="foot-corp" aria-label="Kurumsal">' +
-      '<a href="#">Hakkımızda</a>' + sep() + '<a href="#">Markalar</a>' + sep() + '<a href="#">Azem Kart</a>' + sep() + '<a href="#">İletişim</a>' +
+      '<a href="' + URL.kurumsal('hakkimizda') + '">Hakkımızda</a>' + sep() + '<a href="' + URL.markalar + '">Markalar</a>' + sep() + '<a href="' + URL.kampanyalar + '">Kampanyalar</a>' + sep() +
+      '<a href="' + URL.kurumsal('azem-kart') + '">Azem Kart</a>' + sep() + '<a href="' + URL.kurumsal('iletisim') + '">İletişim</a>' +
     '</nav>' +
     '<nav class="foot-legal" aria-label="Yasal">' +
       '<a href="' + URL.yasal('cerez-politikasi') + '">Çerez Politikası</a>' + sep() +
@@ -126,8 +145,8 @@
   '<a class="bottom-nav__item' + active('home') + '" href="' + URL.home + '"' + (page === 'home' ? ' aria-current="page"' : '') + '>' + icon('fa-solid fa-house') + 'Ana Sayfa</a>' +
   '<button class="bottom-nav__item' + active('kategori') + '" type="button" data-drawer-open="drawer" aria-controls="drawer">' + icon('fa-solid fa-table-cells-large') + 'Kategori</button>' +
   '<button class="bottom-nav__item" type="button" data-search-focus>' + icon('fa-solid fa-magnifying-glass') + 'Ara</button>' +
-  '<a class="bottom-nav__item" href="#">' + icon('fa-regular fa-heart') + 'Favorilerim<span class="pill__count" data-fav-count data-count="0">0</span></a>' +
-  '<a class="bottom-nav__item" href="#">' + icon('fa-solid fa-basket-shopping') + 'Sepet<span class="pill__count" data-cart-count data-count="0">0</span></a>' +
+  '<a class="bottom-nav__item' + active('favoriler') + '" href="' + URL.hesap('favoriler') + '">' + icon('fa-regular fa-heart') + 'Favorilerim<span class="pill__count" data-fav-count data-count="0">0</span></a>' +
+  '<a class="bottom-nav__item' + active('sepet') + '" href="' + URL.sepet + '">' + icon('fa-solid fa-basket-shopping') + 'Sepet<span class="pill__count" data-cart-count data-count="0">0</span></a>' +
 '</nav>' +
 
 '<div class="scrim" data-drawer-scrim></div>' +
@@ -175,7 +194,16 @@
   var me = document.currentScript;
   if (!me) return;
   var part = me.getAttribute('data-shell');
-  if (part === 'top') me.insertAdjacentHTML('beforebegin', top());
+  /* sade header (A101 ödeme): "← Sepete Geri Dön", logo, güvenli ödeme; arama, menü ve alt menü yok */
+  function sadeTop() {
+    return '<a class="sr-only" href="#icerik">İçeriğe geç</a>' +
+      '<header class="site-header site-header--sade" id="siteHeader"><div class="wrap"><div class="hdr-top">' +
+        '<a class="link hdr-back" href="' + URL.sepet + '">' + icon('fa-solid fa-arrow-left') + ' Sepete Geri Dön</a>' +
+        '<a class="hdr-logo" href="' + URL.home + '" aria-label="Azem Toptan ana sayfa"><img src="assets/img/brand/azem-logo.svg" width="114" height="44" alt="Azem Toptan"></a>' +
+        '<span class="hdr-secure">' + icon('fa-solid fa-lock') + ' Güvenli Ödeme</span>' +
+      '</div></div></header>';
+  }
+  if (part === 'top') me.insertAdjacentHTML('beforebegin', document.body.getAttribute('data-header') === 'sade' ? sadeTop() : top());
   if (part === 'bottom') {
     me.insertAdjacentHTML('beforebegin', bottom(document.body.getAttribute('data-page') || ''));
     Array.prototype.forEach.call(document.querySelectorAll('[data-pay-logos]'), function (el) { el.innerHTML = payLogos(); });

@@ -30,7 +30,7 @@
   /* ---------- Story şeridi ---------- */
   var stories = $('[data-stories]');
   var storyHtml =
-    '<a class="story story--featured" href="#"><span class="story__ring"><span class="story__badge">FIRSAT</span>' +
+    '<a class="story story--featured" href="#" data-firsat><span class="story__ring"><span class="story__badge">FIRSAT</span>' +
     '<i class="fa-solid fa-bolt story__icon" aria-hidden="true"></i></span><span class="story__label">Bugünün Fırsatı</span></a>';
   /* Alt kategoriler, kategori ikon setiyle (Font Awesome Solid; catalog.js ico). Ürünü olmayan alt kategori şeritte yer almaz, menülerde durur. */
   var subs = [];
@@ -52,7 +52,7 @@
     var label = 'aria-roledescription="slide" aria-label="' + (i + 1) + ' / ' + D.hero.length + '"';
     if (s.type === 'panel') {
       return '<div class="hero__slide hero__slide--panel" ' + label + '>' +
-        '<div class="hero__bg" style="' + bg(s.img) + '"></div>' +
+        '<div class="hero__bg" style="' + bg(s.img) + '" aria-hidden="true"></div>' +
         '<div class="hero__content">' +
         '<span class="eyebrow">' + esc(s.eyebrow) + '</span>' +
         '<h1 class="hero__title">' + esc(s.title) + '</h1>' +

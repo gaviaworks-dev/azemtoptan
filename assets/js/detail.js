@@ -207,7 +207,7 @@
   $$('[data-buy-add]').forEach(function (b) {
     b.addEventListener('click', function () {
       if (!opts[sel] || !opts[sel].price) return;
-      A.addToCart(p.id, A.qtyValue(qtys[0]), sel);
+      A.addToCart(p.id, A.qtyValue(qtys[0]), sel, { dialog: true });
     });
   });
 

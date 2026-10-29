@@ -41,6 +41,8 @@
   function formatPrice(n) {
     return toNumber(n).toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' ₺';
   }
+  /* sayfa adresleri tek yerde (shell.js) */
+  var URLS = (window.AZEM_SHELL && window.AZEM_SHELL.url) || {};
   var store = {
     get: function (k, d) { try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
     set: function (k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* depolama yoksa yoksay */ } }
@@ -95,8 +97,8 @@
     var koli = az[2] || null; src.koli = koli ? 'azem' : 'yok';
     var rows = [
       { unit: 'Adet', label: 'Adet Fiyatı', price: each ? round2(each) : null },
-      { unit: 'Paket', label: 'Paket Fiyatı' + (pak && pak.n ? ' (' + pak.n + ' Adet)' : ''), price: pak ? pak.price : null, each: pak && pak.n ? round2(pak.price / pak.n) : null },
-      { unit: 'Koli', label: 'Koli' + (koli && koli.n ? ' Fiyatı (' + koli.n + ' Adet)' : ''), price: koli ? koli.price : null, each: koli && koli.n && koli.price ? round2(koli.price / koli.n) : null }
+      { unit: 'Paket', n: pak && pak.n, label: 'Paket Fiyatı' + (pak && pak.n ? ' (' + pak.n + ' Adet)' : ''), price: pak ? pak.price : null, each: pak && pak.n ? round2(pak.price / pak.n) : null },
+      { unit: 'Koli', n: koli && koli.n, label: 'Koli' + (koli && koli.n ? ' Fiyatı (' + koli.n + ' Adet)' : ''), price: koli ? koli.price : null, each: koli && koli.n && koli.price ? round2(koli.price / koli.n) : null }
     ];
     var def = first !== null && rows[first].price ? first : rows.findIndex(function (r) { return r.price; });
     p._sale = { rows: rows, def: def < 0 ? 0 : def, src: src };
@@ -144,7 +146,7 @@
           c.children.map(function (g) { return '<a href="' + catUrl(sub && catByName(g, sub.id)) + '">' + esc(g) + '</a>'; }).join('') + '</div>';
       }).join('') +
       '</div>';
-    nav.appendChild(li);
+    if (nav) nav.appendChild(li);
   });
 
   var menuScrim = $('[data-menu-scrim]');
@@ -154,7 +156,7 @@
       li.classList.remove('is-open');
       var a = $('.nav__link', li); if (a) a.setAttribute('aria-expanded', 'false');
     });
-    menuScrim.classList.remove('is-open');
+    if (menuScrim) menuScrim.classList.remove('is-open');
   }
   function openNav(li) {
     if (li.classList.contains('is-open')) return;
@@ -162,7 +164,7 @@
     if (!$('.dropdown', li)) return;
     li.classList.add('is-open');
     $('.nav__link', li).setAttribute('aria-expanded', 'true');
-    menuScrim.classList.add('is-open');
+    if (menuScrim) menuScrim.classList.add('is-open');
     var first = $('[data-sub]', li); if (first) showSub(li, first);
   }
   function showSub(li, item) {
@@ -181,7 +183,7 @@
       item.addEventListener('focus', function () { showSub(li, item); });
     });
   });
-  nav.addEventListener('focusout', function (e) { if (!nav.contains(e.relatedTarget)) closeNav(); });
+  if (nav) nav.addEventListener('focusout', function (e) { if (!nav.contains(e.relatedTarget)) closeNav(); });
 
   /* ---------- Hesap / mini sepet menüleri ---------- */
   function closeMenus(except) {
@@ -282,39 +284,90 @@
 
   /* ---------- Bildirim (Azem'deki notify mesajları) ---------- */
   var toastBox = $('[data-toasts]');
-  function toast(msg, icon) {
+  /* toast(mesaj, ikon, { tone: 'success' | 'error' | 'info', action: { label, onClick }, ms }) */
+  function toast(msg, icon, opt) {
+    opt = opt || {};
     var el = document.createElement('p');
-    el.className = 'toast';
-    el.innerHTML = '<i class="fa-solid ' + (icon || 'fa-circle-info') + '" aria-hidden="true"></i><span>' + esc(msg) + '</span>';
+    el.className = 'toast' + (opt.tone ? ' toast--' + opt.tone : '') + (opt.action ? ' toast--action' : '');
+    el.innerHTML = '<i class="fa-solid ' + (icon || (opt.tone === 'success' ? 'fa-circle-check' : opt.tone === 'error' ? 'fa-circle-exclamation' : 'fa-circle-info')) + '" aria-hidden="true"></i><span>' + esc(msg) + '</span>' +
+      (opt.action ? '<button class="toast__action" type="button">' + esc(opt.action.label) + '</button>' : '');
+    if (opt.action) $('.toast__action', el).addEventListener('click', function () { opt.action.onClick(); hide(); });
     toastBox.appendChild(el);
     requestAnimationFrame(function () { el.classList.add('is-in'); });
-    setTimeout(function () { el.classList.remove('is-in'); setTimeout(function () { el.remove(); }, 300); }, 2600);
+    var t = setTimeout(hide, opt.ms || (opt.action ? 5000 : 2600));
+    function hide() { clearTimeout(t); el.classList.remove('is-in'); setTimeout(function () { el.remove(); }, 300); }
   }
 
   /* ---------- Sepet ve favoriler ---------- */
   var listeners = [];
   function onCart(fn) { listeners.push(fn); }
-  function cartCount() { return Object.keys(cart).reduce(function (n, id) { return n + cart[id]; }, 0); }
+  /* Sayaç kuralı (her yerde aynı): sepetteki SATIR (kalem) sayısı — rozet, alt menü, "Sepetim (N ürün)".
+     Toptanda adet toplamı (ör. 3 koli + 24 paket) anlam taşımaz; aynı ürünün farklı birimi ayrı satırdır. */
+  function cartCount() { return Object.keys(cart).length; }
+  var FREE_SHIP = 10000;   /* Azem: 10.000 TL ve üzeri ücretsiz kargo */
+  function unitText(row) { return row.unit + (row.n ? ' · ' + row.n + ' Adet' : ''); }
   /* Boş durum kartı (A101): tint zemin, ikon, Azem'in boş metni ve alışverişe dönüş */
   function emptyCard(ic, title) {
     return '<div class="empty empty--box empty--compact"><i class="' + ic + '" aria-hidden="true"></i><p class="empty__title">' + title + '</p>' +
       '<a class="btn btn--primary btn--sm" href="kategori.html">Alışverişe hemen başla <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a></div>';
   }
+  /* Mini sepet (header paneli; mobilde aynı içerik header altında): başlık + sayı · kayan satırlar · ara toplam, kargo eşiği, butonlar */
   function renderMiniCart() {
-    var ids = Object.keys(cart);
+    var keys = Object.keys(cart).filter(function (k) { return cartItem(k); });
     var box = $('[data-minicart]');
-    if (!ids.length) {
-      box.innerHTML = emptyCard('fa-solid fa-basket-shopping', 'Sepetinizde Ürün Bulunamadı!');
+    if (!box) return;
+    if (!keys.length) {
+      box.innerHTML = '<div class="mini-cart mini-cart--empty">' + emptyCard('fa-solid fa-basket-shopping', 'Sepetinizde Ürün Bulunamadı!') + '</div>';
       return;
     }
     var total = 0;
-    box.innerHTML = '<ul class="dropdown__list">' + ids.map(function (key) {
-      var it = cartItem(key), p = it.p, line = toNumber(it.price) * cart[key];
+    var lines = keys.map(function (key) {
+      var it = cartItem(key), p = it.p, q = cart[key], line = toNumber(it.price) * q;
       total += line;
-      return '<li><a class="dropdown__item" href="' + productUrl(p) + '"><span class="dropdown__item-img" style="' + (p.img ? bg(p.img) : '') + '"></span>' +
-        '<span>' + esc(p.name) + '<span class="dropdown__meta">' + (it.isDefault ? '' : esc(it.opt.unit) + ' · ') + cart[key] + ' × ' + formatPrice(it.price) + '</span></span></a></li>';
-    }).join('') + '</ul><p class="dropdown__item"><strong>Toplam</strong><span class="price dropdown__total">' + formatPrice(total) + '</span></p>';
+      return '<li class="mc-line">' +
+        '<a class="mc-line__img" href="' + productUrl(p) + '" tabindex="-1" aria-hidden="true">' + (p.img ? '<span style="' + productBg(p) + '"></span>' : '') + '</a>' +
+        '<div class="mc-line__body">' +
+          '<a class="mc-line__name" href="' + productUrl(p) + '">' + esc(p.name) + '</a>' +
+          '<p class="mc-line__meta"><span class="unit-badge">' + esc(unitText(it.opt)) + '</span><span>' + formatPrice(it.price) + ' / ' + it.opt.unit + '</span></p>' +
+          '<div class="mc-line__row">' +
+            '<span class="qty qty--xs" role="group" aria-label="' + esc(p.name) + ' adedi">' +
+              '<button class="qty__btn" type="button" data-mc-dec="' + key + '" aria-label="Azalt"' + (q <= 1 ? ' disabled' : '') + '><i class="fa-solid fa-minus" aria-hidden="true"></i></button>' +
+              '<span class="qty__input" aria-live="polite">' + q + '</span>' +
+              '<button class="qty__btn" type="button" data-mc-inc="' + key + '" aria-label="Artır"><i class="fa-solid fa-plus" aria-hidden="true"></i></button></span>' +
+            '<span class="price mc-line__total">' + formatPrice(line) + '</span>' +
+          '</div>' +
+        '</div>' +
+        '<button class="icon-btn mc-line__del" type="button" data-mc-del="' + key + '" aria-label="' + esc(p.name) + ' sepetten çıkar"><i class="fa-regular fa-trash-can" aria-hidden="true"></i></button>' +
+      '</li>';
+    }).join('');
+    var left = Math.max(0, FREE_SHIP - total), pct = Math.min(100, total / FREE_SHIP * 100);
+    box.innerHTML = '<div class="mini-cart">' +
+      '<div class="mini-cart__head"><p class="mini-cart__title">Sepetim <span class="mini-cart__count">(' + keys.length + ' ürün)</span></p></div>' +
+      '<ul class="mini-cart__list">' + lines + '</ul>' +
+      '<div class="mini-cart__foot">' +
+        '<p class="mini-cart__sum"><span>Ara Toplam</span><span class="price">' + formatPrice(total) + '</span></p>' +
+        '<div class="ship-meter">' +
+          '<p class="ship-meter__text">' + (left ? icon('fa-solid fa-truck-fast') + '<span>10.000 TL ücretsiz kargoya <b>' + formatPrice(left) + '</b> kaldı</span>'
+            : icon('fa-solid fa-circle-check') + '<span><b>Kargo ücretsiz</b></span>') + '</p>' +
+          '<span class="ship-meter__bar" role="progressbar" aria-label="Ücretsiz kargo eşiği" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' + Math.round(pct) + '"><span style="width:' + pct.toFixed(1) + '%"></span></span>' +
+        '</div>' +
+        '<div class="mini-cart__actions"><a class="btn btn--ghost" href="' + URLS.sepet + '">Sepete Git</a><a class="btn btn--primary" href="' + URLS.odeme + '">Siparişi Tamamla</a></div>' +
+      '</div></div>';
   }
+  /* mini sepet içi: adet ve silme (panel yeniden basılırken açık kalsın: belge tıklamasına gitmez) */
+  document.addEventListener('click', function (e) {
+    var t = e.target.closest('[data-mc-inc], [data-mc-dec], [data-mc-del]');
+    if (!t) return;
+    e.preventDefault(); e.stopPropagation();
+    var key;
+    if ((key = t.getAttribute('data-mc-inc'))) cart[key] += 1;
+    else if ((key = t.getAttribute('data-mc-dec'))) cart[key] = Math.max(1, cart[key] - 1);
+    else if ((key = t.getAttribute('data-mc-del'))) { delete cart[key]; toast('Ürün sepetten çıkarıldı', 'fa-trash-can'); }
+    syncCart(key);
+    var same = $('[data-minicart] [' + t.getAttributeNames().filter(function (a) { return /^data-mc-/.test(a); })[0] + '="' + key + '"]');
+    if (same && !same.disabled) same.focus(); else { var f = $('[data-minicart] button, [data-minicart] a'); if (f) f.focus(); }
+  }, true);
+  function icon(c) { return '<i class="' + c + '" aria-hidden="true"></i>'; }
   function syncCart(id) {
     store.set('azem-sepet', cart);
     $$('[data-cart-slot="' + id + '"]').forEach(function (slot) {
@@ -331,13 +384,17 @@
     listeners.forEach(function (fn) { fn(id); });
   }
   /* k: seçenek sırası (detay sayfası); kart ve hızlı bakış varsayılan seçeneği (0) ekler */
-  function addToCart(id, qty, k) {
+  /* opt.dialog: "Sepete Eklendi" diyaloğu (detay sayfası, A101 Ekstra); yoksa toast (kart +, A101 Kapıda) */
+  function addToCart(id, qty, k, opt) {
     var key = cartKey(id, k);
     cart[key] = (cart[key] || 0) + (qty || 1); syncCart(key);
-    toast('Ürün sepete eklendi', 'fa-basket-shopping');
+    if (opt && opt.dialog) addedDialog(key);
+    else toast('Ürün sepete eklendi', 'fa-basket-shopping', { tone: 'success' });
+    return key;
   }
   function renderFavs() {
     var box = $('[data-favlist]');
+    if (!box) return;
     if (!favs.length) {
       box.innerHTML = emptyCard('fa-regular fa-heart', 'Favorilerinizde Ürün Bulunamadı!');
       return;
@@ -605,9 +662,15 @@
   /* ---------- Arama: öneri paneli (A101) — katalogdan ürün ve kategori, eşleşen kısım kalın ----------
      Enter / "tüm sonuçlar" → kategori.html?q= (liste şablonu arama sonucu olarak açılır) */
   function lowerTR(s) { return String(s).toLocaleLowerCase('tr-TR'); }
+  /* Türkçe harfsiz yedek eşleşme: birebir sonuç yoksa "cay" → "çay" (ç ğ ı ö ş ü sadeleştirilir) */
+  function fold(s) { return lowerTR(s).replace(/ç/g, 'c').replace(/ğ/g, 'g').replace(/ı/g, 'i').replace(/ö/g, 'o').replace(/ş/g, 's').replace(/ü/g, 'u'); }
   function searchProducts(q) {
     q = lowerTR(String(q).trim());
-    return q ? DB.products.filter(function (p) { return sellable(p) && lowerTR(p.name).indexOf(q) > -1; }) : [];
+    if (!q) return [];
+    var hit = DB.products.filter(function (p) { return sellable(p) && lowerTR(p.name).indexOf(q) > -1; });
+    if (hit.length) return hit;
+    var f = fold(q);
+    return DB.products.filter(function (p) { return sellable(p) && fold(p.name).indexOf(f) > -1; });
   }
   function markHit(name, q) {
     var i = lowerTR(name).indexOf(q);
@@ -620,7 +683,7 @@
     function setOpen(on) {
       form.classList.toggle('is-open', on);
       input.setAttribute('aria-expanded', String(on));
-      if (mqDesktop.matches) menuScrim.classList.toggle('is-open', on);
+      if (mqDesktop.matches && menuScrim) menuScrim.classList.toggle('is-open', on);
       if (!on) { input.removeAttribute('aria-activedescendant'); items().forEach(function (o) { o.setAttribute('aria-selected', 'false'); }); }
     }
     function render() {
@@ -899,14 +962,20 @@
     return pick;
   }
 
-  /* Sabit çubuk: sentinel ekranın üstünden çıkınca bar görünür; body.has-buybar alt menüyü gizler */
-  function stickyBar(bar, sentinel) {
+  /* Sabit çubuk: sentinel ekranın üstünden çıkınca bar görünür; body.has-buybar alt menüyü gizler.
+     end (isteğe bağlı): bu öğe ekrandayken çubuk gizlenir (ör. mobilde içeriğin altına inen sipariş özeti) */
+  function stickyBar(bar, sentinel, end) {
+    /* gizli çubuk (ör. .buy-bar--mobile masaüstünde) alt menüyü ve yukarı çık'ı kaydırmaz; genişlik değişince yeniden bakılır */
+    var raw = false, endIn = {};
     function set(on) {
+      raw = on;
+      on = on && !endIn.end && !endIn.page && getComputedStyle(bar).display !== 'none';
       bar.classList.toggle('is-visible', on); bar.setAttribute('aria-hidden', String(!on));
       if ('inert' in bar) bar.inert = !on;
       document.body.classList.toggle('has-buybar', on);
     }
     set(false);
+    window.addEventListener('resize', function () { set(raw); });
     if (!('IntersectionObserver' in window)) return;
     /* kök alttan sınırsız genişletilir: sentinel yalnız ekranın ÜSTÜNDEN çıkınca görünmez sayılır.
        (alttan-görünmez → üstten-görünmez tek karede atlanınca isIntersecting değişmez, çubuk takılırdı)
@@ -922,6 +991,13 @@
     }
     observe();
     if ('ResizeObserver' in window) new ResizeObserver(observe).observe(header);
+    function watchEnd(el, k, opt) { new IntersectionObserver(function (en) { endIn[k] = en[0].isIntersecting; set(raw); }, opt).observe(el); }
+    if (end) watchEnd(end, 'end');
+    /* sayfa sonu: içerik bitip footer görünmeye başlayınca çubuk çekilir, footer'ın son satırını örtmez */
+    var pageEnd = $('.page-main > .page-end');
+    if (!pageEnd) { pageEnd = document.createElement('span'); pageEnd.className = 'page-end'; pageEnd.setAttribute('aria-hidden', 'true'); $('.page-main').appendChild(pageEnd); }
+    /* kök üstten sınırsız: işaret ekranın altına girdiği andan itibaren (üstten çıksa da) çubuk kapalı */
+    watchEnd(pageEnd, 'page', { rootMargin: '100000px 0px 0px 0px' });
   }
 
   /* Alan hatası: .field içindeki .field__error; aria-invalid + aria-describedby */
@@ -1015,6 +1091,179 @@
     return new Array(n + 1).join(one);
   }
 
+  /* ==========================================================================
+     Ortak kanon II (Faz A): diyalog, yükleniyor, oturum, adres, sipariş, sepet toplamları
+     ========================================================================== */
+
+  /* Diyalog (A101 onay/uyarı penceresi). dialog({ tone: 'info'|'danger'|'warn'|'success', icon, title, text, body,
+     ok: 'Onayla', cancel: 'Vazgeç' (false: tek buton), okTone: 'primary'|'danger', okHref }) → Promise<boolean> */
+  var dialogSeq = 0;
+  function dialog(o) {
+    o = o || {};
+    var id = 'dialog-' + (++dialogSeq), tone = o.tone || 'info';
+    var el = document.createElement('div');
+    el.className = 'modal modal--sheet dialog dialog--' + tone; el.id = id;
+    el.setAttribute('role', 'alertdialog'); el.setAttribute('aria-modal', 'true'); el.setAttribute('aria-labelledby', id + '-t');
+    var okCls = 'btn btn--' + (o.okTone || (tone === 'danger' ? 'danger' : 'primary'));
+    el.innerHTML = '<div class="modal__panel modal__panel--dialog" tabindex="-1">' +
+      '<button class="icon-btn icon-btn--round modal__close" type="button" data-dialog-cancel aria-label="Kapat">' + icon('fa-solid fa-xmark') + '</button>' +
+      '<span class="dialog__icon">' + icon('fa-solid ' + (o.icon || ({ danger: 'fa-trash-can', warn: 'fa-triangle-exclamation', success: 'fa-check' })[tone] || 'fa-circle-info')) + '</span>' +
+      '<h2 class="dialog__title" id="' + id + '-t">' + esc(o.title || '') + '</h2>' +
+      (o.text ? '<p class="dialog__text">' + esc(o.text) + '</p>' : '') +
+      (o.body ? '<div class="dialog__body">' + o.body + '</div>' : '') +
+      '<div class="dialog__actions">' +
+        (o.cancel === false ? '' : '<button class="btn btn--ghost" type="button" data-dialog-cancel>' + esc(o.cancel || 'Vazgeç') + '</button>') +
+        (o.okHref ? '<a class="' + okCls + '" href="' + o.okHref + '" data-dialog-ok>' + esc(o.ok || 'Tamam') + '</a>'
+          : '<button class="' + okCls + '" type="button" data-dialog-ok>' + esc(o.ok || 'Tamam') + '</button>') +
+      '</div></div>';
+    document.body.appendChild(el);
+    return new Promise(function (resolve) {
+      var done = false;
+      function finish(v) {
+        if (done) return; done = true;
+        closeModal(el); setTimeout(function () { el.remove(); }, 400); resolve(v);
+      }
+      el.addEventListener('click', function (e) {
+        if (e.target.closest('[data-dialog-ok]')) { if (!o.okHref) e.preventDefault(); finish(true); }
+        else if (e.target.closest('[data-dialog-cancel]') || e.target === el) finish(false);
+      });
+      escHandlers.unshift(function () { if (!done && el.classList.contains('is-open')) { finish(false); return true; } return false; });
+      requestAnimationFrame(function () { openModal(el, document.activeElement); });
+    });
+  }
+  /* "Sepete Eklendi" diyaloğu (A101 Ekstra): ürün satırı + Alışverişe Devam Et / Sepete Git */
+  function addedDialog(key) {
+    var it = cartItem(key); if (!it) return;
+    var p = it.p;
+    return dialog({
+      tone: 'success', icon: 'fa-check', title: 'Sepete Eklendi',
+      body: '<div class="dialog__product"><span class="dialog__product-img">' + (p.img ? '<span style="' + productBg(p) + '"></span>' : '') + '</span>' +
+        '<div><p class="dialog__product-name">' + esc(p.name) + '</p><p class="dialog__product-meta"><span class="unit-badge">' + esc(unitText(it.opt)) + '</span>' +
+        '<b class="price">' + formatPrice(it.price) + '</b></p></div></div>',
+      cancel: 'Alışverişe Devam Et', ok: 'Sepete Git', okHref: URLS.sepet
+    });
+  }
+
+  /* Buton yükleniyor: busy(btn, true, 'Kaydediliyor') — genişlik sabit, dönen ikon, aria-busy */
+  function busy(btn, on, label) {
+    if (!btn) return;
+    if (on) {
+      if (btn.getAttribute('aria-busy') === 'true') return;
+      btn.dataset.html = btn.innerHTML; btn.style.minWidth = btn.offsetWidth + 'px';
+      btn.innerHTML = icon('fa-solid fa-circle-notch fa-spin') + '<span>' + esc(label || btn.textContent.trim()) + '</span>';
+      btn.setAttribute('aria-busy', 'true'); btn.disabled = true;
+    } else {
+      if (btn.dataset.html != null) btn.innerHTML = btn.dataset.html;
+      btn.style.minWidth = ''; btn.removeAttribute('aria-busy'); btn.disabled = false; delete btn.dataset.html;
+    }
+  }
+  /* bölüm durumu kutuları: boş / hata (Tekrar dene) — empty--box ailesi */
+  function stateBox(o) {
+    return '<div class="empty empty--box' + (o.error ? ' empty--error' : '') + '">' + icon('fa-solid ' + (o.icon || (o.error ? 'fa-circle-exclamation' : 'fa-box-open'))) +
+      '<p class="empty__title">' + esc(o.title) + '</p>' + (o.text ? '<p class="empty__text">' + esc(o.text) + '</p>' : '') +
+      (o.action ? (o.action.href ? '<a class="btn btn--primary btn--sm" href="' + o.action.href + '">' + esc(o.action.label) + '</a>'
+        : '<button class="btn btn--primary btn--sm" type="button" data-state-action>' + esc(o.action.label) + '</button>') : '') + '</div>';
+  }
+  function skeletonRows(n) {
+    var one = '<div class="sk-row" aria-hidden="true"><span class="skeleton skeleton--square"></span><span class="sk-row__lines">' +
+      '<span class="skeleton skeleton--text"></span><span class="skeleton skeleton--text skeleton--short"></span></span></div>';
+    return '<div class="sk-list">' + new Array(n + 1).join(one) + '</div>';
+  }
+
+  /* Prototip oturumu (K3, K14): giriş/kayıt formu başarılıysa yerel olarak açılır; gerçek doğrulama yok */
+  var session = {
+    get: function () { return store.get('azem-oturum', null); },
+    set: function (v) { store.set('azem-oturum', v); syncSession(); },
+    clear: function () { try { localStorage.removeItem('azem-oturum'); } catch (e) {} syncSession(); }
+  };
+  function syncSession() {
+    var s = session.get();
+    $$('[data-session-name]').forEach(function (el) { el.textContent = s ? (s.ad ? s.ad + (s.soyad ? ' ' + s.soyad : '') : 'Hesabım') : ''; });
+    document.documentElement.classList.toggle('is-signed-in', !!s);
+  }
+  /* giriş gerektiren işlem (A101 "İşleme devam etmek için…"): oturum yoksa diyalog, true dönerse devam */
+  function requireLogin(text) {
+    if (session.get()) return Promise.resolve(true);
+    return dialog({ tone: 'info', icon: 'fa-user-lock', title: 'Giriş yapmalısınız', text: text || 'İşleme devam etmek için giriş yapın ya da üye olun.',
+      cancel: 'Vazgeç', ok: 'Giriş Yap', okHref: URLS.giris + '?geri=' + encodeURIComponent(location.pathname.split('/').pop() + location.search) }).then(function () { return false; });
+  }
+
+  /* Adres defteri ve siparişler (K14): yalnız yerel; ilk açılışta boş durum */
+  function uid(p) { return p + Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
+  var addresses = {
+    list: function () { return store.get('azem-adresler', []); },
+    get: function (id) { return addresses.list().filter(function (a) { return a.id === id; })[0] || null; },
+    save: function (a) {
+      var l = addresses.list(); if (!a.id) a.id = uid('ad');
+      var i = l.map(function (x) { return x.id; }).indexOf(a.id);
+      if (!l.length) a.varsayilan = true;
+      if (a.varsayilan) l.forEach(function (x) { x.varsayilan = false; });
+      if (i > -1) l[i] = a; else l.push(a);
+      store.set('azem-adresler', l); return a;
+    },
+    remove: function (id) {
+      var l = addresses.list().filter(function (x) { return x.id !== id; });
+      if (l.length && !l.some(function (x) { return x.varsayilan; })) l[0].varsayilan = true;
+      store.set('azem-adresler', l);
+    },
+    makeDefault: function (id) { var l = addresses.list(); l.forEach(function (x) { x.varsayilan = x.id === id; }); store.set('azem-adresler', l); }
+  };
+  /* Sipariş durumları (Azem'den teyit beklenir): prototipte yalnız ilk adım gerçekleşir, diğerleri bekleyen */
+  var ORDER_STEPS = ['Sipariş Alındı', 'Hazırlanıyor', 'Kargoya Verildi', 'Teslim Edildi'];
+  var orders = {
+    list: function () { return store.get('azem-siparisler', []); },
+    get: function (no) { return orders.list().filter(function (o) { return o.no === no; })[0] || null; },
+    add: function (o) {
+      var l = orders.list();
+      o.no = o.no || ('AZ' + Date.now().toString().slice(-8));
+      o.tarih = o.tarih || new Date().toISOString(); o.durum = o.durum || 0;
+      l.unshift(o); store.set('azem-siparisler', l); return o;
+    }
+  };
+
+  /* Sepet toplamları (K4: 10.000 TL altı kargo 500 ₺, Azem sepetindeki ücret) */
+  var SHIPPING_FEE = 500;
+  function cartLines() {
+    return Object.keys(cart).map(function (key) {
+      var it = cartItem(key); if (!it) return null;
+      return { key: key, p: it.p, opt: it.opt, unit: unitText(it.opt), price: toNumber(it.price), qty: cart[key], line: toNumber(it.price) * cart[key] };
+    }).filter(Boolean);
+  }
+  function cartTotals(discount) {
+    var sub = cartLines().reduce(function (n, l) { return n + l.line; }, 0);
+    var ship = sub > 0 && sub < FREE_SHIP ? SHIPPING_FEE : 0, d = discount || 0;
+    return { count: cartCount(), subtotal: sub, shipping: ship, discount: d, total: Math.max(0, sub + ship - d), left: Math.max(0, FREE_SHIP - sub), pct: Math.min(100, sub / FREE_SHIP * 100) };
+  }
+  function setQty(key, q) { if (!(key in cart)) return; if (q <= 0) delete cart[key]; else cart[key] = q; syncCart(key); }
+  function removeLine(key) { delete cart[key]; syncCart(key); }
+  function clearCart() { Object.keys(cart).forEach(function (k) { delete cart[k]; }); syncCart(''); }
+  /* kargo eşiği bileşeni (mini sepet, sepet, ödeme) */
+  function shipMeter(t) {
+    return '<div class="ship-meter"><p class="ship-meter__text">' + (t.left ? icon('fa-solid fa-truck-fast') + '<span>10.000 TL ücretsiz kargoya <b>' + formatPrice(t.left) + '</b> kaldı</span>'
+      : icon('fa-solid fa-circle-check') + '<span><b>Kargo ücretsiz</b></span>') + '</p>' +
+      '<span class="ship-meter__bar" role="progressbar" aria-label="Ücretsiz kargo eşiği" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' + Math.round(t.pct) + '"><span style="width:' + t.pct.toFixed(1) + '%"></span></span></div>';
+  }
+  function formatDate(iso) { try { return new Date(iso).toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' }); } catch (e) { return iso; } }
+
+  /* Çıkış Yap (hesap menüsü) */
+  document.addEventListener('click', function (e) {
+    if (e.target.closest('[data-logout]')) {
+      e.preventDefault(); session.clear(); closeMenus();
+      toast('Çıkış yapıldı', 'fa-arrow-right-from-bracket');
+      if (/hesabim\.html/.test(location.pathname)) setTimeout(function () { location.href = URLS.home; }, 600);
+    }
+    /* Bugünün Fırsatı (K10): Azem'in modalı boş → boş durum + kampanyalara yönlendirme */
+    if (e.target.closest('[data-firsat]')) {
+      e.preventDefault();
+      var onCamp = document.body.getAttribute('data-page') === 'kampanyalar';
+      dialog(onCamp
+        ? { tone: 'info', icon: 'fa-bolt', title: 'Bugünün Fırsatı', text: 'Bugün için tanımlanmış bir fırsat ürünü yok.', cancel: false, ok: 'Kapat' }
+        : { tone: 'info', icon: 'fa-bolt', title: 'Bugünün Fırsatı', text: 'Bugün için tanımlanmış bir fırsat ürünü yok. Güncel kampanyalara göz atabilirsiniz.',
+            cancel: 'Kapat', ok: 'Kampanyalar', okHref: URLS.kampanyalar });
+    }
+  });
+  syncSession();
+
   window.AZEM_APP = {
     D: D, DB: DB, $: $, $$: $$, esc: esc, slug: slug, bg: bg, catImg: catImg, sellable: sellable, toNumber: toNumber, formatPrice: formatPrice,
     store: store, param: param, reduceMotion: reduceMotion, mqDesktop: mqDesktop,
@@ -1026,13 +1275,16 @@
     onEscape: function (fn) { escHandlers.push(fn); },
     initRails: initRails, reveal: reveal, syncFooter: syncFooter, bindMenu: bindMenu, closeMenus: closeMenus,
     initTabs: initTabs, initAcc: initAcc, setAcc: setAcc, initRange: initRange, initGallery: initGallery, scrollSpy: scrollSpy, stickyBar: stickyBar,
+    dialog: dialog, addedDialog: addedDialog, busy: busy, stateBox: stateBox, skeletonRows: skeletonRows, session: session, requireLogin: requireLogin,
+    fold: fold, addresses: addresses, orders: orders, ORDER_STEPS: ORDER_STEPS, cartLines: cartLines, cartTotals: cartTotals, setQty: setQty, removeLine: removeLine, clearCart: clearCart,
+    shipMeter: shipMeter, unitText: unitText, formatDate: formatDate, FREE_SHIP: FREE_SHIP, SHIPPING_FEE: SHIPPING_FEE, URLS: URLS, icon: icon,
     qtyValue: qtyValue, saleOptions: saleOptions, cartKey: cartKey, cartItem: cartItem, inCart: inCart, measureClamp: measureClamp, hyphenate: hyphenate, searchProducts: searchProducts, watchImages: watchImages, skeletonCards: skeletonCards, phoneDigits: phoneDigits, setError: setError, clearError: clearError,
     /* sayfa betiği içeriği bastıktan sonra çağırır */
     ready: function () {
       Object.keys(cart).forEach(syncCart);
       syncCart('');
       favs.forEach(syncFav); syncFav('');
-      initRails(); reveal(); syncFooter(); syncAside(); initAcc(document); watchImages(document); measureClamp(document); hyphenate(document);
+      initRails(); reveal(); syncFooter(); syncAside(); initAcc(document); watchImages(document); measureClamp(document); hyphenate(document); syncSession();
     }
   };
 })();

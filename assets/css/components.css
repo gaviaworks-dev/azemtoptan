@@ -384,7 +384,7 @@
 
 /* ---------- Boş durum (mini sepet, liste, favoriler) ---------- */
 .empty { padding: var(--sp-5) var(--sp-3); text-align: center; font-size: var(--fs-sm); font-weight: 500; line-height: var(--lh-ui); color: var(--c-muted); }
-.empty i { display: block; margin-bottom: var(--sp-2); font-size: 28px; color: var(--c-line-strong); }
+.empty > i { display: block; margin-bottom: var(--sp-2); font-size: 28px; color: var(--c-line-strong); }
 
 /* ---------- Bildirim (Azem notify → toast) ---------- */
 .toast-stack {
@@ -501,6 +501,7 @@
 .dropdown__item:hover .cat-ico, .dropdown__item.is-active .cat-ico { background: var(--c-surface); }
 .dropdown__item-img { width: 32px; height: 32px; flex: none; background: center / contain no-repeat; --ico-fs: 14px; }
 .dropdown__item-chev { margin-left: auto; font-size: 11px; color: var(--c-muted); }
+.dropdown__item > i:first-child { flex: none; width: 18px; text-align: center; }   /* menü ikonları aynı kolonda */
 .dropdown__total { margin-left: auto; }
 .dropdown__meta { display: block; font-size: var(--fs-meta); font-weight: 500; line-height: var(--lh-ui); color: var(--c-muted); }
 
@@ -737,8 +738,8 @@ button.link { font-family: inherit; line-height: inherit; }
 .check__label a { color: var(--c-brand-2); font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
 @media (max-width: 1024px) {
   /* form onay kutuları: 44px dokunma alanı, görünür satır aynı (negatif dikey pay) */
-  .form-stack .check, .form-row .check { padding-block: 12px; margin-block: -12px; }
-  .form-stack .check .check__input, .form-row .check .check__input { top: 12px; }
+  .form-stack .check, .form-row .check, .co-section .check, .summary .check { padding-block: 12px; margin-block: -12px; }
+  .form-stack .check .check__input, .form-row .check .check__input, .co-section .check .check__input, .summary .check .check__input { top: 12px; }
   /* cümle içi linkler: satır yüksekliği değişmeden 44px dokunma alanı */
   .check__label a { display: inline-block; min-width: 44px; padding-block: 13px; margin-block: -13px; text-align: center; }
 }
@@ -943,7 +944,7 @@ button.dropdown__item { width: 100%; text-align: left; }
   border-radius: var(--radius-lg); background: var(--c-brand-tint); box-shadow: inset 0 0 0 1px var(--c-brand-tint-2);
   font-size: var(--fs-body); color: var(--c-ink-2);
 }
-.empty--box i { margin: 0; font-size: 30px; color: var(--c-brand-2); }
+.empty--box > i { margin: 0; font-size: 30px; color: var(--c-brand-2); }
 .empty__title { font-size: var(--fs-body); font-weight: 700; line-height: var(--lh-snug); color: var(--c-ink); }
 .empty--compact { padding: var(--sp-6) var(--sp-4); gap: var(--sp-2); }
 .empty--compact .btn { margin-top: var(--sp-2); }
@@ -1349,3 +1350,327 @@ button.dropdown__item { width: 100%; text-align: left; }
 }
 .cat-ico i { font-size: var(--ico-fs, 15px); line-height: 1; }
 .dropdown__item-img.cat-ico, .search-panel__img.cat-ico { border-radius: var(--radius-badge); }
+
+/* ---------- Mini sepet (header sepet paneli; ≤640 header altında aynı içerik) ----------
+   Üst (başlık + satır sayısı) ve alt (ara toplam, kargo eşiği, butonlar) sabit; satırlar kendi içinde kayar. */
+.hdr-menu > .dropdown.dropdown--cart { width: 400px; padding: 0; overflow: hidden; }
+.mini-cart { display: flex; flex-direction: column; max-height: min(640px, calc(100dvh - var(--hdr-h) - var(--sp-6))); }
+.mini-cart--empty { padding: var(--sp-3); }
+.mini-cart__head { flex: none; padding: var(--sp-4) var(--sp-4) var(--sp-3); border-bottom: 1px solid var(--c-line); }
+.mini-cart__title { font-size: var(--fs-nav); font-weight: 700; line-height: var(--lh-ui); color: var(--c-ink); }
+.mini-cart__count { font-size: var(--fs-sm); font-weight: 500; color: var(--c-muted); }
+.mini-cart__list { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: var(--sp-1) var(--sp-4); }
+.mini-cart__foot { flex: none; display: grid; gap: var(--sp-3); padding: var(--sp-3) var(--sp-4) var(--sp-4); border-top: 1px solid var(--c-line); background: var(--c-surface); }
+.mini-cart__sum { display: flex; align-items: baseline; justify-content: space-between; gap: var(--sp-3); font-size: var(--fs-sm); font-weight: 600; color: var(--c-ink-2); }
+.mini-cart__sum .price { font-size: var(--fs-h3); font-weight: 800; }
+.mini-cart__actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-2); }
+.mini-cart__actions .btn { min-height: 44px; padding-inline: var(--sp-3); }
+
+/* satır: görsel 64 kare · ad (2 satır) · birim rozeti + birim fiyat · adet seçici + satır toplamı · sil */
+.mc-line { display: grid; grid-template-columns: 64px minmax(0, 1fr) auto; gap: var(--sp-3); align-items: start; padding-block: var(--sp-3); }
+.mc-line + .mc-line { border-top: 1px solid var(--c-line); }
+.mc-line__img { width: 64px; height: 64px; padding: 4px; border-radius: var(--radius); border: 1px solid var(--c-line); background: var(--c-surface); }
+.mc-line__img > span { display: block; width: 100%; height: 100%; background: center / min(100%, var(--img-px, 100%)) no-repeat; }
+.mc-line__body { min-width: 0; display: grid; gap: 6px; }
+.mc-line__name {
+  font-size: var(--fs-name); font-weight: 600; line-height: var(--lh-name); color: var(--c-ink);
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+@media (hover: hover) and (pointer: fine) { .mc-line__name:hover { color: var(--c-brand-2); } }
+.mc-line__meta { display: flex; flex-wrap: wrap; align-items: center; gap: 4px var(--sp-2); font-size: var(--fs-xs); font-weight: 500; color: var(--c-muted); font-variant-numeric: tabular-nums; }
+.mc-line__row { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-2); }
+.mc-line__total { font-size: var(--fs-price); }
+.mc-line__del { width: 36px; height: 36px; margin: -6px -8px 0 0; color: var(--c-muted); font-size: var(--icon-sm); }
+@media (hover: hover) and (pointer: fine) { .mc-line__del:hover { color: var(--c-danger); background: var(--c-danger-tint); } }
+
+/* satış birimi rozeti (Adet / Paket · N Adet / Koli · N Adet) */
+.unit-badge {
+  display: inline-flex; align-items: center; min-height: 20px; padding: 0 6px;
+  border-radius: var(--radius-badge); background: var(--c-brand-tint-2); color: var(--c-brand);
+  font-size: var(--fs-micro); font-weight: 700; line-height: 1; letter-spacing: .02em; white-space: nowrap;
+}
+/* küçük adet seçici (mini sepet) */
+.qty--xs { height: 32px; }
+.qty--xs .qty__btn { width: 32px; font-size: 11px; }
+.qty--xs .qty__input { width: 28px; display: grid; place-items: center; font-size: var(--fs-sm); }
+
+/* ücretsiz kargo eşiği: metin + ince ilerleme çubuğu */
+.ship-meter { display: grid; gap: 6px; }
+.ship-meter__text { display: flex; align-items: center; gap: var(--sp-2); font-size: var(--fs-meta); font-weight: 500; line-height: var(--lh-ui); color: var(--c-ink-2); }
+.ship-meter__text i { color: var(--c-brand-2); font-size: var(--icon-sm); }
+.ship-meter__text b { font-weight: 700; color: var(--c-ink); }
+.ship-meter__bar { display: block; height: 4px; border-radius: var(--radius-badge); background: var(--c-brand-tint-2); overflow: hidden; }
+.ship-meter__bar > span { display: block; height: 100%; border-radius: inherit; background: var(--c-brand-2); transition: width var(--t-slow) var(--ease); }
+
+@media (max-width: 1024px) {
+  .qty--xs { height: 44px; }   /* dokunma hedefi */
+  .qty--xs .qty__btn { width: 40px; }
+  .mc-line__del { width: 44px; height: 44px; margin: -10px -12px 0 0; }
+}
+@media (max-width: 640px) {
+  .hdr-menu > .dropdown.dropdown--cart { width: auto; }
+  .mini-cart { max-height: calc(100dvh - var(--header-row) - env(safe-area-inset-top, 0px) - 110px); }   /* alt menüye binmez */
+}
+
+/* ==========================================================================
+   Ortak kanon II (Faz A) — modal ailesi, toast tonları, yükleniyor ve hata, boş durum ve iskelet,
+   durum sayfası ve sonuç kartı, satın alma parçaları, hesap kabuğu. Kaynak: A101 hesap/sepet/ödeme
+   (referans/a101-hesap-odeme.md), radius/tip kanonu.
+   ========================================================================== */
+
+/* ---------- Diyalog (A101 onay / uyarı penceresi): ikon karosu, başlık, metin, eşit iki buton ---------- */
+.modal__panel--dialog { width: min(480px, 100%); padding: var(--sp-7) var(--sp-6) var(--sp-6); text-align: center; }
+.dialog__icon {
+  width: 56px; height: 56px; display: grid; place-items: center; margin: 0 auto var(--sp-4);
+  border-radius: var(--radius); background: var(--c-brand-tint); color: var(--c-brand-2); font-size: 22px;
+}
+.dialog--danger .dialog__icon { background: var(--c-danger-tint); color: var(--c-danger); }
+.dialog--warn .dialog__icon { background: var(--c-warn-tint); color: var(--c-warn); }
+.dialog--success .dialog__icon { background: var(--c-success-tint); color: var(--c-success); }
+.dialog__title { font-size: var(--fs-h3); line-height: var(--lh-snug); color: var(--c-ink); }
+.dialog__text { margin-top: var(--sp-2); font-size: var(--fs-sm); font-weight: 500; line-height: var(--lh-body); color: var(--c-ink-2); }
+.dialog__body { margin-top: var(--sp-5); text-align: left; }
+.dialog__actions { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: var(--sp-2); margin-top: var(--sp-6); }
+.dialog__actions .btn { min-height: 48px; padding-inline: var(--sp-4); }
+/* "Sepete Eklendi": ürün satırı (A101: 84 px görsel kutusu, ad, fiyat) */
+.dialog__product { display: grid; grid-template-columns: 72px minmax(0, 1fr); gap: var(--sp-3); align-items: center; padding: var(--sp-3); border-radius: var(--radius); background: var(--c-bg); }
+.dialog__product-img { width: 72px; height: 72px; padding: 4px; border-radius: var(--radius); border: 1px solid var(--c-line); background: var(--c-surface); }
+.dialog__product-img > span { display: block; width: 100%; height: 100%; background: center / min(100%, var(--img-px, 100%)) no-repeat; }
+.dialog__product-name { font-size: var(--fs-name); font-weight: 600; line-height: var(--lh-name); color: var(--c-ink); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.dialog__product-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 4px var(--sp-2); margin-top: 4px; font-size: var(--fs-xs); color: var(--c-muted); }
+.btn--danger { background: var(--c-danger); color: var(--c-white); }
+.btn--danger:hover { background: color-mix(in srgb, var(--c-danger) 85%, #000); }
+@media (max-width: 640px) {
+  /* mobilde alttan açılan panel (A101 tablet/mobil sheet) */
+  .modal--sheet { align-items: end; padding: 0; }
+  .modal--sheet .modal__panel { width: 100%; max-height: 88dvh; border-radius: var(--radius-lg) var(--radius-lg) 0 0; transform: translateY(24px); padding-bottom: max(var(--sp-6), env(safe-area-inset-bottom, 0px)); }
+  .modal__panel--dialog { padding: var(--sp-6) var(--sp-4) var(--sp-5); }
+}
+
+/* ---------- Form çekmecesi (A101 "Teslimat Adresi": sağdan, sabit başlık ve alt butonlar) ---------- */
+.drawer--form { width: min(560px, 100%); }
+.drawer--form .drawer__head-title { font-size: var(--fs-h3); }
+.drawer--form .drawer__body { padding: var(--sp-5); }
+.drawer--form .drawer__foot { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (max-width: 640px) { .drawer--form { width: 100%; border-radius: 0; } .drawer--form .drawer__body { padding: var(--sp-4); } }
+
+/* ---------- Toast tonları + eylemli toast ---------- */
+.toast--success i { color: #8fe0b3; }
+.toast--error { background: var(--c-danger); }
+.toast--error i { color: var(--c-white); }
+.toast--action { pointer-events: auto; }
+.toast__action { margin-left: auto; padding: 6px 8px; border-radius: var(--radius-badge); color: var(--c-white); font-size: var(--fs-meta); font-weight: 700; text-decoration: underline; text-underline-offset: 2px; white-space: nowrap; }
+.toast__action:hover { background: var(--c-on-dark-fill-2); }
+
+/* ---------- Yükleniyor ve hata ---------- */
+.btn[aria-busy="true"] { opacity: 1; cursor: progress; }
+.btn[aria-busy="true"] .fa-spin { font-size: 15px; }
+/* bölüm hatası: boş durum kutusunun hata tonu ("Yüklenemedi" + Tekrar dene) */
+.empty--error { background: var(--c-danger-tint); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--c-danger) 22%, transparent); }
+.empty--error > i { color: var(--c-danger); }
+/* iskelet satır listesi (sepet, sipariş, adres listeleri ilk açılış) */
+.sk-list { display: grid; gap: var(--sp-3); }
+.sk-row { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: var(--sp-3); align-items: center; padding: var(--sp-3); border-radius: var(--radius); border: 1px solid var(--c-line); background: var(--c-surface); }
+.sk-row > .skeleton--square { width: 64px; height: 64px; }
+.sk-row__lines { display: grid; gap: var(--sp-2); }
+.skeleton--square { display: block; border-radius: var(--radius); }
+
+/* ---------- Durum sayfası (404 / 500 / bakım) ve sonuç kartı (sipariş tamamlandı) ---------- */
+.status-page {
+  display: grid; justify-items: center; gap: var(--sp-3); padding: var(--sp-8) var(--sp-5);
+  border-radius: var(--radius-lg); background: var(--c-brand-tint); text-align: center;
+}
+.status-page__icon { width: 80px; height: 80px; display: grid; place-items: center; margin-bottom: var(--sp-2); border-radius: var(--radius-lg); background: var(--c-surface); color: var(--c-brand-2); font-size: 34px; box-shadow: var(--sh-sm); }
+.status-page__code { font-size: var(--fs-xs); font-weight: 700; letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--c-brand-2); }
+.status-page__title { font-size: var(--fs-h2); line-height: var(--lh-snug); color: var(--c-ink); }
+.status-page__text { max-width: 52ch; font-size: var(--fs-body); font-weight: 500; line-height: var(--lh-body); color: var(--c-ink-2); }
+.status-page__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--sp-2); margin-top: var(--sp-3); }
+.status-page--bare { min-height: 100dvh; align-content: center; border-radius: 0; }   /* bakım: header/footer'sız */
+@media (max-width: 640px) { .status-page { padding: var(--sp-7) var(--sp-4); } .status-page__actions { display: grid; width: 100%; } }
+
+.result-card {
+  width: min(640px, 100%); margin-inline: auto; padding: var(--sp-7) var(--sp-6);
+  border-radius: var(--radius-lg); border: 1px solid var(--c-line); background: var(--c-surface); box-shadow: var(--sh-md); text-align: center;
+}
+.result-card__icon { width: 64px; height: 64px; display: grid; place-items: center; margin: 0 auto var(--sp-4); border-radius: var(--radius-lg); background: var(--c-success-tint); color: var(--c-success); font-size: 28px; }
+.result-card--error .result-card__icon { background: var(--c-danger-tint); color: var(--c-danger); }
+.result-card__title { font-size: var(--fs-h2); line-height: var(--lh-snug); }
+.result-card__text { margin-top: var(--sp-2); font-size: var(--fs-body); font-weight: 500; line-height: var(--lh-body); color: var(--c-ink-2); }
+.result-card .kv { margin-top: var(--sp-5); text-align: left; }
+.result-card__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--sp-2); margin-top: var(--sp-6); }
+@media (max-width: 640px) { .result-card { padding: var(--sp-6) var(--sp-4); } .result-card__actions { display: grid; } }
+
+/* anahtar–değer listesi (sipariş no, tarih, ödeme…) */
+.kv { display: grid; border-radius: var(--radius); border: 1px solid var(--c-line); background: var(--c-surface); }
+.kv__row { display: flex; align-items: baseline; justify-content: space-between; gap: var(--sp-4); padding: var(--sp-3) var(--sp-4); font-size: var(--fs-sm); }
+.kv__row + .kv__row { border-top: 1px solid var(--c-line); }
+.kv__key { color: var(--c-muted); font-weight: 500; }
+.kv__val { color: var(--c-ink); font-weight: 700; text-align: right; font-variant-numeric: tabular-nums; }
+
+/* ---------- Satın alma parçaları ---------- */
+/* Sipariş özeti (A101 sağ kart: Sipariş Tutarı, satırlar, bilgi kutusu, Toplam, birincil buton) */
+.summary { display: grid; gap: var(--sp-3); padding: var(--sp-5); border-radius: var(--radius-lg); border: 1px solid var(--c-line); background: var(--c-surface); box-shadow: var(--sh-sm); }
+.summary__title { font-size: var(--fs-prose-h); font-weight: 700; line-height: var(--lh-snug); color: var(--c-ink); }
+.summary__rows { display: grid; gap: var(--sp-2); }
+.summary__row { display: flex; align-items: baseline; justify-content: space-between; gap: var(--sp-3); font-size: var(--fs-sm); font-weight: 500; color: var(--c-ink-2); font-variant-numeric: tabular-nums; }
+.summary__row b { font-weight: 700; color: var(--c-ink); }
+.summary__row--discount b { color: var(--c-success); }
+.summary__total { display: flex; align-items: baseline; justify-content: space-between; gap: var(--sp-3); padding-top: var(--sp-3); border-top: 1px solid var(--c-line); font-size: var(--fs-sm); font-weight: 700; color: var(--c-ink); }
+.summary__total .price { font-size: var(--fs-h3); font-weight: 800; }
+.summary__note { font-size: var(--fs-xs); font-weight: 500; line-height: var(--lh-ui); color: var(--c-muted); }
+.summary .btn { min-height: 48px; }
+.summary-col { position: sticky; top: calc(var(--hdr-h) + var(--sp-4)); display: grid; gap: var(--sp-4); align-self: start; }
+/* iki kolon: içerik + özet (sepet, ödeme) */
+.buy-layout { display: grid; grid-template-columns: minmax(0, 1fr) 400px; gap: var(--sp-6); align-items: start; }
+@media (max-width: 1024px) { .buy-layout { grid-template-columns: minmax(0, 1fr); } .summary-col { position: static; } }
+
+/* Kupon / tek alan + buton */
+.field-action { display: flex; gap: var(--sp-2); }
+.field-action .input { flex: 1; min-width: 0; }
+.field-action .btn { flex: none; min-height: var(--field-h); padding-inline: var(--sp-5); }
+
+/* Ödeme bölümü kartı (A101 tek sayfa: Teslimat Adresi, Ödeme Seçenekleri…): numaralı başlık + sağda eylem */
+.co-section { display: grid; gap: var(--sp-4); padding: var(--sp-5); border-radius: var(--radius-lg); border: 1px solid var(--c-line); background: var(--c-surface); }
+.co-section__head { display: flex; align-items: center; gap: var(--sp-3); }
+.co-section__no { flex: none; width: 28px; height: 28px; display: grid; place-items: center; border-radius: var(--radius); background: var(--c-brand); color: var(--c-white); font-size: var(--fs-meta); font-weight: 800; }
+.co-section__title { flex: 1; min-width: 0; font-size: var(--fs-prose-h); line-height: var(--lh-snug); }
+.co-section__action { margin-left: auto; }
+.co-section.is-done .co-section__no { background: var(--c-success); }
+@media (max-width: 640px) { .co-section { padding: var(--sp-4); } }
+
+/* Adres kartı (adres defteri ve ödeme seçimi) */
+.address-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: var(--sp-3); }
+.address-card { position: relative; display: grid; gap: 6px; padding: var(--sp-4); border-radius: var(--radius); border: 1px solid var(--c-line); background: var(--c-surface); font-size: var(--fs-sm); line-height: var(--lh-name); color: var(--c-ink-2); }
+.address-card__title { display: flex; align-items: center; gap: var(--sp-2); font-size: var(--fs-sm); font-weight: 700; color: var(--c-ink); }
+.address-card__actions { display: flex; flex-wrap: wrap; gap: var(--sp-4); margin-top: var(--sp-2); }
+.address-card.is-selected, .radio-card:has(.check__input:checked) .address-card { border-color: var(--c-brand); }
+
+/* Durum rozeti (sipariş: alındı, hazırlanıyor, kargoda, teslim edildi, iptal) */
+.status-badge { display: inline-flex; align-items: center; gap: 6px; min-height: 24px; padding: 0 8px; border-radius: var(--radius-badge); background: var(--c-brand-tint-2); color: var(--c-brand); font-size: var(--fs-xs); font-weight: 700; line-height: 1; white-space: nowrap; }
+.status-badge--success { background: var(--c-success-tint); color: var(--c-success); }
+.status-badge--warn { background: var(--c-warn-tint); color: var(--c-warn); }
+.status-badge--danger { background: var(--c-danger-tint); color: var(--c-danger); }
+.status-badge--muted { background: var(--c-bg-strong); color: var(--c-ink-2); }
+
+/* Sipariş kartı (Siparişlerim) */
+.order-card { display: grid; gap: var(--sp-3); padding: var(--sp-4) var(--sp-5); border-radius: var(--radius); border: 1px solid var(--c-line); background: var(--c-surface); }
+.order-card__head { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2) var(--sp-4); }
+.order-card__no { font-size: var(--fs-sm); font-weight: 700; color: var(--c-ink); }
+.order-card__date { font-size: var(--fs-meta); color: var(--c-muted); }
+.order-card__head .status-badge { margin-left: auto; }
+.order-card__body { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--sp-3); }
+.order-card__thumbs { display: flex; gap: var(--sp-2); }
+.order-card__thumb { width: 48px; height: 48px; padding: 3px; border-radius: var(--radius); border: 1px solid var(--c-line); background: var(--c-surface); }
+.order-card__thumb > span { display: block; width: 100%; height: 100%; background: center / min(100%, var(--img-px, 100%)) no-repeat; }
+.order-card__more { display: grid; place-items: center; width: 48px; height: 48px; border-radius: var(--radius); background: var(--c-bg); font-size: var(--fs-meta); font-weight: 700; color: var(--c-ink-2); }
+.order-card__total { font-size: var(--fs-sm); color: var(--c-muted); }
+.order-card__total .price { display: inline-flex; margin-left: 6px; }
+
+/* Durum zaman çizelgesi (sipariş detayı): tamamlanan adım dolu, sıradakiler soluk */
+.timeline { display: grid; }
+.timeline__step { position: relative; display: grid; grid-template-columns: 24px minmax(0, 1fr); gap: var(--sp-3); padding-bottom: var(--sp-4); }
+.timeline__step:last-child { padding-bottom: 0; }
+.timeline__step::before { content: ""; position: absolute; left: 11px; top: 24px; bottom: 0; width: 2px; background: var(--c-line); }
+.timeline__step:last-child::before { content: none; }
+.timeline__mark { width: 24px; height: 24px; display: grid; place-items: center; border-radius: var(--radius-badge); background: var(--c-bg-strong); color: var(--c-muted); font-size: 11px; }
+.timeline__step.is-done .timeline__mark { background: var(--c-success); color: var(--c-white); }
+.timeline__step.is-done::before { background: var(--c-success); }
+.timeline__title { font-size: var(--fs-sm); font-weight: 700; line-height: 24px; color: var(--c-ink); }
+.timeline__step:not(.is-done) .timeline__title { color: var(--c-muted); font-weight: 600; }
+.timeline__meta { font-size: var(--fs-xs); color: var(--c-muted); }
+
+/* Açıklamalı onay kutusu (A101 İletişim Tercihleri: başlık + alt açıklama) */
+.check--desc .check__label strong { display: block; font-weight: 700; color: var(--c-ink); }
+.check--desc .check__label span { display: block; margin-top: 2px; font-size: var(--fs-meta); color: var(--c-muted); }
+
+/* Bilgi kartı (iletişim: ikon + etiket + değer) */
+.info-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: var(--sp-3); }
+.info-card { display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: var(--sp-3); align-items: center; padding: var(--sp-4); border-radius: var(--radius); border: 1px solid var(--c-line); background: var(--c-surface); }
+.info-card__icon { width: 44px; height: 44px; display: grid; place-items: center; border-radius: var(--radius); background: var(--c-brand-tint); color: var(--c-brand-2); font-size: var(--icon-md); }
+.info-card__label { font-size: var(--fs-xs); font-weight: 700; letter-spacing: .02em; color: var(--c-muted); }
+.info-card__value { font-size: var(--fs-sm); font-weight: 700; color: var(--c-ink); overflow-wrap: anywhere; }
+a.info-card:hover { border-color: var(--c-brand-2); }
+
+/* ---------- Hesap kabuğu (A101 profilim: solda karşılama kartı + menü; mobilde dizin / ayrıntı) ---------- */
+.account { display: grid; grid-template-columns: var(--aside-w) minmax(0, 1fr); gap: var(--sp-6); align-items: start; }
+.account__side { position: sticky; top: calc(var(--hdr-h) + var(--sp-4)); display: grid; gap: var(--sp-3); }
+.account__hello { display: grid; gap: 2px; padding: var(--sp-4); border-radius: var(--radius-lg); background: var(--c-brand-tint); box-shadow: inset 0 0 0 1px var(--c-brand-tint-2); }
+.account__hello-pre { font-size: var(--fs-meta); font-weight: 500; color: var(--c-ink-2); }
+.account__hello-name { font-size: var(--fs-prose-h); font-weight: 700; line-height: var(--lh-snug); color: var(--c-ink); overflow-wrap: anywhere; }
+.account__hello .link { justify-self: start; margin-top: var(--sp-1); }
+.account__main { min-width: 0; display: grid; gap: var(--sp-5); }
+.account__head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--sp-3); }
+.account__title { font-size: var(--fs-page); line-height: var(--lh-snug); }
+.account__sub { font-size: var(--fs-sm); color: var(--c-muted); }
+.account__cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: var(--sp-3); }
+.account-card { display: grid; gap: var(--sp-2); align-content: start; padding: var(--sp-5); border-radius: var(--radius-lg); border: 1px solid var(--c-line); background: var(--c-surface); }
+.account-card__icon { width: 40px; height: 40px; display: grid; place-items: center; border-radius: var(--radius); background: var(--c-brand-tint); color: var(--c-brand-2); font-size: var(--icon-md); }
+.account-card__title { font-size: var(--fs-nav); font-weight: 700; color: var(--c-ink); }
+.account-card__text { font-size: var(--fs-sm); color: var(--c-ink-2); }
+.account-card .btn { justify-self: start; margin-top: var(--sp-2); }
+@media (max-width: 1024px) {
+  .account { grid-template-columns: minmax(0, 1fr); }
+  .account__side { position: static; }
+  .account--detail .account__side { display: none; }   /* mobil ayrıntı: menü gizli, geri butonu sayfa başında */
+  .account--index .account__main { display: none; }    /* mobil dizin: yalnız menü */
+}
+
+/* ---------- Teammate istekleri (gece-istekler.md) ---------- */
+/* çok satırlı alan: .input yüksekliği/dolgusu textarea için */
+textarea.input { height: auto; min-height: 144px; padding-block: var(--sp-3); line-height: var(--lh-body); resize: vertical; }
+/* bilgi kartı: etiket ve değer alt alta */
+.info-card__label, .info-card__value { display: block; }
+/* SSS: her soru ayrı kart, tek açık (data-acc-single) */
+.faq { display: grid; gap: var(--sp-2); }
+.faq__item { border-radius: var(--radius); border: 1px solid var(--c-line); background: var(--c-surface); }
+.faq__item > .acc__btn { min-height: 56px; padding: var(--sp-3) var(--sp-4); font-size: var(--fs-body); }
+.faq__item > .acc__btn[aria-expanded="true"] { color: var(--c-brand); }
+.faq__answer { padding: 0 var(--sp-4) var(--sp-4); font-size: var(--fs-sm); font-weight: 500; line-height: var(--lh-body); color: var(--c-ink-2); }
+/* harf dizini (markalar): masaüstünde tek satır ızgara, ≤1024 yatay kayar; markası olmayan harf pasif */
+.az-index { display: grid; grid-template-columns: repeat(auto-fit, minmax(32px, 1fr)); gap: var(--sp-1); }
+.az-index > .chip { justify-content: center; padding-inline: 0; }
+.chip[aria-disabled="true"] { opacity: .4; pointer-events: none; background: var(--c-bg); }
+@media (max-width: 1024px) {
+  .az-index { display: flex; overflow-x: auto; scrollbar-width: none; margin-inline: calc(var(--gutter) * -1); padding: 6px var(--gutter) var(--sp-2); }
+  .az-index::-webkit-scrollbar { display: none; }
+  .az-index > .chip { flex: none; min-width: 40px; justify-content: center; }
+}
+/* arama sonuç satırı (A101 "“q” araması için N sonuç listelendi") */
+.result-line { font-size: var(--fs-sm); font-weight: 500; line-height: var(--lh-ui); color: var(--c-muted); overflow-wrap: anywhere; }
+.result-line strong { font-weight: 700; color: var(--c-ink); }
+/* kampanya kartı ızgarası (kampanyalar sayfası): mobilde de ızgara; kart görseli 320 px'i geçmez */
+@media (max-width: 1024px) {
+  .promo-row--grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 320px)); justify-content: center; }
+  .promo-row--grid > .promo-card { width: auto; }
+}
+/* hesap yan menüsünde buton öğesi (Çıkış Yap) tam genişlik */
+button.side-menu__item { width: 100%; text-align: left; }
+/* adres kartı: rozetli/rozetsiz başlık aynı yükseklik; eylem linkleri dokunmatikte 44 px */
+.address-card__title { min-height: 24px; }
+@media (max-width: 1024px) {
+  .address-card__actions .link { display: inline-flex; align-items: center; min-height: 44px; }
+  .address-card__actions { margin-top: 0; }
+}
+
+/* pasif görünen ama tıklanınca doğrulamayı çalıştıran buton (A101 "Siparişi Tamamla") */
+.btn[aria-disabled="true"] { opacity: .6; transform: none; }
+@media (hover: hover) and (pointer: fine) { .btn[aria-disabled="true"]:hover { transform: none; } }
+
+/* geniş sepet satırı (sepet sayfası): 88 px görsel; masaüstünde ad + birim solda, adet ve satır toplamı sağda */
+.mc-line--lg { grid-template-columns: 88px minmax(0, 1fr) auto; gap: var(--sp-4); padding-block: var(--sp-4); }
+.mc-line--lg .mc-line__img { width: 88px; height: 88px; }
+@media (min-width: 641px) {
+  .mc-line--lg .mc-line__body { grid-template-columns: minmax(0, 1fr) auto; column-gap: var(--sp-5); align-items: center; }
+  .mc-line--lg .mc-line__row { grid-column: 2; grid-row: 1 / span 2; gap: var(--sp-5); }
+  .mc-line--lg .mc-line__total { min-width: 110px; justify-content: flex-end; text-align: right; }
+}
+@media (max-width: 640px) {
+  .mc-line--lg { grid-template-columns: 72px minmax(0, 1fr) auto; gap: var(--sp-3); }
+  .mc-line--lg .mc-line__img { width: 72px; height: 72px; }
+  .mc-line--lg .qty--sm .qty__btn { width: 40px; }
+}
+/* segmented: masaüstünde doğal genişlik, telefonda tam genişlik */
+@media (max-width: 640px) { .segmented--block-sm { display: grid; width: 100%; } }
+
+/* ödeme bölümü başlık eylemi (Adres Ekle, Sepeti Boşalt): dokunmatikte 44 px, satır yüksekliği değişmez */
+@media (max-width: 1024px) { .co-section__action { display: inline-flex; align-items: center; min-height: 44px; margin-block: -12px; } }

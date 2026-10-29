@@ -60,6 +60,8 @@
   --c-danger-tint: #fdedf0;    /* hatalı alan zemini, hata uyarısı */
   --c-success: #1d7a4f;        /* başarı uyarısı ikonu */
   --c-success-tint: #e7f4ec;   /* başarı uyarısı zemini */
+  --c-warn: #a35f00;           /* uyarı ikonu, durum rozeti (bekliyor) */
+  --c-warn-tint: #fdf2e1;      /* uyarı zemini */
 
   /* — Renk: perde (overlay) — */
   --c-scrim: rgba(26, 17, 77, .5);        /* drawer / modal */

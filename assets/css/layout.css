@@ -374,3 +374,34 @@ body.has-buybar .cookie { bottom: calc(96px + env(safe-area-inset-bottom, 0px));
   /* yapışık araç çubuğu olan sayfada bildirim çubuğun altında belirir */
   body:has(.list-sticky) .toast-stack { top: calc(env(safe-area-inset-top, 0px) + var(--hdr-h) + var(--sticky-h, 0px) + var(--sp-2)); }
 }
+
+/* ---------- Oturum durumu: misafir / üye öğeleri (main.js html.is-signed-in) ---------- */
+.only-user { display: none; }
+.is-signed-in .only-user { display: grid; }
+.is-signed-in .only-guest { display: none; }
+.dropdown__hello { display: grid; gap: 2px; padding: var(--sp-2) 10px var(--sp-3); margin-bottom: var(--sp-1); border-bottom: 1px solid var(--c-line); }
+.dropdown__hello span { font-size: var(--fs-meta); color: var(--c-muted); }
+.dropdown__hello strong { font-size: var(--fs-sm); font-weight: 700; color: var(--c-ink); overflow-wrap: anywhere; }
+
+/* ---------- Sade header (ödeme, A101): geri linki · logo · güvenli ödeme; alt menü gizli ---------- */
+.site-header--sade .hdr-top { justify-content: space-between; }
+.site-header--sade .hdr-logo { position: absolute; left: 50%; transform: translateX(-50%); }
+.site-header--sade .wrap { position: relative; }
+.hdr-back { display: inline-flex; align-items: center; gap: var(--sp-2); min-height: 44px; }
+.hdr-secure { display: inline-flex; align-items: center; gap: var(--sp-2); font-size: var(--fs-meta); font-weight: 600; color: var(--c-ink-2); }
+.hdr-secure i { color: var(--c-success); }
+body[data-header="sade"] .bottom-nav { display: none; }
+@media (max-width: 640px) {
+  .site-header--sade .hdr-logo { position: static; transform: none; order: -1; }
+  .site-header--sade .hdr-secure { display: none; }
+  /* alt menü yok: yukarı çık köşeye iner, footer son satırı onun üstünde biter */
+  body[data-header="sade"] .site-footer { padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px)); }
+  body[data-header="sade"]:not(.has-buybar) .to-top { bottom: calc(var(--sp-4) + env(safe-area-inset-bottom, 0px)); }
+}
+
+/* Toplam çubuğu (sepet, ödeme): .buy-bar kalıbı; yalnız 1024 ve altında, özet ekrandan çıkınca belirir */
+.buy-bar__total { flex: 1; min-width: 0; display: grid; gap: 2px; }
+.buy-bar__total-label { font-size: var(--fs-meta); font-weight: 500; line-height: var(--lh-ui); color: var(--c-ink-2); }
+.buy-bar__total .price { font-size: var(--fs-price); }
+@media (min-width: 1025px) { .buy-bar--mobile { display: none; } }
+@media (max-width: 640px) { .buy-bar--mobile .buy-bar__actions { flex: none; } }
