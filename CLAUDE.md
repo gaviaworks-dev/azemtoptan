@@ -15,6 +15,6 @@
 ## Durum ve sıradaki adım (30.10.2026)
 - **Sayfalar:** ana sayfa, liste (arama ve marka dahil), ürün, yasal metinler, giriş, kayıt, şifremi unuttum; gece eklenenler: sepet, ödeme, sipariş tamamlandı, hesabım (tüm alt bölümler), kampanyalar, markalar, kurumsal, 404, 500, bakım.
 - **Kanon:** ortak bileşenler ve JS API'si `referans/kanon-api.md`'de, örnekler `referans/kit.html`'de. Gece kararları `referans/gece-kararlari.md`'de (G1–G22), gece raporu `referans/gece-raporu.md`'de.
-- **Canlı:** https://gaviaworks-dev.github.io/azemtoptan/ (GitHub Pages, `main` dalı). Gece işi henüz commit'lenmedi.
+- **Canlı:** https://gaviaworks-dev.github.io/azemtoptan/ (GitHub Pages, `main` dalı). Gece işi yayında (30.10.2026); 404 Pages'te çalışıyor.
 - **Açık konular:** Azem'den beklenen içerik `referans/azem-eksikler.md`'de; harici ürün görselleri `referans/urun-gorsel-kaynaklari.md`'de. `referans/` repoya girmez, yerelde durur.
-- **Sıradaki:** Beyar gece işini inceler; onaydan sonra commit + push ve canlıda kontrol.
+- **Sıradaki:** Beyar ve patron yeni sayfaları inceler; revize turları CLAUDE.md çalışma kurallarıyla.
