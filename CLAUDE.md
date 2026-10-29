@@ -12,8 +12,9 @@
 - Revize turlarında yalnız değişen sayfalar 390 ve 1440'ta (yerleşim değiştiyse 768) hızlı kontrol edilir; 6 genişlik tam tarama yalnız yayından önce bir kez yapılır.
 - Bot koruması veya site engelleri aşılmaz; engellenen kaynaktan vazgeçilir.
 
-## Durum ve sıradaki adım (28.10.2026)
-- **Yapılan 7 sayfa:** ana sayfa (`index.html`), liste (`kategori.html`, arama sonucu dahil), ürün detayı (`urun.html`), yasal metinler (`sayfa.html`), giriş (`giris-yap.html`), kayıt (`kayit-ol.html`), şifremi unuttum (`sifremi-unuttum.html`).
-- **Canlı:** https://gaviaworks-dev.github.io/azemtoptan/ (GitHub Pages, `main` dalı).
-- **Açık konular:** Azem'den beklenen içerik ve görseller `referans/azem-eksikler.md`'de (ör. boş yasal metinler, 0,00 ₺ ürünler, 404 görseller); harici kaynaktan bulunan ürün görselleri ve "görsel bekleniyor" olan 2 ürün `referans/urun-gorsel-kaynaklari.md`'de. `referans/` repoya girmez, yerelde durur.
-- **Sıradaki faz (patron onayından sonra):** önce site haritası çıkarılır. Sonra ortak kanon: popup/modal, onay pencereleri, hata sayfaları, boş durumlar. Ardından tüm akışlar: sepet, ödeme, adres, profil, siparişler, favoriler, arama, kurumsal sayfalar.
+## Durum ve sıradaki adım (30.10.2026)
+- **Sayfalar:** ana sayfa, liste (arama ve marka dahil), ürün, yasal metinler, giriş, kayıt, şifremi unuttum; gece eklenenler: sepet, ödeme, sipariş tamamlandı, hesabım (tüm alt bölümler), kampanyalar, markalar, kurumsal, 404, 500, bakım.
+- **Kanon:** ortak bileşenler ve JS API'si `referans/kanon-api.md`'de, örnekler `referans/kit.html`'de. Gece kararları `referans/gece-kararlari.md`'de (G1–G22), gece raporu `referans/gece-raporu.md`'de.
+- **Canlı:** https://gaviaworks-dev.github.io/azemtoptan/ (GitHub Pages, `main` dalı). Gece işi henüz commit'lenmedi.
+- **Açık konular:** Azem'den beklenen içerik `referans/azem-eksikler.md`'de; harici ürün görselleri `referans/urun-gorsel-kaynaklari.md`'de. `referans/` repoya girmez, yerelde durur.
+- **Sıradaki:** Beyar gece işini inceler; onaydan sonra commit + push ve canlıda kontrol.
