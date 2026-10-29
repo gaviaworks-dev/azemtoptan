@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Markalar | Azem Toptan</title>
+  <meta name="description" content="Azem Toptan'da satılan markalar: harf dizininden markayı bulun, markanın tüm ürünlerini listeleyin.">
+  <meta name="theme-color" content="#1a114d">
+  <link rel="icon" href="data:,">
+  <link rel="preload" href="assets/fonts/plus-jakarta-sans/plus-jakarta-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/vendor/fontawesome/css/all.min.css">
+  <link rel="stylesheet" href="assets/css/tokens.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/layout.css">
+  <script>document.documentElement.classList.add('js');</script>
+</head>
+<body data-page="markalar">
+
+<script src="assets/js/shell.js" data-shell="top"></script>
+
+<!-- ================= İÇERİK =================
+     Marka dizini (K11a): Azem'in /markalar sayfası boş; dizin AZEM_DB.brands'ten, yalnız satılabilir ürünü olan markalar.
+     Marka → kategori.html?marka=<slug>. İçeriği assets/js/brands.js basar. -->
+<main class="page-main" id="icerik">
+
+  <section class="sec sec--white">
+    <div class="wrap">
+      <div class="page-head">
+        <nav aria-label="Konum"><ol class="breadcrumb"><li><a href="index.html">Ana Sayfa</a></li><li class="breadcrumb__sep" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></li><li aria-current="page">Markalar</li></ol></nav>
+        <div class="page-head__row"><h1 class="page-head__title">Markalar<span class="page-head__count" data-total></span></h1></div>
+      </div>
+
+      <div class="stack stack--lg">
+        <div class="form-grid form-grid--2">
+          <div class="input-group">
+            <label class="input-group__prefix" for="markaAra"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i><span class="sr-only">Marka ara</span></label>
+            <input class="input" id="markaAra" type="search" placeholder="Marka ara" autocomplete="off" data-brand-filter>
+          </div>
+        </div>
+
+        <!-- Harf dizini: markası olmayan harf pasif; mobilde yatay kayar -->
+        <nav class="az-index" aria-label="Harf dizini" data-letters></nav>
+
+        <p class="sr-only" role="status" data-status></p>
+        <div class="stack stack--lg" data-groups></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script src="assets/js/shell.js" data-shell="bottom"></script>
+
+<script src="assets/data/catalog.js"></script>
+<script src="assets/data/products.js"></script>
+<script src="assets/data/format.js"></script>
+<script src="assets/js/main.js"></script>
+<script src="assets/js/brands.js"></script>
+</body>
+</html>

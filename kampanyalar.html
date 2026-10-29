@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Kampanyalar | Azem Toptan</title>
+  <meta name="description" content="Azem Toptan güncel kampanyaları: avantajlı fiyatlar, indirimli markalar ve öne çıkan ürünler.">
+  <meta name="theme-color" content="#1a114d">
+  <link rel="icon" href="data:,">
+  <link rel="preload" href="assets/fonts/plus-jakarta-sans/plus-jakarta-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/vendor/fontawesome/css/all.min.css">
+  <link rel="stylesheet" href="assets/css/tokens.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/layout.css">
+  <script>document.documentElement.classList.add('js');</script>
+</head>
+<body data-page="kampanyalar">
+
+<script src="assets/js/shell.js" data-shell="top"></script>
+
+<!-- ================= İÇERİK =================
+     Azem'in kampanya malzemesi (catalog.js): ana sayfa banner'ları + kampanya kartları + Bugünün Fırsatı.
+     İçeriği assets/js/campaigns.js basar. -->
+<main class="page-main" id="icerik">
+
+  <section class="sec sec--white">
+    <div class="wrap">
+      <div class="page-head">
+        <nav aria-label="Konum"><ol class="breadcrumb"><li><a href="index.html">Ana Sayfa</a></li><li class="breadcrumb__sep" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></li><li aria-current="page">Kampanyalar</li></ol></nav>
+        <div class="page-head__row"><h1 class="page-head__title">Kampanyalar</h1></div>
+      </div>
+
+      <div class="stack stack--lg">
+        <!-- Bugünün Fırsatı: main.js [data-firsat] diyaloğunu açar (G10) -->
+        <div class="info-grid">
+          <a class="info-card" href="#" data-firsat><span class="info-card__icon"><i class="fa-solid fa-bolt" aria-hidden="true"></i></span><span><span class="info-card__label">FIRSAT</span><span class="info-card__value">Bugünün Fırsatı</span></span></a>
+        </div>
+
+        <!-- Kampanya banner'ları (ana sayfa hero'su: çerçeve oranında geniş / dikey dolgu sürümleri) -->
+        <div class="hero" data-banners></div>
+
+        <!-- Kampanya kartları (ana sayfadaki 4 kart, aynı hedefler); ≤1024 ızgara, kart ≤320 px -->
+        <h2 class="sr-only">Kampanya kartları</h2>
+        <div class="promo-row promo-row--grid" data-promos></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script src="assets/js/shell.js" data-shell="bottom"></script>
+
+<script src="assets/data/catalog.js"></script>
+<script src="assets/data/products.js"></script>
+<script src="assets/data/format.js"></script>
+<script src="assets/js/main.js"></script>
+<script src="assets/js/campaigns.js"></script>
+</body>
+</html>

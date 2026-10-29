@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Sipariş Tamamlandı | Azem Toptan</title>
+  <meta name="description" content="Azem Toptan sipariş sonucu: sipariş numaranız, teslimat ve ödeme bilgileri.">
+  <meta name="theme-color" content="#1a114d">
+  <link rel="icon" href="data:,">
+  <link rel="preload" href="assets/fonts/plus-jakarta-sans/plus-jakarta-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/vendor/fontawesome/css/all.min.css">
+  <link rel="stylesheet" href="assets/css/tokens.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/layout.css">
+  <script>document.documentElement.classList.add('js');</script>
+</head>
+<body data-page="siparis-tamamlandi">
+
+<script src="assets/js/shell.js" data-shell="top"></script>
+
+<!-- ================= İÇERİK =================
+     Sipariş sonucu: siparis-tamamlandi.html?no=<sipariş no>. Sipariş yerel kayıttan (A.orders) okunur;
+     bilinmeyen numarada hata kartı. Kartı assets/js/order-done.js basar. -->
+<main class="page-main" id="icerik">
+  <section class="sec"><div class="wrap">
+    <div class="page-head">
+      <nav aria-label="Konum"><ol class="breadcrumb"><li><a href="index.html">Ana Sayfa</a></li><li class="breadcrumb__sep" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></li><li aria-current="page">Sipariş Tamamlandı</li></ol></nav>
+    </div>
+    <div data-order-done></div>
+  </div></section>
+</main>
+
+<script src="assets/js/shell.js" data-shell="bottom"></script>
+
+<script src="assets/data/catalog.js"></script>
+<script src="assets/data/products.js"></script>
+<script src="assets/data/format.js"></script>
+<script src="assets/js/main.js"></script>
+<script src="assets/js/order-done.js"></script>
+</body>
+</html>

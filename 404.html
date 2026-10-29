@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <!-- GitHub Pages bu dosyayı her eksik adreste (iç içe yollar dahil) sunar: göreli adresler site kökünden çözülsün.
+       <base> ve bütün varlık etiketleri betikle yazılır; düz etiket olsalar tarayıcının ön yükleyicisi
+       base'den önce yanlış klasörden (ör. /a/b/assets/...) ister ve 404 alır. -->
+  <script>
+    window.AZEM_ROOT = location.pathname.indexOf('/azemtoptan/') > -1 ? '/azemtoptan/' : '/';
+    window.AZEM_JS = function (list) { document.write(list.map(function (s) { return '<script src="' + s[0] + '"' + (s[1] ? ' data-shell="' + s[1] + '"' : '') + '><\/script>'; }).join('')); };
+    document.write('<base href="' + window.AZEM_ROOT + '">' +
+      '<link rel="preload" href="assets/fonts/plus-jakarta-sans/plus-jakarta-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>' +
+      ['assets/vendor/fontawesome/css/all.min.css', 'assets/css/tokens.css', 'assets/css/base.css', 'assets/css/components.css', 'assets/css/layout.css']
+        .map(function (h) { return '<link rel="stylesheet" href="' + h + '">'; }).join(''));
+    document.documentElement.classList.add('js');
+  </script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#1a114d">
+  <link rel="icon" href="data:,">
+  <title>Sayfa bulunamadı | Azem Toptan</title>
+</head>
+<body data-page="404">
+
+<script>AZEM_JS([['assets/js/shell.js', 'top']]);</script>
+
+<!-- ================= İÇERİK ================= -->
+<main class="page-main" id="icerik">
+  <section class="sec sec--white"><div class="wrap">
+    <div class="status-page">
+      <span class="status-page__icon"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i></span>
+      <p class="status-page__code">Hata 404</p>
+      <h1 class="status-page__title">Aradığınız sayfa bulunamadı</h1>
+      <p class="status-page__text">Sayfa kaldırılmış ya da adres yanlış yazılmış olabilir.</p>
+      <div class="status-page__actions"><a class="btn btn--primary" href="index.html">Ana Sayfaya Dön</a><a class="btn btn--ghost" href="kategori.html">Ürünlere Göz At</a></div>
+    </div>
+  </div></section>
+</main>
+
+<script>AZEM_JS([['assets/js/shell.js', 'bottom'], ['assets/data/catalog.js'], ['assets/data/products.js'], ['assets/data/format.js'], ['assets/js/main.js'], ['assets/js/status.js']]);</script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Hesabım | Azem Toptan</title>
+  <meta name="description" content="Azem Toptan hesabım: siparişler, favoriler, adresler, profil ve iletişim tercihleri.">
+  <meta name="theme-color" content="#1a114d">
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="data:,">
+  <link rel="preload" href="assets/fonts/plus-jakarta-sans/plus-jakarta-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/vendor/fontawesome/css/all.min.css">
+  <link rel="stylesheet" href="assets/css/tokens.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/layout.css">
+  <script>document.documentElement.classList.add('js');</script>
+</head>
+<body data-page="hesabim">
+
+<script src="assets/js/shell.js" data-shell="top"></script>
+
+<!-- ================= İÇERİK =================
+     Tek şablon: hesabim.html?s=<bölüm> (siparisler, siparis&no=, favoriler, adresler, profil, sifre, tercihler; boş = özet).
+     Yerleşimi assets/js/account.js basar. Misafire giriş kutusu; ≤1024'te dizin (menü) / ayrıntı (bölüm). -->
+<main class="page-main" id="icerik">
+  <section class="sec sec--white"><div class="wrap"><div class="page-head" data-account-top></div><div data-account-body></div></div></section>
+</main>
+
+<!-- Adres ekle / düzenle (A101 sağdan çekmece; konum araması yerine il / ilçe / mahalle / adres formu, G4). main z-index bağlamı dışında: header'ın üstünde açılır -->
+<aside class="drawer drawer--form" id="adresForm" role="dialog" aria-modal="true" aria-labelledby="adresFormBaslik">
+  <div class="drawer__head"><span class="drawer__head-title" id="adresFormBaslik">Yeni Adres</span><button class="icon-btn" type="button" data-drawer-close aria-label="Kapat"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button></div>
+  <div class="drawer__body">
+    <form class="form-stack" id="adresFormu" novalidate>
+      <div class="field"><label class="field__label" for="aBaslik">Adres Başlığı<span class="req" aria-hidden="true">*</span><span class="sr-only">(zorunlu)</span></label><input class="input" id="aBaslik" name="baslik" type="text" maxlength="40" placeholder="Ev, İş…" required data-label="Adres Başlığı"></div>
+      <div class="form-grid form-grid--2">
+        <div class="field"><label class="field__label" for="aAd">Ad<span class="req" aria-hidden="true">*</span><span class="sr-only">(zorunlu)</span></label><input class="input" id="aAd" name="ad" type="text" autocomplete="given-name" required data-label="Ad"></div>
+        <div class="field"><label class="field__label" for="aSoyad">Soyad<span class="req" aria-hidden="true">*</span><span class="sr-only">(zorunlu)</span></label><input class="input" id="aSoyad" name="soyad" type="text" autocomplete="family-name" required data-label="Soyad"></div>
+      </div>
+      <div class="field"><label class="field__label" for="aTelefon">Telefon<span class="req" aria-hidden="true">*</span><span class="sr-only">(zorunlu)</span></label><div class="input-group"><span class="input-group__prefix" aria-hidden="true">0</span><input class="input" id="aTelefon" name="telefon" type="tel" inputmode="numeric" autocomplete="tel-national" placeholder="5__ ___ __ __" data-phone required data-label="Telefon"></div></div>
+      <div class="form-grid form-grid--2">
+        <div class="field"><label class="field__label" for="aIl">İl<span class="req" aria-hidden="true">*</span><span class="sr-only">(zorunlu)</span></label><span class="select"><select class="input" id="aIl" name="il" autocomplete="address-level1" required data-label="İl" data-il-select="aIlce"><option value="">İl Seçiniz</option></select></span></div>
+        <div class="field"><label class="field__label" for="aIlce">İlçe<span class="req" aria-hidden="true">*</span><span class="sr-only">(zorunlu)</span></label><span class="select"><select class="input" id="aIlce" name="ilce" autocomplete="address-level2" required data-label="İlçe" disabled><option value="">İlçe Seçiniz</option></select></span></div>
+      </div>
+      <div class="field"><label class="field__label" for="aMahalle">Mahalle<span class="req" aria-hidden="true">*</span><span class="sr-only">(zorunlu)</span></label><input class="input" id="aMahalle" name="mahalle" type="text" maxlength="100" required data-label="Mahalle"></div>
+      <div class="field"><label class="field__label" for="aAdres">Adres<span class="req" aria-hidden="true">*</span><span class="sr-only">(zorunlu)</span></label><textarea class="input" id="aAdres" name="adres" rows="3" maxlength="255" autocomplete="street-address" placeholder="Cadde, sokak, bina ve daire no" required data-label="Adres"></textarea></div>
+    </form>
+  </div>
+  <div class="drawer__foot"><button class="btn btn--ghost" type="button" data-drawer-close>Vazgeç</button><button class="btn btn--primary" type="submit" form="adresFormu">Kaydet</button></div>
+</aside>
+<div class="scrim" data-drawer-scrim="adresForm"></div>
+
+<script src="assets/js/shell.js" data-shell="bottom"></script>
+
+<script src="assets/data/catalog.js"></script>
+<script src="assets/data/products.js"></script>
+<script src="assets/data/format.js"></script>
+<script src="assets/data/iller.js"></script>
+<script src="assets/js/main.js"></script>
+<script src="assets/js/account.js"></script>
+</body>
+</html>

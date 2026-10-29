@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Sepetim | Azem Toptan</title>
+  <meta name="description" content="Azem Toptan sepetiniz: ürün adetlerini düzenleyin, sipariş özetini görün ve siparişinizi onaylayın.">
+  <meta name="theme-color" content="#1a114d">
+  <link rel="icon" href="data:,">
+  <link rel="preload" href="assets/fonts/plus-jakarta-sans/plus-jakarta-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/vendor/fontawesome/css/all.min.css">
+  <link rel="stylesheet" href="assets/css/tokens.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/layout.css">
+  <script>document.documentElement.classList.add('js');</script>
+</head>
+<body data-page="sepet">
+
+<script src="assets/js/shell.js" data-shell="top"></script>
+
+<!-- ================= İÇERİK =================
+     A101 sepet: solda satırlar, sağda yapışık sipariş özeti + kupon; altta öneri rayı.
+     Satırlar ve özet sepetten (localStorage) assets/js/cart.js ile basılır. -->
+<main class="page-main" id="icerik">
+  <section class="sec"><div class="wrap">
+    <div class="page-head">
+      <nav aria-label="Konum"><ol class="breadcrumb"><li><a href="index.html">Ana Sayfa</a></li><li class="breadcrumb__sep" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></li><li aria-current="page">Sepetim</li></ol></nav>
+      <div class="page-head__row"><h1 class="page-head__title">Sepetim<span class="page-head__count" data-cart-head></span></h1></div>
+    </div>
+    <div data-cart-body><div data-cart-full hidden></div><div data-cart-empty hidden></div></div>
+  </div></section>
+  <div data-cart-rail></div>
+</main>
+
+<!-- Mobil toplam çubuğu (≤1024): özet kartı ekrandan çıkınca belirir -->
+<div class="buy-bar buy-bar--mobile" data-sum-bar aria-hidden="true"><div class="wrap buy-bar__inner">
+  <div class="buy-bar__total"><span class="buy-bar__total-label">Toplam</span><span class="price" data-sum-bar-total></span></div>
+  <div class="buy-bar__actions"><button class="btn btn--primary" type="button" data-cart-confirm>Sepeti Onayla</button></div>
+</div></div>
+
+<script src="assets/js/shell.js" data-shell="bottom"></script>
+
+<script src="assets/data/catalog.js"></script>
+<script src="assets/data/products.js"></script>
+<script src="assets/data/format.js"></script>
+<script src="assets/js/main.js"></script>
+<script src="assets/js/cart.js"></script>
+</body>
+</html>

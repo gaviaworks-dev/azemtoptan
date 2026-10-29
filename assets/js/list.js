@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Ürün liste sayfası — kategori.html?k=<slug>
+   Ürün liste sayfası — kategori.html?k=<slug> · arama sonucu ?q=<sorgu> · marka listesi ?marka=<marka slug>
    Yapışık blok (A101): ana kategori çubuğu + alt kategori chip'leri (Azem "Kategoriler" filtresi:
    çoklu seçim, anında uygulanır). Yan sütun: Fiyat, Markalar, Filtrele. Sıralama, görünüm seçici,
    48'lik sayfalama (2, 3 ve 4 kolona tam bölünür: tam sayfada son satır her kırılımda dolu). Durum URL'de: geri tuşu ve yenileme çalışır.
@@ -19,10 +19,16 @@
   var cat = A.catBySlug[A.param('k') || ''] || null;
   /* arama sonucu: kategori.html?q=… (header arama kutusu ve öneri panelinin "tüm sonuçlar" bağlantısı) */
   var query = cat ? '' : (A.param('q') || '').trim();
+  /* marka listesi: kategori.html?marka=<slug> (markalar.html). ?k= / ?q= varken marka= marka filtresidir (id listesi). */
+  var brand = null;
+  if (!cat && !query) A.DB.brands.forEach(function (b) { if (b.slug === A.param('marka')) brand = b; });
+  var brandName = brand ? window.AZEM_FORMAT.productName(brand.name) : '';
   var items = cat ? cat.items.filter(function (id) { return A.products[id]; })
-    : A.searchProducts(query).map(function (p) { return p.id; });
-  var heading = cat ? cat.name : (query ? '“' + query + '”' : 'Ürün Listesi');
-  if (query) EMPTY = EMPTY.replace('Bu kategoride ürün bulunamadı !', 'Ürün bulunamadı');
+    : brand ? A.DB.products.filter(function (p) { return p.brand === brand.id && A.sellable(p); }).map(function (p) { return p.id; })
+    : A.searchProducts(query).map(function (p) { return p.id; });   /* birebir yoksa Türkçe harfsiz yakın sonuç (main.js) */
+  var heading = cat ? cat.name : brand ? brandName : (query ? '“' + query + '”' : 'Ürün Listesi');
+  if (query) EMPTY = EMPTY.replace('Bu kategoride ürün bulunamadı !', 'Ürün bulunamadı').replace('</p>', '</p><p class="empty__text">Farklı bir kelimeyle aramayı deneyin.</p>');
+  if (brand) EMPTY = EMPTY.replace('Bu kategoride ürün bulunamadı !', 'Bu markada ürün bulunamadı !');
 
   var drawer = $('#filterDrawer'), main = $('[data-main]'), results = $('[data-results]');
 
@@ -30,7 +36,8 @@
   var path = cat ? A.catPath(cat) : [];
   $('[data-crumbs]').innerHTML = '<li><a href="index.html">Ana Sayfa</a></li>' + SEP +
     path.slice(0, -1).map(function (c) { return '<li><a href="' + A.catUrl(c) + '">' + esc(c.name) + '</a></li>' + SEP; }).join('') +
-    '<li aria-current="page">' + esc(cat ? cat.name : (query ? 'Arama' : 'Ürün Listesi')) + '</li>';
+    (brand ? '<li><a href="' + A.URLS.markalar + '">Markalar</a></li>' + SEP : '') +
+    '<li aria-current="page">' + esc(cat ? cat.name : brand ? brandName : (query ? 'Arama' : 'Ürün Listesi')) + '</li>';
   $('[data-title]').textContent = heading;
   document.title = heading + ' | Azem Toptan';
   if (query) $$('input[name="q"]').forEach(function (i) { i.value = query; });
@@ -59,16 +66,27 @@
 
   /* Kategori yok ya da ürünü yok: filtre ve araç çubuğu anlamsız, yalnız boş durum */
   if (!items.length) {
-    if (cat) $('[data-total]').textContent = '(0 Ürün)';
+    if (cat || brand) $('[data-total]').textContent = '(0 Ürün)';
     drawer.remove();
     $('[data-drawer-scrim="filterDrawer"]').remove();
     $('[data-toolbar]').remove();
     $('[data-layout]').classList.remove('with-aside');
-    results.innerHTML = EMPTY;
+    /* sonuçsuz arama: boş durum + Azem'in 7 ana kategorisi (öneri panelindeki "Popüler Kategoriler") */
+    results.innerHTML = EMPTY + (query
+      ? '<div class="stack stack--sm"><h2 class="sec-head__title">Popüler Kategoriler</h2><div class="chip-row">' +
+        (A.D.categories || []).map(function (c) { return '<a class="chip" href="' + A.catUrl(A.catByName(c.name, null)) + '">' + esc(c.name) + '</a>'; }).join('') +
+        '</div></div>'
+      : '');
     A.ready();
     return;
   }
   $('[data-total]').textContent = '(' + items.length + ' Ürün)';
+  /* arama sonucu satırı (A101): ""q" araması için N sonuç listelendi"; chip ve filtreyle güncellenir */
+  var resultLine = null;
+  if (query) {
+    $('[data-toolbar]').insertAdjacentHTML('beforebegin', '<p class="result-line" data-result-line></p>');
+    resultLine = $('[data-result-line]');
+  }
 
   /* ---------- Filtre seçenekleri ---------- */
   /* Kategoriler: geçerli kategori + alt ağacı, ağaç sırasıyla, yalnız ürünü olanlar */
@@ -85,7 +103,8 @@
     var b = A.products[id].brand;
     if (b != null && A.brands[b]) brandCount[b] = (brandCount[b] || 0) + 1;
   });
-  var brandOpts = Object.keys(brandCount).map(function (id) { return A.brands[id]; })
+  /* marka listesinde tek marka var: marka filtresi gösterilmez */
+  var brandOpts = brand ? [] : Object.keys(brandCount).map(function (id) { return A.brands[id]; })
     .sort(function (a, b) { return a.name.localeCompare(b.name, 'tr'); });
 
   var prices = items.map(function (id) { return A.products[id].price; });
@@ -96,13 +115,28 @@
       '<span class="check__box"><i class="fa-solid fa-check" aria-hidden="true"></i></span>' +
       '<span class="check__label">' + esc(label) + '</span><span class="check__count">(' + count + ')</span></label>';
   }
-  /* Alt kategori chip'leri "Ad (sayı)": geçerli kategorinin ürünü olan alt kategorileri (ağaç sırası) */
-  var chipOpts = catOpts.slice(1);
+  /* Alt kategori chip'leri "Ad (sayı)": geçerli kategorinin ürünü olan alt kategorileri (ağaç sırası).
+     Arama ve marka listesinde (A101 arama sonucu): sonuçların 2. seviye kategorileri, sayı sonuç içindeki ürün sayısı,
+     çoktan aza; tek kategoriye düşen sonuçta chip satırı gösterilmez. */
+  var chipOpts = catOpts.slice(1), chipCount = {};
+  if (cat) chipOpts.forEach(function (c) { chipCount[c.id] = c.items.length; });
+  else {
+    items.forEach(function (id) {
+      (A.products[id].cats || []).forEach(function (cid) {
+        var c = A.cats[cid];
+        if (c && c.level === 2 && c.items.indexOf(id) > -1) chipCount[cid] = (chipCount[cid] || 0) + 1;
+      });
+    });
+    chipOpts = A.DB.cats.filter(function (c) { return chipCount[c.id]; })
+      .sort(function (a, b) { return chipCount[b.id] - chipCount[a.id]; });   /* sort kararlı: eşitler ağaç sırasında */
+    if (chipOpts.length < 2) chipOpts = [];
+  }
   var chipBar = $('[data-chips]'), brandList = $('[data-brand-list]');
   chipBar.innerHTML = chipOpts.map(function (c) {
     return '<button class="chip" type="button" data-kat="' + c.id + '" aria-pressed="false">' + esc(c.name) +
-      ' <span class="chip__count">(' + c.items.length + ')</span></button>';
+      ' <span class="chip__count">(' + chipCount[c.id] + ')</span></button>';
   }).join('');
+  if (!cat) chipBar.setAttribute('aria-label', 'Sonuç kategorileri');
   if (brandOpts.length) brandList.innerHTML = brandOpts.map(function (b) { return checkRow('marka', b.id, b.name, brandCount[b.id]); }).join('');
   else $('[data-group="marka"]').remove();
   var range = A.initRange($('[data-range]'), { min: pMin, max: pMax, from: pMin, to: pMax, format: A.formatPrice });
@@ -117,7 +151,7 @@
   document.addEventListener('click', function (e) { if (e.target.closest('.acc__btn') && drawer.contains(e.target)) syncPanels(); });
 
   /* ---------- Durum <-> URL ---------- */
-  /* ?k=…&kat=ids&marka=ids&fiyat=min-max&sira=artan|azalan&gorunum=3|4|liste&s=2 ; geçersiz değerler yok sayılır */
+  /* ?k=…|q=…|marka=<slug> &kat=ids&marka=ids (marka listesinde yok)&fiyat=min-max&sira=artan|azalan&gorunum=3|4|liste&s=2 ; geçersiz değerler yok sayılır */
   function idList(raw, allowed) {
     var want = String(raw || '').split(',');
     return allowed.filter(function (id) { return want.indexOf(String(id)) > -1; });
@@ -142,7 +176,7 @@
     return st;
   }
   function toUrl(st) {
-    var q = cat ? 'k=' + encodeURIComponent(cat.slug) : 'q=' + encodeURIComponent(query);
+    var q = cat ? 'k=' + encodeURIComponent(cat.slug) : brand ? 'marka=' + encodeURIComponent(brand.slug) : 'q=' + encodeURIComponent(query);
     if (st.kat.length) q += '&kat=' + st.kat.join(',');
     if (st.marka.length) q += '&marka=' + st.marka.join(',');
     if (st.fiyat) q += '&fiyat=' + st.fiyat[0] + '-' + st.fiyat[1];
@@ -231,6 +265,7 @@
   }
   function syncControls(list, total) {
     $('[data-status]').textContent = list.length + ' ürün' + (total > 1 ? ', sayfa ' + state.s + ' / ' + total : '');
+    if (resultLine) resultLine.innerHTML = '“' + esc(query) + '” araması için <strong>' + list.length + ' sonuç</strong> listelendi';
 
     $('[data-sort-label]').textContent = SORTS[state.sira];
     $$('[data-sort]').forEach(function (b) { b.setAttribute('aria-checked', String(b.getAttribute('data-sort') === state.sira)); });

@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Ödeme | Azem Toptan</title>
+  <meta name="description" content="Azem Toptan ödeme: teslimat adresi, teslimat yöntemi, fatura ve ödeme bilgileriyle siparişinizi tamamlayın.">
+  <meta name="theme-color" content="#1a114d">
+  <link rel="icon" href="data:,">
+  <link rel="preload" href="assets/fonts/plus-jakarta-sans/plus-jakarta-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/vendor/fontawesome/css/all.min.css">
+  <link rel="stylesheet" href="assets/css/tokens.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/layout.css">
+  <script>document.documentElement.classList.add('js');</script>
+</head>
+<body data-page="odeme" data-header="sade">
+
+<script src="assets/js/shell.js" data-shell="top"></script>
+
+<!-- ================= İÇERİK =================
+     A101 ödeme (G5): tek sayfa, numaralı bölüm kartları (1 Teslimat Adresi, 2 Teslimat Yöntemi, 3 Fatura, 4 Ödeme),
+     sağda yapışık özet + sözleşme onayı + "Siparişi Tamamla". Bölümleri assets/js/checkout.js basar. -->
+<main class="page-main" id="icerik">
+  <section class="sec"><div class="wrap">
+    <div class="page-head">
+      <nav aria-label="Konum"><ol class="breadcrumb"><li><a href="index.html">Ana Sayfa</a></li><li class="breadcrumb__sep" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></li><li><a href="sepet.html">Sepetim</a></li><li class="breadcrumb__sep" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></li><li aria-current="page">Ödeme</li></ol></nav>
+      <div class="page-head__row"><h1 class="page-head__title">Ödeme</h1></div>
+    </div>
+    <div data-co-body></div>
+  </div></section>
+</main>
+
+<!-- Adres ekle (G4: sağdan form çekmecesi; A101'deki harita yerine il / ilçe / mahalle / adres) -->
+<aside class="drawer drawer--form" id="adresCekmece" role="dialog" aria-modal="true" aria-labelledby="adresCekmeceBaslik">
+  <div class="drawer__head"><span class="drawer__head-title" id="adresCekmeceBaslik">Yeni Adres</span><button class="icon-btn" type="button" data-drawer-close aria-label="Kapat"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button></div>
+  <div class="drawer__body">
+    <form class="form-stack" id="adresFormu" novalidate>
+      <div class="field"><label class="field__label" for="oBaslik">Adres Başlığı<span class="req" aria-hidden="true">*</span><span class="sr-only">(zorunlu)</span></label><input class="input" id="oBaslik" name="baslik" type="text" maxlength="40" placeholder="Ev, İş…" required data-label="Adres Başlığı"></div>
+      <div class="form-grid form-grid--2">
+        <div class="field"><label class="field__label" for="oAd">Ad<span class="req" aria-hidden="true">*</span><span class="sr-only">(zorunlu)</span></label><input class="input" id="oAd" name="ad" type="text" autocomplete="given-name" required data-label="Ad"></div>
+        <div class="field"><label class="field__label" for="oSoyad">Soyad<span class="req" aria-hidden="true">*</span><span class="sr-only">(zorunlu)</span></label><input class="input" id="oSoyad" name="soyad" type="text" autocomplete="family-name" required data-label="Soyad"></div>
+      </div>
+      <div class="field"><label class="field__label" for="oTelefon">Telefon<span class="req" aria-hidden="true">*</span><span class="sr-only">(zorunlu)</span></label><div class="input-group"><span class="input-group__prefix" aria-hidden="true">0</span><input class="input" id="oTelefon" name="telefon" type="tel" inputmode="numeric" autocomplete="tel-national" placeholder="5__ ___ __ __" data-phone required data-label="Telefon"></div></div>
+      <div class="form-grid form-grid--2">
+        <div class="field"><label class="field__label" for="oIl">İl<span class="req" aria-hidden="true">*</span><span class="sr-only">(zorunlu)</span></label><span class="select"><select class="input" id="oIl" name="il" autocomplete="address-level1" required data-label="İl"><option value="">İl Seçiniz</option></select></span></div>
+        <div class="field"><label class="field__label" for="oIlce">İlçe<span class="req" aria-hidden="true">*</span><span class="sr-only">(zorunlu)</span></label><span class="select"><select class="input" id="oIlce" name="ilce" autocomplete="address-level2" required data-label="İlçe" disabled><option value="">İlçe Seçiniz</option></select></span></div>
+      </div>
+      <div class="field"><label class="field__label" for="oMahalle">Mahalle<span class="req" aria-hidden="true">*</span><span class="sr-only">(zorunlu)</span></label><input class="input" id="oMahalle" name="mahalle" type="text" maxlength="100" required data-label="Mahalle"></div>
+      <div class="field"><label class="field__label" for="oAdres">Adres<span class="req" aria-hidden="true">*</span><span class="sr-only">(zorunlu)</span></label><textarea class="input" id="oAdres" name="adres" rows="3" maxlength="255" autocomplete="street-address" placeholder="Cadde, sokak, bina ve daire no" required data-label="Adres"></textarea></div>
+    </form>
+  </div>
+  <div class="drawer__foot"><button class="btn btn--ghost" type="button" data-drawer-close>Vazgeç</button><button class="btn btn--primary" type="submit" form="adresFormu">Kaydet</button></div>
+</aside>
+<div class="scrim" data-drawer-scrim="adresCekmece"></div>
+
+<!-- Mobil toplam çubuğu (≤1024): sayfa başı ekrandan çıkınca belirir; buton özetteki "Siparişi Tamamla" ile aynı işi yapar -->
+<div class="buy-bar buy-bar--mobile" data-sum-bar aria-hidden="true"><div class="wrap buy-bar__inner">
+  <div class="buy-bar__total"><span class="buy-bar__total-label">Toplam</span><span class="price" data-sum-bar-total></span></div>
+  <div class="buy-bar__actions"><button class="btn btn--primary" type="button" data-co-submit aria-disabled="true">Siparişi Tamamla</button></div>
+</div></div>
+
+<script src="assets/js/shell.js" data-shell="bottom"></script>
+
+<script src="assets/data/catalog.js"></script>
+<script src="assets/data/products.js"></script>
+<script src="assets/data/format.js"></script>
+<script src="assets/data/iller.js"></script>
+<script src="assets/js/main.js"></script>
+<script src="assets/js/checkout.js"></script>
+</body>
+</html>
