@@ -474,7 +474,7 @@
   background: var(--c-surface);
 }
 .field-pill > i { color: var(--c-muted); }
-.field-pill input { flex: 1; min-width: 0; height: 56px; border: 0; outline: 0; background: transparent; font-size: var(--fs-sm); color: var(--c-ink); }
+.field-pill input { flex: 1; min-width: 0; height: 56px; border: 0; outline: 0; background: transparent; font-size: var(--fs-input); color: var(--c-ink); }
 .field-pill input::placeholder { color: var(--c-muted); }
 .field-pill:focus-within { box-shadow: 0 0 0 3px color-mix(in srgb, var(--c-brand-2) 45%, transparent); }
 .field-pill .btn { align-self: stretch; border-radius: 0; min-height: 56px; padding: 10px 26px; }  /* kutunun kenarına yapışık; köşesini kutunun radius'u verir */
@@ -546,19 +546,23 @@
   font-size: var(--fs-nav); font-weight: 600; line-height: var(--lh-ui); text-align: left; color: var(--c-ink);
 }
 .acc__btn:hover { background: var(--c-brand-tint); }
-.acc__btn i { margin-left: auto; font-size: 12px; color: var(--c-muted); transition: transform var(--t-base) var(--ease); }
-.acc__btn[aria-expanded="true"] i { transform: rotate(180deg); }
+/* dönen ok yalnız düğmenin doğrudan çocuğu olan chevron; kategori ikonu (.cat-ico içindeki <i>) hiç etkilenmez */
+.acc__btn > i { margin-left: auto; font-size: 12px; color: var(--c-muted); transition: transform var(--t-base) var(--ease); }
+.acc__btn[aria-expanded="true"] > i { transform: rotate(180deg); }
 .acc__img { width: 36px; height: 36px; flex: none; background: center / contain no-repeat; --ico-fs: 16px; }
+/* satır zemini koyulunca ikon kutusu kaybolmasın: kutu yerinde ve aynı boyda kalır, yalnız zemini açılır (.dropdown__item ile aynı) */
+.acc__btn:hover > .cat-ico { background: var(--c-surface); }
 .acc__panel { display: grid; grid-template-rows: 0fr; transition: grid-template-rows var(--t-base) var(--ease); }
 .acc__panel > div { overflow: hidden; }
 .acc__btn[aria-expanded="true"] + .acc__panel { grid-template-rows: 1fr; }
 .acc__panel .dropdown__list { padding: 2px 0 var(--sp-2) var(--sp-4); }
 .acc__sub { padding: 0 0 var(--sp-2) 56px; display: flex; flex-wrap: wrap; gap: 6px; }
-/* 2. seviye: ad bağlantı (alt kategori sayfası), yanında chip'leri açan düğme; panel tam satır */
-.acc--nested { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; }
-.acc--nested > .acc__panel { grid-column: 1 / -1; }
-.acc__btn--toggle { width: 44px; min-height: 44px; padding: 0; justify-content: center; }
-.acc__btn--toggle i { margin-left: 0; }
+/* 2. seviye: ad bağlantı (alt kategori sayfası), chip'leri açan düğme satırın içinde sağda.
+   Bağlantı tam satır genişliğinde: düğmeli ve düğmesiz satırların zemini, ikonu ve hizası aynı */
+.acc--nested { position: relative; }
+.acc--nested > .dropdown__item { padding-right: 44px; }
+.acc__btn--toggle { position: absolute; top: 0; right: 0; width: 44px; min-height: 44px; padding: 0; justify-content: center; }
+.acc__btn--toggle > i { margin-left: 0; }
 .chip {
   display: inline-flex; align-items: center; min-height: 32px; padding: 6px 12px;
   border-radius: var(--radius); border: 1px solid var(--c-line);
@@ -678,7 +682,7 @@ button.link { font-family: inherit; line-height: inherit; }
   width: 100%; min-width: 0; height: var(--field-h); padding: 0 var(--sp-4);
   border: 0; border-radius: var(--radius);
   background: var(--c-surface); box-shadow: inset 0 0 0 1px var(--c-line-strong);
-  font-size: var(--fs-body); font-weight: 500; line-height: var(--lh-ui); color: var(--c-ink);
+  font-size: var(--fs-input); font-weight: 500; line-height: var(--lh-ui); color: var(--c-ink);
   -webkit-appearance: none; appearance: none;
   transition: box-shadow var(--t-fast) var(--ease), background-color var(--t-fast) var(--ease);
 }
@@ -687,8 +691,8 @@ button.link { font-family: inherit; line-height: inherit; }
 .input:focus, .input:focus-visible { outline: 0; box-shadow: inset 0 0 0 2px var(--c-brand-2); }
 .input[aria-invalid="true"] { background: var(--c-danger-tint); box-shadow: inset 0 0 0 2px var(--c-danger); }
 .input:disabled { opacity: .6; cursor: not-allowed; }
-.input--sm { height: 40px; font-size: var(--fs-sm); }
-@media (max-width: 1024px) { .input--sm { height: 44px; font-size: var(--fs-body); } }  /* iOS odak büyütmesi olmasın */
+.input--sm { height: 40px; }
+@media (max-width: 1024px) { .input--sm { height: 44px; } }
 
 /* Önek / sonek: telefon "0", şifre gözü — tek kutu, iç öğeler çerçevesiz */
 .input-group {
@@ -700,7 +704,7 @@ button.link { font-family: inherit; line-height: inherit; }
 .input-group:focus-within { box-shadow: inset 0 0 0 2px var(--c-brand-2); }
 .input-group:has(.input[aria-invalid="true"]) { background: var(--c-danger-tint); box-shadow: inset 0 0 0 2px var(--c-danger); }
 .input-group .input { flex: 1; height: 100%; background: transparent; box-shadow: none; }
-.input-group__prefix { flex: none; padding-left: var(--sp-4); font-size: var(--fs-body); font-weight: 600; line-height: var(--lh-ui); color: var(--c-ink-2); }
+.input-group__prefix { flex: none; padding-left: var(--sp-4); font-size: var(--fs-input); font-weight: 600; line-height: var(--lh-ui); color: var(--c-ink-2); }
 .input-group__prefix + .input { padding-left: var(--sp-1); }
 .input-group__btn {
   flex: none; width: var(--field-h); height: 100%; display: grid; place-items: center;
@@ -1203,7 +1207,6 @@ button.dropdown__item { width: 100%; text-align: left; }
 .auth .form-group__title { margin-bottom: var(--sp-1); }
 .auth .field, .auth-card .field { gap: 6px; }
 .auth .field__label, .auth-card .field__label { font-size: var(--fs-meta); }
-.auth .input, .auth-card .input, .auth .input-group__prefix { font-size: var(--auth-fs-field); }
 .auth .check { font-size: var(--fs-meta); }
 .auth .btn--lg, .auth-card .btn--lg { min-height: var(--auth-btn-h); font-size: var(--fs-btn); }
 .auth .tabs--block .tabs__tab { min-height: var(--auth-ctl-h); font-size: var(--auth-fs-ctl); }

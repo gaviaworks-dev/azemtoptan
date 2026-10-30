@@ -89,50 +89,40 @@
 '<div class="menu-scrim" data-menu-scrim></div>';
   }
 
-  function sep() { return '<span class="sep"></span>'; }
+  /* boşluklar: satır kırılımı yalnız öğe aralarında (ayırıcı ≤1024'te gizli) */
+  function sep() { return ' <span class="sep"></span> '; }
 
   function bottom(page) {
     var active = function (p) { return page === p ? ' is-active' : ''; };
     return '' +
 '<footer class="site-footer" id="siteFooter">' +
   '<div class="wrap">' +
-    '<div class="foot-grid">' +
-      '<div class="foot-brand">' +
-        '<a class="foot-brand__logo" href="' + URL.home + '" aria-label="Azem Toptan ana sayfa"><img src="assets/img/brand/azem-logo.svg" width="108" height="42" alt="Azem Toptan"></a>' +
-        '<div class="foot-soc" aria-label="Bizi Takip Edin">' +
-          '<a href="#" aria-label="Facebook">' + icon('fa-brands fa-facebook-f') + '</a>' +
-          '<a href="#" aria-label="YouTube">' + icon('fa-brands fa-youtube') + '</a>' +
-          '<a href="#" aria-label="X">' + icon('fa-brands fa-x-twitter') + '</a>' +
-          '<a href="#" aria-label="Instagram">' + icon('fa-brands fa-instagram') + '</a>' +
-        '</div>' +
+    /* üst satır: sosyal | logo | uygulama (≤1024: logo, sosyal, uygulama alt alta) */
+    '<div class="foot-top">' +
+      '<a class="foot-logo" href="' + URL.home + '" aria-label="Azem Toptan ana sayfa"><img src="assets/img/brand/azem-logo.svg" width="108" height="42" alt="Azem Toptan"></a>' +
+      '<div class="foot-soc" role="group" aria-label="Bizi Takip Edin">' +
+        '<a href="#" aria-label="Facebook">' + icon('fa-brands fa-facebook-f') + '</a>' +
+        '<a href="#" aria-label="YouTube">' + icon('fa-brands fa-youtube') + '</a>' +
+        '<a href="#" aria-label="X">' + icon('fa-brands fa-x-twitter') + '</a>' +
+        '<a href="#" aria-label="Instagram">' + icon('fa-brands fa-instagram') + '</a>' +
       '</div>' +
-      '<nav class="foot-col" aria-label="Kategoriler"><h2>Kategoriler</h2><div data-foot-cats></div></nav>' +
-      '<nav class="foot-col" aria-label="Yardım"><h2>Yardım</h2>' +
-        '<a href="' + URL.kurumsal('musteri-hizmetleri') + '">Müşteri Hizmetleri</a>' +
-        '<a href="' + URL.yasal('iptal-ve-iade') + '">İptal ve İade</a>' +
-        '<a href="' + URL.kurumsal('iade') + '">Nasıl Kolay İade Yaparım?</a>' +
-        '<a href="' + URL.kurumsal('sss') + '">S.S.S.</a>' +
-      '</nav>' +
-      '<div class="foot-col"><h2>İletişim</h2><div class="foot-contact">' +
-        '<p class="foot-contact__row">' + icon('fa-brands fa-whatsapp') + '<span><strong>WhatsApp Sipariş Hattı</strong><span data-whatsapp></span></span></p>' +
-        '<p class="foot-contact__row">' + icon('fa-solid fa-envelope') + '<span><strong>E-Posta Adresi</strong><span data-email></span></span></p>' +
-        '<p class="foot-contact__row">' + icon('fa-solid fa-location-dot') + '<span><strong>Adres</strong><span data-address></span></span></p>' +
-      '</div></div>' +
-      '<div class="foot-app"><h2>Uygulamayı İndir</h2><div class="foot-app__btns">' +
+      '<div class="foot-app" role="group" aria-label="Uygulamayı İndir">' +
         '<a class="app-btn" href="#" aria-label="App Store\'dan indir">' + icon('fa-brands fa-apple') + '<span class="app-btn__tx"><span class="app-btn__pre">İndir</span><span class="app-btn__store">App Store</span></span></a>' +
         '<a class="app-btn" href="#" aria-label="Google Play\'den indir">' + icon('fa-brands fa-google-play') + '<span class="app-btn__tx"><span class="app-btn__pre">İndir</span><span class="app-btn__store">Google Play</span></span></a>' +
-      '</div></div>' +
+      '</div>' +
     '</div>' +
-    '<nav class="foot-corp" aria-label="Kurumsal">' +
-      '<a href="' + URL.kurumsal('hakkimizda') + '">Hakkımızda</a>' + sep() + '<a href="' + URL.markalar + '">Markalar</a>' + sep() + '<a href="' + URL.kampanyalar + '">Kampanyalar</a>' + sep() +
-      '<a href="' + URL.kurumsal('azem-kart') + '">Azem Kart</a>' + sep() + '<a href="' + URL.kurumsal('iletisim') + '">İletişim</a>' +
-    '</nav>' +
-    '<nav class="foot-legal" aria-label="Yasal">' +
-      '<a href="' + URL.yasal('cerez-politikasi') + '">Çerez Politikası</a>' + sep() +
-      '<a href="' + URL.yasal('uyelik-sozlesmesi') + '">Üyelik Sözleşmesi</a>' + sep() +
-      '<a href="' + URL.yasal('mesafeli-satis-sozlesmesi') + '">Mesafeli Satış Sözleşmesi</a>' + sep() +
-      '<a href="' + URL.yasal('kvkk') + '">KVKK</a>' +
-    '</nav>' +
+    /* link satırları: kurumsal + yardım, yasal */
+    '<nav class="foot-links foot-links--corp" aria-label="Kurumsal ve yardım">' + [
+      '<a href="' + URL.kurumsal('hakkimizda') + '">Hakkımızda</a>', '<a href="' + URL.markalar + '">Markalar</a>',
+      '<a href="' + URL.kampanyalar + '">Kampanyalar</a>', '<a href="' + URL.kurumsal('azem-kart') + '">Azem Kart</a>',
+      '<a href="' + URL.kurumsal('iletisim') + '">İletişim</a>', '<a href="' + URL.kurumsal('musteri-hizmetleri') + '">Müşteri Hizmetleri</a>',
+      '<a href="' + URL.kurumsal('iade') + '">Nasıl Kolay İade Yaparım?</a>', '<a href="' + URL.kurumsal('sss') + '">S.S.S.</a>'
+    ].join(sep()) + '</nav>' +
+    '<nav class="foot-links foot-links--legal" aria-label="Yasal">' + [
+      '<a href="' + URL.yasal('cerez-politikasi') + '">Çerez Politikası</a>', '<a href="' + URL.yasal('uyelik-sozlesmesi') + '">Üyelik Sözleşmesi</a>',
+      '<a href="' + URL.yasal('mesafeli-satis-sozlesmesi') + '">Mesafeli Satış Sözleşmesi</a>', '<a href="' + URL.yasal('kvkk') + '">KVKK</a>',
+      '<a href="' + URL.yasal('iptal-ve-iade') + '">İptal ve İade</a>'
+    ].join(sep()) + '</nav>' +
     '<div class="foot-bottom">' +
       '<span>© 2024 <b>Azem Toptan</b> · Toptan Alışverişin Adresi</span>' +
       '<div class="pay-logos" aria-label="Ödeme yöntemleri" data-pay-logos></div>' +

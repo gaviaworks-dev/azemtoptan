@@ -735,10 +735,6 @@
   });
   toTop.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' }); });
 
-  /* ---------- Footer: kategori linkleri ---------- */
-  var fc = $('[data-foot-cats]');
-  if (fc) fc.outerHTML = (D.categories || []).map(function (c) { return '<a href="' + catUrl(catByName(c.name, null)) + '">' + esc(c.name) + '</a>'; }).join('');
-
   /* ---------- Footer perde açılışı (DadaGastro mekanizması) ----------
      ≥641'de footer position:fixed; gövdeye footer yüksekliği kadar dip boşluğu
      açılmazsa son ekranı kalıcı örter. ResizeObserver border-box izler (dolgu

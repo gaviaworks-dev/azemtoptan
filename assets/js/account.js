@@ -308,7 +308,7 @@
   function renderFavoriler() {
     var ids = sellableFavs();
     main.innerHTML = ids.length
-      ? head(ids.length + ' Ürün' + (user.demo ? A.ornekBadge({ ornek: true }) : '')) + '<div class="p-grid">' + ids.map(function (id) { return A.productCard(A.products[id]); }).join('') + '</div>'
+      ? head(ids.length + ' Ürün' + (user.demo ? A.ornekBadge({ ornek: true }) : '')) + '<div class="p-grid p-grid--4">' + ids.map(function (id) { return A.productCard(A.products[id]); }).join('') + '</div>'
       : A.stateBox({ icon: 'fa-heart', title: 'Favorilerinizde ürün bulunmuyor', action: { label: 'Alışverişe Başla', href: URLS.home } });
     A.watchImages(main);
   }

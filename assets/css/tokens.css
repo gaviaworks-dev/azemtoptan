@@ -88,7 +88,6 @@
   --auth-ctl-h: 44px;      /* alan, sekme, segment */
   --auth-btn-h: 48px;      /* gönder butonu */
   --auth-fs-ctl: var(--fs-sm);    /* sekme ve segment yazısı (14) */
-  --auth-fs-field: 15px;          /* alan yazısı; ≤1024 16 (iOS odak büyütmesi olmasın) */
 
   /* — Köşe: İKİ ölçü. Büyük kapsayıcı (form kartı, marka paneli, modal, hero, banner, drawer, açılır panel, büyük panel) 16;
        buton, input, chip, küçük kart ve küçük öğeler 8. — */
@@ -121,10 +120,11 @@
   --fs-lead: 16px;      /* giriş paragrafı (hero, e-bülten) · 500 · lh-body */
   --fs-body: 16px;      /* gövde · 500 · lh-body */
   --fs-nav: 15px;       /* footer başlığı, drawer menü öğesi · 600/700 · lh-ui */
-  --fs-menu: 14px;      /* header ana menü · 600 · lh-ui */
+  --fs-menu: 14px;      /* header ana menü · 700 · lh-ui */
   --fs-btn: 15px;       /* buton · 700 · lh-ui */
   --fs-name: 14px;      /* ürün kartı adı · 500 · lh-name · 2 satır */
-  --fs-sm: 14px;        /* UI metni: dropdown, input, link, kart alt satırı · 500/600 · lh-ui */
+  --fs-sm: 14px;        /* UI metni: dropdown, link, kart alt satırı · 500/600 · lh-ui */
+  --fs-input: 14px;     /* alan yazısı (değer + placeholder): input, select, textarea, arama · 500; dokunmatik/≤1024 16 (iOS odak büyütmesi olmasın) */
   --fs-cell: 14px;      /* grid hücre etiketi (kategori, güven) · 600 · lh-ui */
   --fs-side: 14px;      /* yan sütun başlığı: liste filtresi (Filtreler, Fiyat, Markalar) ve yasal yan menü öğeleri · 600 · lh-ui */
   --fs-text-btn: 13px;  /* metin buton / küçük link: Hepsini Temizle, Şifreni mi Unuttun, Üye Ol · 600 */
@@ -178,8 +178,11 @@
     --fs-h3: 22px;
     --fs-page: 22px;
     --header-row: 64px;
-    --auth-fs-field: 16px;
   }
+}
+/* dokunmatik ekran (geniş tablet dahil) ve ≤1024: alan yazısı 16 — iOS odakta sayfayı büyütmesin */
+@media (max-width: 1024px), (hover: none) and (pointer: coarse) {
+  :root { --fs-input: 16px; }
 }
 
 @media (max-width: 640px) {

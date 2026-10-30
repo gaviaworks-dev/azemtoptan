@@ -30,7 +30,7 @@ body::before {
 }
 .search:focus-within { border-color: var(--c-brand-2); box-shadow: 0 0 0 3px color-mix(in srgb, var(--c-brand-2) 18%, transparent); }
 .search i { color: var(--c-muted); font-size: var(--icon-sm); }
-.search input { flex: 1; min-width: 0; height: 100%; border: 0; outline: 0; background: transparent; font-size: var(--fs-sm); }
+.search input { flex: 1; min-width: 0; height: 100%; border: 0; outline: 0; background: transparent; font-size: var(--fs-input); }
 .search input::placeholder { color: var(--c-muted); }
 .search input::-webkit-search-cancel-button { -webkit-appearance: none; appearance: none; }   /* yerine 44px'lik × (A101) */
 .search__clear { flex: none; align-self: stretch; display: grid; place-items: center; width: 44px; margin-left: -11px; color: var(--c-muted); font-size: var(--icon-sm); transition: color var(--t-fast) var(--ease); }
@@ -54,11 +54,11 @@ body::before {
 body:has(.cat-bar) .hdr-nav-row { display: none; }
 .nav { display: flex; align-items: center; flex-wrap: nowrap; }
 .nav__item { position: relative; display: flex; align-items: center; }
-.nav__item + .nav__item::before { content: "·"; color: var(--c-muted); padding-inline: 6px; }
+.nav__item + .nav__item::before { content: "·"; color: var(--c-muted); padding-inline: 10px; }
 .nav__link {
   display: inline-flex; align-items: center; gap: 6px;
   min-height: 44px; padding-inline: 4px;
-  font-size: var(--fs-menu); font-weight: 600; line-height: var(--lh-ui); white-space: nowrap; color: var(--c-ink);
+  font-size: var(--fs-menu); font-weight: 700; line-height: var(--lh-ui); white-space: nowrap; color: var(--c-ink);
   transition: color var(--t-fast) var(--ease);
 }
 .nav__link:hover, .nav__item.is-open > .nav__link { color: var(--c-brand-2); }
@@ -131,63 +131,44 @@ body:has(.cat-bar) .hdr-nav-row { display: none; }
 }
 
 /* ---------- Footer (DadaGastro kurgusu; Azem içeriği, lacivert zemin) ---------- */
-.site-footer { background: var(--c-brand); color: var(--c-on-dark-2); padding-top: var(--sp-8); }
+.site-footer { background: var(--c-brand); color: var(--c-on-dark-2); padding-top: var(--sp-7); }
 
-/* Üst grid: marka | 3 link kolonu | uygulama (sağ kenara yaslı) */
-.foot-grid {
-  display: grid;
-  grid-template-columns: minmax(max-content, 1fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.15fr) auto;
-  gap: var(--sp-7) var(--sp-7);
+/* Üst satır: sosyal | logo | uygulama; yan bölgeler eşit (1fr) olduğu için logo tam ortada */
+.foot-top {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); grid-template-areas: "soc logo app";
+  align-items: center; gap: var(--sp-5);
   padding-bottom: var(--sp-7);
   border-bottom: 1px solid var(--c-on-dark-line);
 }
-
-/* Marka kolonu: logo + sosyal butonlar */
-.foot-brand__logo { display: inline-block; margin-bottom: var(--sp-5); }
-.foot-brand__logo img { height: 42px; width: auto; filter: brightness(0) invert(1); }
-.foot-soc { display: flex; gap: 11px; }
+.foot-logo { grid-area: logo; display: inline-flex; align-items: center; min-height: 44px; }
+.foot-logo img { height: 42px; width: auto; filter: brightness(0) invert(1); }
+.foot-soc { grid-area: soc; justify-self: start; display: flex; gap: 11px; }
 .foot-soc a {
-  width: 42px; height: 42px; display: grid; place-items: center;
+  width: 44px; height: 44px; display: grid; place-items: center;
   border-radius: var(--radius); background: var(--c-on-dark-fill-2);
   color: var(--c-on-dark); font-size: 16px;
   transition: background-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease), transform var(--t-fast) var(--ease);
 }
 @media (hover: hover) and (pointer: fine) { .foot-soc a:hover { background: var(--c-on-dark); color: var(--c-brand); transform: translateY(-3px); } }
+.foot-app { grid-area: app; justify-self: end; display: flex; gap: var(--sp-3); }
 
-/* Link kolonları */
-.foot-col h2, .foot-app h2 {
-  margin-bottom: var(--sp-5);
-  font-size: var(--fs-nav); font-weight: 700; letter-spacing: 0; line-height: var(--lh-ui); color: var(--c-on-dark);
+/* Link satırları: 1. kurumsal + yardım, 2. yasal. Ortalı; kırılınca satırlar dengeli (balance) */
+.foot-links {
+  padding-block: var(--sp-4); border-bottom: 1px solid var(--c-on-dark-line);
+  text-align: center; text-wrap: balance;
 }
-.foot-col a {
-  display: block; padding-block: var(--sp-2);
-  font-size: var(--fs-sm); font-weight: 500; line-height: var(--lh-prose); color: var(--c-on-dark-2);
-  transition: color var(--t-fast) var(--ease), padding-left var(--t-fast) var(--ease);
+.foot-links a {
+  display: inline-flex; align-items: center; min-height: 32px; white-space: nowrap;
+  color: var(--c-on-dark-2); transition: color var(--t-fast) var(--ease);
 }
-.foot-col h2 + a, .foot-col h2 + * > a:first-child { padding-top: 0; }
-@media (hover: hover) and (pointer: fine) { .foot-col a:hover { color: var(--c-on-dark); padding-left: 5px; } }
-
-/* İletişim satırları */
-.foot-contact { display: grid; gap: var(--sp-4); }
-.foot-contact__row { display: flex; gap: var(--sp-3); align-items: flex-start; font-size: var(--fs-sm); line-height: var(--lh-prose); }
-.foot-contact__row i { width: 16px; margin-top: 3px; color: var(--c-on-dark); text-align: center; }
-.foot-contact__row strong { display: block; margin-bottom: 2px; font-size: var(--fs-xs); font-weight: 700; letter-spacing: .02em; color: var(--c-on-dark); }
-
-/* Uygulama kolonu: butonların sağ kenarı divider'ın sağ ucuyla aynı hizada */
-.foot-app { justify-self: end; }
-.foot-app__btns { display: grid; gap: var(--sp-3); }
-
-/* Alt bölüm: üç satır, eşit dikey boşluk, ortak orta eksen */
-.foot-corp, .foot-legal, .foot-bottom { padding-block: var(--sp-5); }
-.foot-corp, .foot-legal { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; border-bottom: 1px solid var(--c-on-dark-line); }
-.foot-corp { gap: 10px 14px; font-size: var(--fs-meta); font-weight: 600; }
-.foot-legal { gap: 8px 10px; font-size: var(--fs-xs); font-weight: 500; }
-.foot-corp a, .foot-legal a { white-space: nowrap; color: var(--c-on-dark-2); transition: color var(--t-fast) var(--ease); }
-.foot-corp a:hover, .foot-legal a:hover { color: var(--c-on-dark); }
-.foot-corp .sep { width: 1px; height: 12px; background: var(--c-on-dark-sep); flex: none; }
-.foot-legal .sep { width: 1px; height: 11px; background: var(--c-on-dark-sep); flex: none; }
+.foot-links a:hover { color: var(--c-on-dark); }
+.foot-links .sep { display: inline-block; width: 1px; height: 12px; margin-inline: 10px; vertical-align: middle; background: var(--c-on-dark-sep); }
+.foot-links--corp { font-size: var(--fs-meta); font-weight: 600; }
+.foot-links--legal { font-size: var(--fs-xs); font-weight: 500; }
+.foot-links--legal .sep { height: 11px; margin-inline: 8px; }
 
 .foot-bottom {
+  padding-block: var(--sp-5);
   display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: var(--sp-5);
   font-size: var(--fs-meta); font-weight: 500; color: var(--c-on-dark-3);
 }
@@ -207,30 +188,20 @@ body:has(.cat-bar) .hdr-nav-row { display: none; }
   .no-curtain .site-footer { position: relative; }
 }
 
+/* ≤1024 (A101 mobil): logo üstte ortada, altında sosyal ikonlar, sonra uygulama butonları; ayırıcısız ortalı link akışı */
 @media (max-width: 1024px) {
-  .foot-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--sp-6) var(--sp-5); }
-  .foot-brand { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; gap: var(--sp-5); }
-  .foot-brand__logo { margin-bottom: 0; }
-  .foot-app { grid-column: 1 / -1; justify-self: stretch; display: flex; align-items: center; justify-content: space-between; gap: var(--sp-5); }
-  .foot-app h2 { margin-bottom: 0; }
-  .foot-app__btns { grid-auto-flow: column; }
+  .foot-top { grid-template-columns: minmax(0, 1fr); grid-template-areas: "logo" "soc" "app"; justify-items: center; gap: var(--sp-5); padding-bottom: var(--sp-6); }
+  .foot-soc, .foot-app { justify-self: center; }
+  .foot-links { padding-block: var(--sp-3); }
+  .foot-links .sep { display: none; }
+  .foot-links a { min-height: 44px; padding-inline: var(--sp-3); }
 }
-/* Mobil footer (A101/DadaGastro): iki kolonlu link alanı, tek eksende ortalı alt satırlar, alt menüyle eşit nefes */
 @media (max-width: 640px) {
   /* alt boşluk = alt menü (66) + menünün altı (14) + üstünde nefes (24): menü footer'ın içinde, son satırdan ayrık durur */
-  .site-footer { padding-top: var(--sp-7); padding-bottom: calc(104px + env(safe-area-inset-bottom, 0px)); }
-  .foot-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-6) var(--sp-5); padding-bottom: var(--sp-6); }
-  .foot-brand { grid-column: 1 / -1; flex-direction: row; align-items: center; justify-content: space-between; gap: var(--sp-4); }
-  .foot-brand__logo img { height: 36px; }
-  .foot-soc { gap: var(--sp-2); }
-  .foot-col h2, .foot-app h2 { margin-bottom: var(--sp-3); }
-  .foot-col:has(.foot-contact) { grid-column: 1 / -1; }
-  .foot-app { grid-column: 1 / -1; display: block; }
-  .foot-app__btns { grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); }
+  .site-footer { padding-top: var(--sp-6); padding-bottom: calc(104px + env(safe-area-inset-bottom, 0px)); }
+  .foot-logo img { height: 36px; }
+  .foot-app { justify-self: stretch; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .foot-app .app-btn { width: 100%; }
-  /* kurumsal ve yasal satırlar: ayırıcısız, ortalı akış (satır sonunda sarkan ayırıcı kalmaz) */
-  .foot-corp, .foot-legal { gap: 0 var(--sp-5); padding-block: var(--sp-3); }
-  .foot-corp .sep, .foot-legal .sep { display: none; }
   .foot-bottom { grid-template-columns: minmax(0, 1fr); justify-items: center; gap: var(--sp-3); padding-block: var(--sp-5) 0; text-align: center; }
   .foot-bottom > :first-child, .foot-bottom > :last-child { justify-self: center; }
   .pay-logos { flex-wrap: wrap; justify-content: center; }
@@ -242,11 +213,6 @@ body:has(.cat-bar) .hdr-nav-row { display: none; }
 @media (max-width: 1024px) {
   .hdr-logo { display: flex; align-items: center; min-height: 44px; }
   /* footer: 44px dokunma hedefi */
-  .foot-brand__logo { display: inline-flex; align-items: center; min-height: 44px; }
-  .foot-soc a { width: 44px; height: 44px; }
-  .foot-col a { padding-block: 11px; }
-  .foot-corp a, .foot-legal a { display: inline-flex; align-items: center; min-height: 44px; }
-  .foot-legal { row-gap: 0; }
   .foot-sign { min-height: 44px; }
   /* alt satır: tablette de alt alta ve ortalı (copyright iki satıra kırılmasın) */
   .foot-bottom { grid-template-columns: minmax(0, 1fr); justify-items: center; gap: var(--sp-4); text-align: center; }
