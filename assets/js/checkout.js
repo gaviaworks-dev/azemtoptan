@@ -78,7 +78,7 @@
       '<div class="empty empty--box empty--compact">' + icon('fa-solid fa-location-dot') + '<p class="empty__title">Kayıtlı Adresiniz Bulunmamaktadır</p>' +
       '<p class="empty__text">Siparişinizin teslimatı için adres ekleyin.</p><button class="btn btn--primary btn--sm" type="button" data-state-action>' + icon('fa-solid fa-plus') + ' Adres Ekle</button></div>';
     return '<div class="radio-list" role="radiogroup" aria-label="' + (name === 'adres' ? 'Teslimat adresi' : 'Fatura adresi') + '">' + l.map(function (a) {
-      return radio(name, a.id, a.id === sel, esc(a.baslik), [esc(a.ad + ' ' + a.soyad) + ' · ' + esc(phoneText(a.telefon)), esc(addrLine(a))]);
+      return radio(name, a.id, a.id === sel, esc(a.baslik) + A.ornekBadge(a), [esc(a.ad + ' ' + a.soyad) + ' · ' + esc(phoneText(a.telefon)), esc(addrLine(a))]);
     }).join('') + '</div>';
   }
   function renderAddr() {

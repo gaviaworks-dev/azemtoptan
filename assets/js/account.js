@@ -168,7 +168,7 @@
   body.innerHTML =
     '<div class="account account--' + (sec ? 'detail' : 'index') + '">' +
       '<aside class="account__side">' +
-        '<div class="account__hello"><span class="account__hello-pre">Hoş geldiniz</span><span class="account__hello-name" data-session-name>' + esc(fullName(user) || 'Hesabım') + '</span>' +
+        '<div class="account__hello"><span class="account__hello-pre">Hoş geldiniz' + (user.demo ? ' <span class="status-badge status-badge--muted">Örnek hesap</span>' : '') + '</span><span class="account__hello-name" data-session-name>' + esc(fullName(user) || 'Hesabım') + '</span>' +
           '<a class="link" href="' + href('profil') + '">Bilgilerimi Düzenle</a></div>' +
         '<nav class="side-menu" aria-label="Hesabım">' +
           MENU.map(function (g) { return '<ul class="side-menu__list">' + g.map(menuItem).join('') + '</ul>'; }).join('<hr class="side-menu__divider">') +
@@ -201,7 +201,7 @@
   function orderCard(o) {
     var lines = o.lines || [], more = lines.length - 4;
     return '<article class="order-card">' +
-      '<div class="order-card__head"><p class="order-card__no">Sipariş No: ' + esc(o.no) + '</p><span class="order-card__date">' + esc(A.formatDate(o.tarih)) + '</span>' + badge(o) + '</div>' +
+      '<div class="order-card__head"><p class="order-card__no">Sipariş No: ' + esc(o.no) + A.ornekBadge(o) + '</p><span class="order-card__date">' + esc(A.formatDate(o.tarih)) + '</span>' + badge(o) + '</div>' +
       '<div class="order-card__body">' +
         '<div class="order-card__thumbs">' + lines.slice(0, 4).map(function (l) {
           return '<span class="order-card__thumb"><span style="' + lineBg(l) + '" role="img" aria-label="' + esc(l.name) + '"></span></span>';
@@ -237,7 +237,7 @@
   var STEP_ICON = ['fa-check', 'fa-box', 'fa-truck', 'fa-house'];
   function addressCard(a, actions) {
     return '<article class="address-card">' +
-      '<p class="address-card__title">' + esc(a.baslik || 'Adres') + (a.varsayilan && actions ? ' <span class="status-badge">Varsayılan</span>' : '') + '</p>' +
+      '<p class="address-card__title">' + esc(a.baslik || 'Adres') + (a.varsayilan && actions ? ' <span class="status-badge">Varsayılan</span>' : '') + A.ornekBadge(a) + '</p>' +
       (fullName(a) ? '<p>' + esc(fullName(a)) + '</p>' : '') +
       '<p>' + esc([a.mahalle, a.adres].filter(Boolean).join(', ')) + '</p>' +
       '<p>' + esc([a.ilce, a.il].filter(Boolean).join(' / ')) + '</p>' +
@@ -270,7 +270,7 @@
     var pickup = /mağaza/i.test(txt(o.teslimat));   /* "Mağazadan Teslim Al": teslimat adresi kartı yok */
     var kv = [['Teslimat', txt(o.teslimat)], ['Ödeme', txt(o.odeme)], ['Fatura', faturaText(o.fatura)]].filter(function (r) { return r[1]; });
     main.innerHTML =
-      '<div class="order-card"><div class="order-card__head"><p class="order-card__no">Sipariş No: ' + esc(o.no) + '</p><span class="order-card__date">' + esc(A.formatDate(o.tarih)) + '</span>' + badge(o) + '</div></div>' +
+      '<div class="order-card"><div class="order-card__head"><p class="order-card__no">Sipariş No: ' + esc(o.no) + A.ornekBadge(o) + '</p><span class="order-card__date">' + esc(A.formatDate(o.tarih)) + '</span>' + badge(o) + '</div></div>' +
       '<section class="co-section"><div class="co-section__head"><h2 class="co-section__title">Sipariş Durumu</h2></div>' +
         '<ol class="timeline">' + A.ORDER_STEPS.map(function (s, i) {
           var done = i <= d;
@@ -308,7 +308,7 @@
   function renderFavoriler() {
     var ids = sellableFavs();
     main.innerHTML = ids.length
-      ? head(ids.length + ' Ürün') + '<div class="p-grid">' + ids.map(function (id) { return A.productCard(A.products[id]); }).join('') + '</div>'
+      ? head(ids.length + ' Ürün' + (user.demo ? A.ornekBadge({ ornek: true }) : '')) + '<div class="p-grid">' + ids.map(function (id) { return A.productCard(A.products[id]); }).join('') + '</div>'
       : A.stateBox({ icon: 'fa-heart', title: 'Favorilerinizde ürün bulunmuyor', action: { label: 'Alışverişe Başla', href: URLS.home } });
     A.watchImages(main);
   }

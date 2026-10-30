@@ -1173,8 +1173,8 @@
   /* Prototip oturumu (K3, K14): giriş/kayıt formu başarılıysa yerel olarak açılır; gerçek doğrulama yok */
   var session = {
     get: function () { return store.get('azem-oturum', null); },
-    set: function (v) { store.set('azem-oturum', v); syncSession(); },
-    clear: function () { try { localStorage.removeItem('azem-oturum'); } catch (e) {} syncSession(); }
+    set: function (v) { var o = session.get(); if (o && o.demo && !(v && v.demo)) clearDemo(o); store.set('azem-oturum', v); syncSession(); },
+    clear: function () { var o = session.get(); if (o && o.demo) clearDemo(o); try { localStorage.removeItem('azem-oturum'); } catch (e) {} syncSession(); }
   };
   function syncSession() {
     var s = session.get();
@@ -1221,6 +1221,47 @@
     }
   };
 
+  /* Demo hesap (patronun kayıt olmadan gezmesi; K14'e yalnız burada istisna): ticari üyelik, 1 adres, 2 sipariş, birkaç favori.
+     Ürünler Azem kataloğundan; tüm kayıtlar "Örnek" etiketli. Çıkışta (ya da başka hesapla girişte) örnekler silinir, kullanıcının kendi kayıtları kalır. */
+  var DEMO_ADDR = { id: 'ornek-adres', baslik: 'Depo', ad: 'Demo', soyad: 'Kullanıcı', telefon: '05000000000', il: 'İstanbul', ilce: 'Şişli',
+    mahalle: 'Kurtuluş Mah.', adres: 'Örnek Sok. No 1', ornek: true };
+  /* demo giriş bilgisi: giriş formu bununla dolu gelir; bu ikiliyle "Giriş Yap" demo hesabı açar */
+  var DEMO_LOGIN = { telefon: '05000000000', sifre: 'demo123' };
+  function ornekBadge(x) { return x && x.ornek ? ' <span class="status-badge status-badge--muted">Örnek</span>' : ''; }
+  function demoLogin() {
+    var pool = Object.keys(products).map(function (id) { return products[id]; }).filter(function (p) { return sellable(p) && p.img; });
+    var pick = function (i) { return pool[(i * 37) % pool.length]; };
+    function line(p, qty) {
+      var o = saleOptions(p), row = o.rows[o.def];
+      return { id: p.id, name: p.name, img: p.img, px: p.px, unit: unitText(row), price: row.price, qty: qty, line: round2(row.price * qty) };
+    }
+    function order(no, days, durum, lines, odeme) {
+      var sub = round2(lines.reduce(function (n, l) { return n + l.line; }, 0)), ship = sub < FREE_SHIP ? SHIPPING_FEE : 0;
+      return { no: no, tarih: new Date(Date.now() - days * 864e5).toISOString(), durum: durum, ornek: true, lines: lines,
+        totals: { subtotal: sub, shipping: ship, discount: 0, total: round2(sub + ship) }, adres: DEMO_ADDR, teslimat: 'Kargo ile Teslimat', odeme: odeme,
+        fatura: { tip: 'Ticari', firma: 'Örnek Gıda Ltd. Şti.', vergiDairesi: 'Şişli', vergiNo: '1234567890', adres: DEMO_ADDR } };
+    }
+    var own = addresses.list().filter(function (a) { return !a.ornek; });
+    store.set('azem-adresler', own.concat([Object.assign({}, DEMO_ADDR, { varsayilan: !own.length })]));
+    var demoOrders = [
+      order('AZ90000002', 1, 0, [line(pick(1), 2), line(pick(2), 1), line(pick(3), 3)], 'Havale / EFT'),
+      order('AZ90000001', 6, 2, [line(pick(4), 1), line(pick(5), 2), line(pick(6), 1), line(pick(7), 4), line(pick(8), 1)], 'Kredi / Banka Kartı')
+    ];
+    store.set('azem-siparisler', demoOrders.concat(orders.list().filter(function (o) { return !o.ornek; }))
+      .sort(function (a, b) { return new Date(b.tarih) - new Date(a.tarih); }));
+    var added = [9, 10, 11, 12].map(function (i) { return pick(i).id; }).filter(function (id, i, l) { return favs.indexOf(id) < 0 && l.indexOf(id) === i; });
+    added.forEach(function (id) { favs.push(id); });
+    store.set('azem-favori', favs);
+    session.set({ ad: 'Demo', soyad: 'Kullanıcı', email: 'demo@example.com', telefon: '05000000000', tip: '2', firma: 'Örnek Gıda Ltd. Şti.',
+      vergiDairesi: 'Şişli', vergiNo: '1234567890', faaliyet: 'Market', il: 'İstanbul', ilce: 'Şişli', demo: true, demoFavs: added });
+  }
+  function clearDemo(o) {
+    store.set('azem-adresler', addresses.list().filter(function (a) { return !a.ornek; }));
+    store.set('azem-siparisler', orders.list().filter(function (x) { return !x.ornek; }));
+    (o.demoFavs || []).forEach(function (id) { var i = favs.indexOf(id); if (i > -1) { favs.splice(i, 1); syncFav(id); } });
+    store.set('azem-favori', favs);
+  }
+
   /* Sepet toplamları (K4: 10.000 TL altı kargo 500 ₺, Azem sepetindeki ücret) */
   var SHIPPING_FEE = 500;
   function cartLines() {
@@ -1252,6 +1293,13 @@
       toast('Çıkış yapıldı', 'fa-arrow-right-from-bracket');
       if (/hesabim\.html/.test(location.pathname)) setTimeout(function () { location.href = URLS.home; }, 600);
     }
+    /* Demo Hesapla Giriş Yap (giriş kartı): hazır hesapla oturum, hesaba ya da geldiği sayfaya */
+    var demoBtn = e.target.closest('[data-demo-login]');
+    if (demoBtn) {
+      demoLogin(); busy(demoBtn, true, 'Giriş yapılıyor');
+      var geri = param('geri');
+      setTimeout(function () { location.href = geri && /^[a-z-]+\.html/.test(geri) ? geri : URLS.hesap(); }, 600);
+    }
     /* Bugünün Fırsatı (K10): Azem'in modalı boş → boş durum + kampanyalara yönlendirme */
     if (e.target.closest('[data-firsat]')) {
       e.preventDefault();
@@ -1276,7 +1324,7 @@
     initRails: initRails, reveal: reveal, syncFooter: syncFooter, bindMenu: bindMenu, closeMenus: closeMenus,
     initTabs: initTabs, initAcc: initAcc, setAcc: setAcc, initRange: initRange, initGallery: initGallery, scrollSpy: scrollSpy, stickyBar: stickyBar,
     dialog: dialog, addedDialog: addedDialog, busy: busy, stateBox: stateBox, skeletonRows: skeletonRows, session: session, requireLogin: requireLogin,
-    fold: fold, addresses: addresses, orders: orders, ORDER_STEPS: ORDER_STEPS, cartLines: cartLines, cartTotals: cartTotals, setQty: setQty, removeLine: removeLine, clearCart: clearCart,
+    fold: fold, addresses: addresses, orders: orders, ornekBadge: ornekBadge, demoLogin: demoLogin, DEMO_LOGIN: DEMO_LOGIN, ORDER_STEPS: ORDER_STEPS, cartLines: cartLines, cartTotals: cartTotals, setQty: setQty, removeLine: removeLine, clearCart: clearCart,
     shipMeter: shipMeter, unitText: unitText, formatDate: formatDate, FREE_SHIP: FREE_SHIP, SHIPPING_FEE: SHIPPING_FEE, URLS: URLS, icon: icon,
     qtyValue: qtyValue, saleOptions: saleOptions, cartKey: cartKey, cartItem: cartItem, inCart: inCart, measureClamp: measureClamp, hyphenate: hyphenate, searchProducts: searchProducts, watchImages: watchImages, skeletonCards: skeletonCards, phoneDigits: phoneDigits, setError: setError, clearError: clearError,
     /* sayfa betiği içeriği bastıktan sonra çağırır */

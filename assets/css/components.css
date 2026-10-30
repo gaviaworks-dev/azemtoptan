@@ -1557,7 +1557,7 @@ button.dropdown__item { width: 100%; text-align: left; }
 .order-card__head { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2) var(--sp-4); }
 .order-card__no { font-size: var(--fs-sm); font-weight: 700; color: var(--c-ink); }
 .order-card__date { font-size: var(--fs-meta); color: var(--c-muted); }
-.order-card__head .status-badge { margin-left: auto; }
+.order-card__head > .status-badge { margin-left: auto; }
 .order-card__body { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--sp-3); }
 .order-card__thumbs { display: flex; gap: var(--sp-2); }
 .order-card__thumb { width: 48px; height: 48px; padding: 3px; border-radius: var(--radius); border: 1px solid var(--c-line); background: var(--c-surface); }

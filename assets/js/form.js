@@ -54,6 +54,15 @@
     requestAnimationFrame(function () { el.innerHTML = '<i class="fa-solid ' + icon + '" aria-hidden="true"></i><span>' + html + '</span>'; });
   }
 
+  /* Giriş formu demo hesabın bilgileriyle dolu gelir (patron kayıt olmadan gezsin); başka numara yazılırsa normal giriş */
+  var gForm = $('form[data-form="giris"]');
+  if (gForm) {
+    var demoTel = A.DEMO_LOGIN.telefon.slice(1);
+    $('[data-phone]', gForm).value = [demoTel.slice(0, 3), demoTel.slice(3, 6), demoTel.slice(6, 8), demoTel.slice(8)].join(' ');
+    $('[type="password"]', gForm).value = A.DEMO_LOGIN.sifre;
+    $$('fieldset .check__input', gForm).forEach(function (c) { c.checked = true; });
+  }
+
   $$('form[data-form]').forEach(function (form) {
     var inputs = $$('.input, .check__input[required]', form);
     var errBox = $('[data-form-error]', form), infoBox = $('[data-form-info]', form);
@@ -73,7 +82,9 @@
         /* prototip oturumu (K3/K14): gerçek doğrulama yok; yerel oturum açılır, hesaba ya da geldiği sayfaya döner */
         var f = new FormData(form), kayit = form.getAttribute('data-form') === 'kayit';
         var v = function (n) { return String(f.get(n) || '').trim(); };
-        A.session.set(kayit
+        var demo = !kayit && A.phoneDigits($('[data-phone]', form)) === A.DEMO_LOGIN.telefon && v('sifre') === A.DEMO_LOGIN.sifre;
+        if (demo) A.demoLogin();
+        else A.session.set(kayit
           ? { ad: v('ad'), soyad: v('soyad'), email: v('email'), telefon: v('telefon'), tip: v('registerType') || 'bireysel',
               firma: v('firmaadi'), vergiDairesi: v('vergidairesi'), vergiNo: v('tcvergino'), faaliyet: v('faaliyetalani'), il: v('sehir'), ilce: v('ilce') }
           : { telefon: v('telefon') || ($('[type="tel"]', form) || {}).value || '' });
