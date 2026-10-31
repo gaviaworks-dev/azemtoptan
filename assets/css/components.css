@@ -490,6 +490,8 @@
   transition: opacity .22s var(--ease-out), transform .22s var(--ease-out), visibility .22s;
 }
 .is-open > .dropdown { opacity: 1; visibility: visible; transform: none; }
+/* küçük menü (hesap, sıralama): genişlik içerik kadar, sol ve sağ iç boşluk eşit; sabit genişlik yok */
+.dropdown--fit { width: max-content; min-width: 0; max-width: min(320px, calc(100vw - var(--gutter) * 2)); }
 .dropdown__list { display: grid; gap: 2px; }
 .dropdown__item {
   display: flex; align-items: center; gap: var(--sp-3);
@@ -907,6 +909,7 @@ button.chip { font: inherit; font-size: var(--fs-meta); font-weight: 600; cursor
 /* Açılır menü (sıralama vb.): header menüleriyle aynı panel */
 .menu { position: relative; }
 .menu > .dropdown { top: calc(100% + 8px); right: 0; min-width: 240px; }
+.menu > .dropdown--fit { min-width: 0; }
 .menu--start > .dropdown { left: 0; right: auto; }
 .menu__btn i { font-size: 11px; transition: transform var(--t-base) var(--ease); }
 .menu.is-open .menu__btn i { transform: rotate(180deg); }

@@ -49,7 +49,7 @@
         '</div>' +
         '<div class="hdr-menu" data-menu data-hover>' +
           '<button class="icon-btn icon-btn--ghost hdr-icon" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Giriş Yap" title="Giriş Yap" data-menu-btn>' + icon('fa-regular fa-user') + '</button>' +
-          '<div class="dropdown" role="menu">' +
+          '<div class="dropdown dropdown--fit" role="menu">' +
             /* misafir / oturum açık: iki liste, html.is-signed-in ile değişir */
             '<ul class="dropdown__list only-guest">' +
               '<li><a class="dropdown__item" href="' + URL.giris + '" role="menuitem">' + icon('fa-solid fa-arrow-right-to-bracket') + ' Giriş Yap</a></li>' +
@@ -99,7 +99,7 @@
   '<div class="wrap">' +
     /* üst satır: sosyal | logo | uygulama (≤1024: logo, sosyal, uygulama alt alta) */
     '<div class="foot-top">' +
-      '<a class="foot-logo" href="' + URL.home + '" aria-label="Azem Toptan ana sayfa"><img src="assets/img/brand/azem-logo.svg" width="108" height="42" alt="Azem Toptan"></a>' +
+      '<a class="foot-logo" href="' + URL.home + '" aria-label="Azem Toptan ana sayfa"><img src="assets/img/brand/azem-logo.svg" width="139" height="54" alt="Azem Toptan"></a>' +
       '<div class="foot-soc" role="group" aria-label="Bizi Takip Edin">' +
         '<a href="#" aria-label="Facebook">' + icon('fa-brands fa-facebook-f') + '</a>' +
         '<a href="#" aria-label="YouTube">' + icon('fa-brands fa-youtube') + '</a>' +

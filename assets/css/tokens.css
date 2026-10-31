@@ -31,7 +31,7 @@
   --c-brand-2-deep: #2a4f86;
   --c-brand-tint: #f2f1f8;     /* header zemini (A101'deki açık marka tonu) */
   --c-brand-tint-2: #e8e6f3;   /* story dairesi, hover zemini */
-  --c-band: #efedf8;           /* liste sayfa başı bandı: düz tek ton, primary'nin çok açık hali (header #f2f1f8 ve sayfa #f3f3f7 ile uyumlu, ferah) */
+  --c-band: #e7e4f4;           /* liste sayfa başı bandı + yapışık hali: düz tek ton, primary'nin açık hali; header (#f2f1f8) ve sayfa (#f3f3f7) zemininden bir tık koyu */
   --c-brand-on-dark: #b9c9ea;  /* lacivert üstünde ikincil metin */
 
   /* — Renk: koyu zemin üstü (footer) — */

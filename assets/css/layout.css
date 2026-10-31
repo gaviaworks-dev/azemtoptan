@@ -47,6 +47,7 @@ body::before {
 .hdr-icon:hover, .hdr-menu.is-open > .hdr-icon { background: var(--c-brand-tint-2); border-color: transparent; color: var(--c-brand); }
 .hdr-menu { position: relative; }
 .hdr-menu > .dropdown { top: calc(100% + 10px); right: 0; width: 320px; }
+.hdr-menu > .dropdown--fit { width: max-content; }
 .hdr-menu > .dropdown::before { content: ""; position: absolute; left: 0; right: 0; top: -12px; height: 12px; }  /* hover köprüsü */
 
 .hdr-nav-row { display: flex; align-items: center; justify-content: center; gap: var(--sp-5); min-height: 48px; border-top: 1px solid var(--c-line); }   /* arama satırından ince çizgiyle ayrılır; menü ortalı */
@@ -141,7 +142,7 @@ body:has(.cat-bar) .hdr-nav-row { display: none; }
   border-bottom: 1px solid var(--c-on-dark-line);
 }
 .foot-logo { grid-area: logo; display: inline-flex; align-items: center; min-height: 44px; }
-.foot-logo img { height: 42px; width: auto; filter: brightness(0) invert(1); }
+.foot-logo img { height: 54px; width: auto; filter: brightness(0) invert(1); }
 .foot-soc { grid-area: soc; justify-self: start; display: flex; gap: 11px; }
 .foot-soc a {
   width: 44px; height: 44px; display: grid; place-items: center;
@@ -199,7 +200,7 @@ body:has(.cat-bar) .hdr-nav-row { display: none; }
 @media (max-width: 640px) {
   /* alt boşluk = alt menü (66) + menünün altı (14) + üstünde nefes (24): menü footer'ın içinde, son satırdan ayrık durur */
   .site-footer { padding-top: var(--sp-6); padding-bottom: calc(104px + env(safe-area-inset-bottom, 0px)); }
-  .foot-logo img { height: 36px; }
+  .foot-logo img { height: 44px; }
   .foot-app { justify-self: stretch; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .foot-app .app-btn { width: 100%; }
   .foot-bottom { grid-template-columns: minmax(0, 1fr); justify-items: center; gap: var(--sp-3); padding-block: var(--sp-5) 0; text-align: center; }
@@ -224,6 +225,7 @@ body:has(.cat-bar) .hdr-nav-row { display: none; }
     position: fixed; top: calc(env(safe-area-inset-top, 0px) + var(--header-row));
     left: var(--gutter); right: var(--gutter); width: auto;
   }
+  .hdr-menu > .dropdown--fit { left: auto; width: max-content; }
   /* ödeme logoları tek satır */
   .pay-logos { gap: var(--sp-3); }
   .pay-logos { --pay-h: 16px; }
